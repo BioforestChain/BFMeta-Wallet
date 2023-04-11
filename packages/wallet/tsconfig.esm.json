@@ -1,0 +1,36 @@
+{
+    "extends": "./tsconfig",
+    "mixin": ["./tsconfig.json", "../../config/tsconfig_base/base.tsconfig.esm.json"],
+    "compilerOptions": {
+        "outDir": "./build/esm"
+    },
+    "references": [
+        {
+            "path": "../bfchain/tsconfig.esm.json"
+        },
+        {
+            "path": "../bfm/tsconfig.esm.json"
+        },
+        {
+            "path": "../bsc/tsconfig.esm.json"
+        },
+        {
+            "path": "../ccchain/tsconfig.esm.json"
+        },
+        {
+            "path": "../eth/tsconfig.esm.json"
+        },
+        {
+            "path": "../helpers/tsconfig.esm.json"
+        },
+        {
+            "path": "../pmchain/tsconfig.esm.json"
+        },
+        {
+            "path": "../tron/tsconfig.esm.json"
+        },
+        {
+            "path": "../typings/tsconfig.esm.json"
+        }
+    ]
+}

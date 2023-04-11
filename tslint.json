@@ -1,0 +1,14 @@
+{
+    "extends": "tslint:recommended",
+    "rules": {
+        "no-floating-promises": false,
+        "jsdoc-format": false,
+        "no-namespace": false,
+        "variable-name": false,
+        "max-classes-per-file": false,
+        "no-unused-expression": false,
+        "no-var-requires": false,
+        "no-console": false,
+        "forin": false
+    }
+}

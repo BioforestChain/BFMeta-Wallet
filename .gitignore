@@ -1,0 +1,7 @@
+.vscode
+.cache
+.idea
+.project
+node_modules
+src/**/.*
+build

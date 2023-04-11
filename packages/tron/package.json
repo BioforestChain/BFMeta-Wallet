@@ -1,0 +1,23 @@
+{
+    "name": "@bfmeta/wallet-tron",
+    "version": "1.0.0",
+    "description": " wallet tron",
+    "main": "build/cjs/index.js",
+    "keywords": [
+        "wallet",
+        "tron"
+    ],
+    "author": "wzx",
+    "license": "ISC",
+    "type": "commonjs",
+    "types": "build/cjs/index.d.ts",
+    "dependencies": {
+        "@bfmeta/wallet-typings": "1.0.0",
+        "ethers": "^5.7.1"
+    },
+    "files": [
+        "build"
+    ],
+    "module": "build/esm/index.js",
+    "gitHead": "ba33ddfdf9969f4f3f8e90c64ff58059566a7f40"
+}

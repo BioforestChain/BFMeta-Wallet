@@ -1,0 +1,26 @@
+import "@bfmeta/wallet-typings";
+import "./@types";
+import { Resolve, ModuleStroge } from "@bfchain/util-dep-inject";
+import { EthApi, EthHealthCheckHelper, ETH_PEERS } from "./core";
+import { PeerListHelperParmas } from "@bfmeta/wallet-helpers";
+
+export const EthWalletFactory = (config: BFChainWallet.Config["eth"], parentMap?: ModuleStroge) => {
+    if (config && config.enable) {
+        const moduleMap = new ModuleStroge(
+            [
+                [ETH_PEERS.ips, config.ips],
+                [ETH_PEERS.port, config.port],
+                [ETH_PEERS.testnet, config.testnet],
+                [PeerListHelperParmas.checkInterval, 30 * 1000 /**config */],
+            ],
+            parentMap,
+        );
+        moduleMap.set("CustomerPeerCheckHelper", Resolve(EthHealthCheckHelper, moduleMap));
+        const ethApi = Resolve(EthApi, moduleMap);
+        return ethApi;
+    } else {
+        console.warn(`EthWalletFactory is not enable`);
+    }
+};
+
+export * from "./core";

@@ -1,0 +1,21 @@
+{
+    "extends": "../../config/tsconfig_base/base.tsconfig.cjs",
+    "compilerOptions": {
+        "outDir": "./build/cjs",
+        "rootDir": "./src"
+    },
+    "references": [
+        {
+            "path": "../typings/tsconfig.json"
+        }
+    ],
+    "files": [
+        "src/@types.ts",
+        "src/constants.ts",
+        "src/cryptoHelper.ts",
+        "src/httpHelper.ts",
+        "src/index.ts",
+        "src/peerListHelper.ts",
+        "src/_baseApi.ts"
+    ]
+}

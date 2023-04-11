@@ -1,0 +1,19 @@
+{
+    "name": "@bfmeta/wallet-typings",
+    "version": "1.0.0",
+    "description": " wallet typings",
+    "main": "build/cjs/index.js",
+    "keywords": [
+        "wallet",
+        "typings"
+    ],
+    "author": "wzx",
+    "license": "ISC",
+    "type": "commonjs",
+    "types": "build/cjs/index.d.ts",
+    "files": [
+        "build"
+    ],
+    "module": "build/esm/index.js",
+    "gitHead": "ba33ddfdf9969f4f3f8e90c64ff58059566a7f40"
+}

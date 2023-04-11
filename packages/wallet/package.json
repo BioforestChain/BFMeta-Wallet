@@ -1,0 +1,30 @@
+{
+    "name": "@bfmeta/wallet",
+    "version": "1.0.0",
+    "description": " wallet",
+    "main": "build/cjs/index.js",
+    "keywords": [
+        "wallet"
+    ],
+    "author": "wzx",
+    "license": "ISC",
+    "type": "commonjs",
+    "types": "build/cjs/index.d.ts",
+    "dependencies": {
+        "@bfchain/util": "^5.0.0",
+        "@bfmeta/wallet-bfchain": "1.0.0",
+        "@bfmeta/wallet-bfm": "1.0.0",
+        "@bfmeta/wallet-bsc": "1.0.0",
+        "@bfmeta/wallet-ccchain": "1.0.0",
+        "@bfmeta/wallet-eth": "1.0.0",
+        "@bfmeta/wallet-helpers": "1.0.0",
+        "@bfmeta/wallet-pmchain": "1.0.0",
+        "@bfmeta/wallet-tron": "1.0.0",
+        "@bfmeta/wallet-typings": "1.0.0"
+    },
+    "files": [
+        "build"
+    ],
+    "module": "build/esm/index.js",
+    "gitHead": "ba33ddfdf9969f4f3f8e90c64ff58059566a7f40"
+}
