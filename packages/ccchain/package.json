@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-ccchain",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": " wallet ccchain",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -17,8 +17,8 @@
     "types": "build/cjs/index.d.ts",
     "dependencies": {
         "@bfmeta/node-sdk": "3.0.9",
-        "@bfmeta/wallet-helpers": "1.0.6",
-        "@bfmeta/wallet-typings": "1.0.6"
+        "@bfmeta/wallet-helpers": "1.0.7",
+        "@bfmeta/wallet-typings": "1.0.7"
     },
     "files": [
         "build"
