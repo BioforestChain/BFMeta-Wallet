@@ -1,7 +1,7 @@
 import { WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
 import { ModuleStroge, Injectable } from "@bfchain/util";
-
+const config: BFChainWallet.Config = require(`../../assets/config.json`);
 @Injectable(LoggerSymbol)
 class DemoLogger {
     constructor() {}
@@ -13,18 +13,7 @@ class DemoLogger {
 (async () => {
     const moduleMap = new ModuleStroge();
     moduleMap.set(LoggerSymbol, DemoLogger);
-    const walletFactory = new WalletFactory(
-        {
-            tron: { enable: true, ips: ["192.168.150.6"], port: 8090 },
-            tatum: {
-                enable: true,
-                host: "http://192.168.150.6/v3/blockchain/node",
-                apiKey: "3510e2c4-4d62-487c-b20f-42c8679912b7",
-                apiHost: "http://192.168.150.6/v3",
-            },
-        },
-        moduleMap,
-    );
+    const walletFactory = new WalletFactory(config, moduleMap);
     const tronApi = walletFactory.TronApi;
 
     const tronHelper = tronApi.tronHelper;

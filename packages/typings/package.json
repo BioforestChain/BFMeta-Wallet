@@ -1,12 +1,16 @@
 {
     "name": "@bfmeta/wallet-typings",
-    "version": "1.0.0",
+    "version": "1.0.6",
     "description": " wallet typings",
     "main": "build/cjs/index.js",
     "keywords": [
         "wallet",
         "typings"
     ],
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
     "author": "wzx",
     "license": "ISC",
     "type": "commonjs",
@@ -15,5 +19,5 @@
         "build"
     ],
     "module": "build/esm/index.js",
-    "gitHead": "ba33ddfdf9969f4f3f8e90c64ff58059566a7f40"
+    "gitHead": "613869747a152d44fd66d2f138228afd2421b809"
 }

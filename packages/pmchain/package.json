@@ -1,24 +1,28 @@
 {
     "name": "@bfmeta/wallet-pmchain",
-    "version": "1.0.0",
+    "version": "1.0.6",
     "description": " wallet pmchain",
     "main": "build/cjs/index.js",
     "keywords": [
         "wallet",
         "pmchain"
     ],
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
     "author": "wzx",
     "license": "ISC",
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet-helpers": "1.0.0",
-        "@bfmeta/wallet-typings": "1.0.0",
-        "@bfmeta/node-sdk": "3.0.9"
+        "@bfmeta/node-sdk": "3.0.9",
+        "@bfmeta/wallet-helpers": "1.0.6",
+        "@bfmeta/wallet-typings": "1.0.6"
     },
     "files": [
         "build"
     ],
     "module": "build/esm/index.js",
-    "gitHead": "ba33ddfdf9969f4f3f8e90c64ff58059566a7f40"
+    "gitHead": "613869747a152d44fd66d2f138228afd2421b809"
 }

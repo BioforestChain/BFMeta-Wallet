@@ -1,8 +1,17 @@
 {
     "packages": ["packages/*", "packages/@types/*"],
-    "version": "1.0.0",
+    "version": "1.0.6",
     "useWorkspaces": true,
     "npmClient": "yarn",
-    "publishConifg": {},
-    "exact": true
+    "publishConifg": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "exact": true,
+    "command": {
+        "init": {
+            "exact": true
+        }
+    },
+    "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

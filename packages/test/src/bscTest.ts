@@ -1,6 +1,7 @@
 import { WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
 import { ModuleStroge, Injectable, sleep } from "@bfchain/util";
+const config: BFChainWallet.Config = require(`../../assets/config.json`);
 
 @Injectable(LoggerSymbol)
 class DemoLogger {
@@ -14,28 +15,7 @@ class DemoLogger {
 (async () => {
     const moduleMap = new ModuleStroge();
     moduleMap.set(LoggerSymbol, DemoLogger);
-    const walletFactory = new WalletFactory(
-        {
-            bsc: {
-                enable: true,
-                ips: ["192.168.150.7"],
-                port: 8575,
-                testnet: true,
-            },
-            tatum: {
-                enable: true,
-                host: "http://192.168.150.6/v3/blockchain/node",
-                apiKey: "3510e2c4-4d62-487c-b20f-42c8679912b7",
-                apiHost: "http://192.168.150.6/v3",
-            },
-            bscApiScan: {
-                enable: true,
-                apiHost: "http://192.168.150.7",
-                apiKey: "5UZ63SSG3FZ5IRR7E5EDG141QET1HXS9GG",
-            },
-        },
-        moduleMap,
-    );
+    const walletFactory = new WalletFactory(config, moduleMap);
     const bscApi = walletFactory.BscApi;
     await sleep(0);
 

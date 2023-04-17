@@ -1,8 +1,8 @@
 import { WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
 import { ModuleStroge, Injectable, sleep } from "@bfchain/util";
-import type * as Web3_Eth from "web3-eth";
 import * as ethereumjs from "ethereumjs-tx";
+const config: BFChainWallet.Config = require(`../../assets/config.json`);
 
 @Injectable(LoggerSymbol)
 class DemoLogger {
@@ -15,24 +15,7 @@ class DemoLogger {
 (async () => {
     const moduleMap = new ModuleStroge();
     moduleMap.set(LoggerSymbol, DemoLogger);
-    const walletFactory = new WalletFactory(
-        {
-            eth: { enable: true, ips: ["192.168.150.4"], port: 8545, testnet: true },
-            tatum: {
-                enable: true,
-                host: "http://192.168.150.6/v3/blockchain/node",
-                apiKey: "3510e2c4-4d62-487c-b20f-42c8679912b7",
-                ethTest: "testnetType=ethereum-goerli",
-                apiHost: "http://192.168.150.6/v3",
-            },
-            ethApiScan: {
-                enable: true,
-                apiHost: "https://api-goerli.etherscan.io",
-                apiKey: "DB159Z6HT9M2RKDAW1PFYZE9S5TEMRZIHY",
-            },
-        },
-        moduleMap,
-    );
+    const walletFactory = new WalletFactory(config, moduleMap);
     const ethApi = walletFactory.EthApi;
 
     await sleep(0);

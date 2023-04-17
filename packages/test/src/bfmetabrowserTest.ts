@@ -1,6 +1,6 @@
 import { WalletFactory, LoggerSymbol } from "@bfmeta/wallet";
 import { ModuleStroge, Injectable, sleep } from "@bfchain/util";
-
+const config: BFChainWallet.Config = require(`../../assets/config.json`);
 @Injectable(LoggerSymbol)
 class DemoLogger {
     constructor() {}
@@ -14,35 +14,7 @@ export class BfmetabrowserTest {
     constructor() {
         const moduleMap = new ModuleStroge();
         moduleMap.set(LoggerSymbol, DemoLogger);
-        this.walletFactory = new WalletFactory(
-            {
-                bfchain: {
-                    enable: true,
-                    ips: ["192.168.140.45"],
-                    port: 19003,
-                    browserPath: "http://192.168.150.49:4040/browser",
-                },
-                ccchain: {
-                    enable: true,
-                    ips: ["192.168.140.48"],
-                    port: 19003,
-                    browserPath: "http://192.168.140.34:5052/browser",
-                },
-                bfm: {
-                    enable: true,
-                    ips: ["192.168.110.42"],
-                    port: 19003,
-                    browserPath: "http://192.168.110.42:5052/browser",
-                },
-                tron: { enable: true, ips: ["192.168.150.6"], port: 8090 },
-                tatum: {
-                    enable: false,
-                    host: "http://192.168.150.6/v3/blockchain/node",
-                    apiKey: "3510e2c4-4d62-487c-b20f-42c8679912b7",
-                },
-            },
-            moduleMap,
-        );
+        this.walletFactory = new WalletFactory(config, moduleMap);
     }
 
     async getAddressBalance() {
