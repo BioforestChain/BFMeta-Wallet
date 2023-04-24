@@ -24,7 +24,7 @@
         "@bfmeta/wallet-pmchain": "1.0.8",
         "@bfmeta/wallet-tron": "1.0.8",
         "@bfmeta/wallet-typings": "1.0.8",
-        "@bnqkl/util-node": "^1.1.2"
+        "@bnqkl/util-node": "^1.1.3"
     },
     "files": [
         "build"
