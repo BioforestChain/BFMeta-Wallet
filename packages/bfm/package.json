@@ -16,7 +16,7 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/node-sdk": "3.0.16",
+        "@bfmeta/node-sdk": "3.0.17",
         "@bfmeta/wallet-helpers": "1.0.11",
         "@bfmeta/wallet-typings": "1.0.11"
     },
