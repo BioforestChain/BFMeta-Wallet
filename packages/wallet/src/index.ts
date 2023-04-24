@@ -9,7 +9,7 @@ import { CCChainApi, CCChainWalletFactory } from "@bfmeta/wallet-ccchain";
 import { BfmApi, BFMWalletFactory } from "@bfmeta/wallet-bfm";
 import { PMChainApi, PMChainWalletFactory } from "@bfmeta/wallet-pmchain";
 import { TronApi, TronWalletFactory } from "@bfmeta/wallet-tron";
-import type { ModuleStroge } from "@bfchain/util";
+import type { ModuleStroge } from "@bnqkl/util-node";
 import { EthApi, EthWalletFactory } from "@bfmeta/wallet-eth";
 import { BscApi, BscWalletFactory } from "@bfmeta/wallet-bsc";
 import { BscApiScanSymbol, EthApiScanSymbol, TatumSymbol } from "@bfmeta/wallet-helpers";

@@ -1,4 +1,4 @@
-import { Injectable, Inject } from "@bfchain/util-dep-inject";
+import { Injectable, Inject } from "@bnqkl/util-node";
 import { HttpHelper, LoggerSymbol } from "@bfmeta/wallet-helpers";
 
 @Injectable("CustomerPeerCheckHelper")

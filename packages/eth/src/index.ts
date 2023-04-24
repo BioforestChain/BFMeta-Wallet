@@ -1,6 +1,6 @@
 import "@bfmeta/wallet-typings";
 import "./@types";
-import { Resolve, ModuleStroge } from "@bfchain/util-dep-inject";
+import { Resolve, ModuleStroge } from "@bnqkl/util-node";
 import { EthApi, EthHealthCheckHelper, ETH_PEERS } from "./core";
 import { PeerListHelperParmas } from "@bfmeta/wallet-helpers";
 

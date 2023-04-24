@@ -1,6 +1,6 @@
 import "@bfmeta/wallet-typings";
 import "./@types";
-import { Resolve, ModuleStroge } from "@bfchain/util-dep-inject";
+import { Resolve, ModuleStroge } from "@bnqkl/util-node";
 import { PeerListHelperParmas } from "@bfmeta/wallet-helpers";
 import { BscApi, BscHealthCheckHelper, BSC_PEERS } from "./core";
 export const BscWalletFactory = (config: BFChainWallet.Config["bsc"], parentMap?: ModuleStroge) => {

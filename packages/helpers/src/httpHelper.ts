@@ -1,7 +1,7 @@
 import * as http from "http";
 import * as https from "https";
 import type { IncomingMessage } from "http";
-import { Injectable } from "@bfchain/util-dep-inject";
+import { Injectable } from "@bnqkl/util-node";
 
 @Injectable()
 export class HttpHelper {

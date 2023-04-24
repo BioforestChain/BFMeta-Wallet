@@ -15,7 +15,7 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfchain/util": "^5.0.0",
+        "@bnqkl/util-node": "^1.1.2",
         "@bfmeta/wallet-bfchain": "1.0.7",
         "@bfmeta/wallet-bfm": "1.0.7",
         "@bfmeta/wallet-bsc": "1.0.7",

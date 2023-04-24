@@ -1,4 +1,4 @@
-import { Injectable } from "@bfchain/util-dep-inject";
+import { Injectable } from "@bnqkl/util-node";
 
 @Injectable("CustomerPeerCheckHelper")
 export class BscHealthCheckHelper

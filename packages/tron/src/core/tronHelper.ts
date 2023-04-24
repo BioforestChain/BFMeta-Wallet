@@ -1,5 +1,5 @@
 import { utils } from "ethers";
-import { Injectable, Inject } from "@bfchain/util-dep-inject";
+import { Injectable, Inject } from "@bnqkl/util-node";
 import { LoggerSymbol } from "@bfmeta/wallet-helpers";
 
 @Injectable()

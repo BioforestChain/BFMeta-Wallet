@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@bfchain/util-dep-inject";
+import { Inject, Injectable } from "@bnqkl/util-node";
 import { HttpHelper, _BaseApi } from "@bfmeta/wallet-helpers";
 import { BFMetaSDK } from "@bfmeta/node-sdk";
 export const PMCHAIN_PEERS = {

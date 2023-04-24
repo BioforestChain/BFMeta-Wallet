@@ -3,7 +3,7 @@ import "@bfmeta/wallet-helpers";
 
 import "./@types";
 import { BFChainApi, BFCHAIN_PEERS } from "./core/bfchainApi";
-import { Resolve, ModuleStroge } from "@bfchain/util-dep-inject";
+import { Resolve, ModuleStroge } from "@bnqkl/util-node";
 export const BFChainWalletFactory = (
     config: BFChainWallet.Config["bfchain"],
     parentMap?: ModuleStroge,

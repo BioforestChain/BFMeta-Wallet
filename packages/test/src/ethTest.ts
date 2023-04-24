@@ -1,6 +1,6 @@
 import { WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
-import { ModuleStroge, Injectable, sleep } from "@bfchain/util";
+import { ModuleStroge, Injectable, sleep } from "@bnqkl/util-node";
 import * as ethereumjs from "ethereumjs-tx";
 const config: BFChainWallet.Config = require(`../../assets/config.json`);
 

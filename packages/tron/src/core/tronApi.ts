@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@bfchain/util-dep-inject";
+import { Inject, Injectable } from "@bnqkl/util-node";
 import { HttpHelper, PeerListHelper, TatumSymbol } from "@bfmeta/wallet-helpers";
 import { TronHelper } from "./tronHelper";
 

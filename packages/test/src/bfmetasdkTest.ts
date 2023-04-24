@@ -1,5 +1,5 @@
 import { WalletFactory, LoggerSymbol } from "@bfmeta/wallet";
-import { ModuleStroge, Injectable, sleep } from "@bfchain/util";
+import { ModuleStroge, Injectable, sleep } from "@bnqkl/util-node";
 const config: BFChainWallet.Config = require(`../../assets/config.json`);
 
 @Injectable(LoggerSymbol)

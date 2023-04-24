@@ -23,346 +23,6 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@bfchain/util-aborter@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-aborter/-/util-aborter-5.0.0.tgz#a45c37f2bd160fd27542852bd9aec37e29f20665"
-  integrity sha512-w1F1aWAKwNx/hbDbkItJ6Kfov+KS5/yCHyGVeuPq6bq6fh4cn7TOBQxLTLDMfdYXwU+Ams8vkptPhxk6gPe66w==
-  dependencies:
-    "@bfchain/util-extends-promise-out" "^5.0.0"
-    "@bfchain/util-extends-promise-safe" "^5.0.0"
-
-"@bfchain/util-buffer@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-buffer/-/util-buffer-5.0.0.tgz#897867aacb5f033c11bd735ccb0b08a2d7ce243f"
-  integrity sha512-XfsEPIyZx/cHXdODiy5vbb3BuLelRAlISv0OoTWfpr1QY2KhmVhvBgX2pFvweX3JzOysf3mktw+3iSFFVskg1g==
-
-"@bfchain/util-decorator@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-decorator/-/util-decorator-5.0.0.tgz#201435c25b750ec88b5e0b66e95094fce388aafc"
-  integrity sha512-6vdVEibvxoiulNF995SW9WYmKtDcL3p6nZz2EpCK2J3Bhd8rn3qpbi/2V8rIlL0yL4YmEFHnkD2YNjpJdUnKXQ==
-  dependencies:
-    "@bfchain/util-typings" "^5.0.0"
-    tslib "^2.3.1"
-
-"@bfchain/util-deepcopy@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-deepcopy/-/util-deepcopy-5.0.0.tgz#c245d68ca5fc1d5ab6a5c26f4db411c1d0350c0c"
-  integrity sha512-/XYBG4nndPk+Bszemgi8As0bir6ZNs15tNK0jcGjQIxymxPSpzeCGAFG1a5/wgBSEkVjEEcUSe8TSgovShrNSw==
-  dependencies:
-    "@bfchain/util-type-detect" "^5.0.0"
-
-"@bfchain/util-deepmix@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-deepmix/-/util-deepmix-5.0.0.tgz#c50dfe4c12609a1f172ad4bb73ed99c3f4b09f44"
-  integrity sha512-/53TT+rmOKGnAhEM9FDWSOB0FCB5OpbZrT7jF/5R+HlwIHi+Eras8/ZRuuO8at/2a1O57zzcWoelbQP2w+ZUtQ==
-
-"@bfchain/util-dep-inject@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-dep-inject/-/util-dep-inject-5.0.0.tgz#0f2a027ae3731439012d59a7d07297c9548798f3"
-  integrity sha512-hK2+07fz2DVPB7lsFwnf+0TN3DF+eSJ3QcTwhDhNYPggx4RzGpzmxlJ2BJlnHdCRLTo6bJG1KmxIgdtyBbDEGw==
-  dependencies:
-    "@bfchain/util-extends-map" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-    reflect-metadata "^0.1.13"
-
-"@bfchain/util-encoding-binary@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-encoding-binary/-/util-encoding-binary-5.0.0.tgz#6182c5480c4fafd7a88970d3cad78807ec6089bc"
-  integrity sha512-i2rfq3EGUvUj8/DYAso1A9sCRuh8Xv253Uk9SoOLX1XLrW+rVwG8PW3qNMJCEMW/m8cSKCkVlboK9Nyy64WCZw==
-
-"@bfchain/util-encoding-hex@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-encoding-hex/-/util-encoding-hex-5.0.0.tgz#c2596ccecb00d7f7434a03beb9dc40b95f04fc9b"
-  integrity sha512-6bkJ61N2jLZOfbASmb4TQe9+U2APJRFMxOJJKwQVtXiMQybUkw/2euY2o4VKXsXWvacYdZhKTQgcRUO85i+tiA==
-
-"@bfchain/util-encoding-utf8@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-encoding-utf8/-/util-encoding-utf8-5.0.0.tgz#28d950f467ab533023c088283680b91fead1f74b"
-  integrity sha512-3HggkUnTr2QWItSUXR/DZHFJ6+wI7VpCcBDFkVuz5fhidwv3p/lNA26j4vnW/pANSm20y6IaRWbfbJb1j7I1BQ==
-
-"@bfchain/util-env@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-env/-/util-env-5.0.0.tgz#59b8ab8b5d442a085247980309ffc7df606e8e8e"
-  integrity sha512-U9S2J/F3DEp+U0T4wvQNFHVHtYAA1LyNqrtIONDi5sXIKQnAoVQ5M1Vr8HweEEERA07H9jt5Vi4ek4wOxDBn6w==
-  dependencies:
-    "@bfchain/util-platform" "^5.0.0"
-
-"@bfchain/util-event-base@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-event-base/-/util-event-base-5.0.0.tgz#a407fada4e219f8c8627b309fa495c5ba6506869"
-  integrity sha512-cG4kqdhzwYccrYaLcr6HDBISgFBqXwiCEujvI5TcP4qSsd7XM1G31KZtMQn2ZG4ukeT6CDNNPqJNj34RKgZT8g==
-  dependencies:
-    "@bfchain/util-decorator" "^5.0.0"
-    "@bfchain/util-env" "^5.0.0"
-    "@bfchain/util-extends-error" "^5.0.0"
-    "@bfchain/util-extends-function" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
-"@bfchain/util-event-map-emitter@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-event-map-emitter/-/util-event-map-emitter-5.0.0.tgz#965b68773a0c5adfc66c910b3f7d487b3e3d7a09"
-  integrity sha512-0zdmvv+R1oJR/eiHK2K+aLvEm65me9qsuQC/yKSLcno+KQ3XHIjxz3NfvVYI8AGneruHh0FFuhf+uIYSG1dE2w==
-  dependencies:
-    "@bfchain/util-event-base" "^5.0.0"
-    "@bfchain/util-extends-function" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
-"@bfchain/util-event-quene-emitter@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-event-quene-emitter/-/util-event-quene-emitter-5.0.0.tgz#7c3282a434211114e7a4f84aad36157d32fde332"
-  integrity sha512-MK5d59Wksg28dbDmz4n4C5St9VgI4vza1iOaVUeYPtk+aYcqqtwmzleyMavMlNC+vYgPVLJGb+OVn2iFH7MJjw==
-  dependencies:
-    "@bfchain/util-decorator" "^5.0.0"
-    "@bfchain/util-env" "^5.0.0"
-    "@bfchain/util-event-base" "^5.0.0"
-    "@bfchain/util-extends-error" "^5.0.0"
-    "@bfchain/util-extends-function" "^5.0.0"
-    "@bfchain/util-extends-iterator-is" "^5.0.0"
-    "@bfchain/util-extends-promise-out" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
-"@bfchain/util-event@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-event/-/util-event-5.0.0.tgz#4df7d2deb30eb3d8a76d4c58d95d8f8b4ad2127c"
-  integrity sha512-XEg2ilqy1osvU6ZMqIHmJNEHG9knk7zHedDDmGnbeRGbe7pI7Lt9uOeg1d1C20yHFHCMqlx3weXZsNIda8dXQw==
-  dependencies:
-    "@bfchain/util-event-base" "^5.0.0"
-    "@bfchain/util-event-map-emitter" "^5.0.0"
-    "@bfchain/util-event-quene-emitter" "^5.0.0"
-    "@bfchain/util-extends-promise-out" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
-"@bfchain/util-exception-error-code@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-exception-error-code/-/util-exception-error-code-5.0.0.tgz#33b2211b50c4957f981490bd03464ac61b01e7e3"
-  integrity sha512-B+9Njc3s0GQyQL4YLdZtciXWoPiBKumzdJCFyaz+98bKDG2UuDdwsxQhNJwbYrQp+01wtYqsy+2Pa4lJuK+eZg==
-
-"@bfchain/util-exception-generator@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-exception-generator/-/util-exception-generator-5.0.0.tgz#0e6384e295ae4c2a8113e803c61f861401b97b16"
-  integrity sha512-UWf07tbEW1Gg18DABEiTRnMemGfi+BBUCdPI7yMnV4t1QxSYUo0iit9cQrjkmX3ndMuP+OiwU5MaZPj+Z5QIGQ==
-  dependencies:
-    "@bfchain/util-exception-error-code" "^5.0.0"
-    "@bfchain/util-extends-error" "^5.0.0"
-    "@bfchain/util-extends-object" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
-"@bfchain/util-exception-logger@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-exception-logger/-/util-exception-logger-5.0.0.tgz#754381f1fde93126ef2b65a6914720d2489ec910"
-  integrity sha512-uFgnbqn1sPMTd2FvIrlSTsZEkvwdk5SL13lL+PuwiUzKfhXDnEp6JL8AWBbL56WX/RZiFfcynpuXiCg5N51etA==
-  dependencies:
-    "@bfchain/util-extends-object" "^5.0.0"
-    "@bfchain/util-logger" "^5.0.0"
-
-"@bfchain/util-exception@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-exception/-/util-exception-5.0.0.tgz#6eb294ccc3f84403a960bfb18a6583a88d71beb9"
-  integrity sha512-o6P3RMH5v6Pg7j5EnDmXRjd9z8wymH4axfbKcpdDeXSZWMeSTvLyPXOL349asOmD0BV7MSaTGSNFydBFj3BmjQ==
-  dependencies:
-    "@bfchain/util-dep-inject" "^5.0.0"
-    "@bfchain/util-exception-error-code" "^5.0.0"
-    "@bfchain/util-exception-generator" "^5.0.0"
-    "@bfchain/util-exception-logger" "^5.0.0"
-    "@bfchain/util-extends-error" "^5.0.0"
-    "@bfchain/util-logger" "^5.0.0"
-    "@bfchain/util-platform" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
-"@bfchain/util-extends-array@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-array/-/util-extends-array-5.0.0.tgz#9456254070059a3eea8ae1a8e0ac7d5ba020c51d"
-  integrity sha512-TzFTrDxReWMeup7BS5kwESW3tRa7heGcg0rT1CwkNwtrkda/V29Fwa/SZ8Hkz3BsuFuhDpOukDCcm/Gw1K/5Ug==
-
-"@bfchain/util-extends-async-iterator@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-async-iterator/-/util-extends-async-iterator-5.0.0.tgz#3571b1a52b5f79ee4e5e04e3d09f10ad83293314"
-  integrity sha512-C+JzJOWqPceV5pcdzpvhF5FLg88WjjIuXG6eHnRPCpbumzBsqtnGUUmpk7Rx37SBxo0can1URA2gGsEJghBDNg==
-  dependencies:
-    "@bfchain/util-extends-array" "^5.0.0"
-    "@bfchain/util-extends-promise" "^5.0.0"
-
-"@bfchain/util-extends-error@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-error/-/util-extends-error-5.0.0.tgz#3e5ad9929b97cf468485ba8aed5b76b7ff3ba549"
-  integrity sha512-MxKGcfBhWqwc2b/hw+B6I5QGOa/aJXUY8VkKVZWv0c5kr6caBFhUyCyCYARpzUWUAD+iOVWDQjwwP5FsDJu1qA==
-
-"@bfchain/util-extends-function@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-function/-/util-extends-function-5.0.0.tgz#28b7a77bbe7ead5777d0e757ce6daceddf43d642"
-  integrity sha512-cMoZWIc8h01Qy/FRMnahz/vzM1BE3hV5bB5xFsbQYcT0IHrE3Pdvwz09uemW9YgcIqI0LP+8Rn3Dwqi8euspGw==
-
-"@bfchain/util-extends-iterator-is@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-iterator-is/-/util-extends-iterator-is-5.0.0.tgz#185a625a57efdaa47f975522b5e99bc841f87e6a"
-  integrity sha512-iYTmjdfvBvp4xKWstG2UvLJ3eNHkssWEklVF44mOka+EzphuCMw2f38xRBWH9vgrsq8JlpnilSV5XFez1DQjDA==
-
-"@bfchain/util-extends-iterator@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-iterator/-/util-extends-iterator-5.0.0.tgz#0fdee8dc10fa534694c564db4eb363d1ba9c94e6"
-  integrity sha512-oQ6CAyMxXslc2Nv0Q80+Mx1ogs/sXPTs0fWnWiDbcYJcfHFLoGijJ6EBvZpbD9tzmRihWfwZwUJ6H7UK6vdYug==
-  dependencies:
-    "@bfchain/util-extends-iterator-is" "^5.0.0"
-
-"@bfchain/util-extends-map@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-map/-/util-extends-map-5.0.0.tgz#2bf8cb2ae211540536d69eec066af75db1c2a2fd"
-  integrity sha512-QxM8WsGVHfdDrUhbsQPU6EkjR4bg7fnHvUrJ1Lj4ASjcLZeVfnsnWsP392zCmh9Z7k0llI8L9xCbZiB9G/rFoQ==
-  dependencies:
-    "@bfchain/util-decorator" "^5.0.0"
-
-"@bfchain/util-extends-object@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-object/-/util-extends-object-5.0.0.tgz#a9a814229bc5fb270ce85a231e79453791bbfa74"
-  integrity sha512-oeddkITFNC0OMGU3r9q32TY6gKBATDhwIHkJsPlvShek8QsRJRlCxjCTohOtvRUenuuGQua6TVsUXRy0F3Yhrw==
-
-"@bfchain/util-extends-promise-is@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-promise-is/-/util-extends-promise-is-5.0.0.tgz#f5435b141651f769e3bdd204637859cd71d9eac1"
-  integrity sha512-eMzH0O3jDDt9l0tVmMMHgPyYnwzcKbxI7DjFaXuoz0e0bOYdlHL6Olpa479c+4c1XKPZS1JPRThir3AZLGmpIA==
-
-"@bfchain/util-extends-promise-out@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-promise-out/-/util-extends-promise-out-5.0.0.tgz#ec2b744d382322c996445eba3b92917f09a0c547"
-  integrity sha512-TKkla/FlpB94ugSlU8OCYTzsLn6nlxXay0OwV8wCtYZwUnO57dTuBJ+XnpMPknDl6JRjms97g/HXtShrb8DieQ==
-  dependencies:
-    "@bfchain/util-extends-promise-is" "^5.0.0"
-
-"@bfchain/util-extends-promise-safe@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-promise-safe/-/util-extends-promise-safe-5.0.0.tgz#bfaf5f739cee3bd1332f2ca9b0fe8d3a2797a93f"
-  integrity sha512-HE6B9qAa96VQYpNZ3d9PTmvbBf4K+v73fRkZBo6laIqf2NfEImFGiBVUcivB1MtCHCAIkK8hk0aKSaHmUNwREg==
-  dependencies:
-    "@bfchain/util-extends-promise-out" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
-"@bfchain/util-extends-promise@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-promise/-/util-extends-promise-5.0.0.tgz#6fa1555c111b535d5e142444cd77bb4b6317c828"
-  integrity sha512-00e6JLsWqgt0yovTOIR9V0tVPs2NVayQSBNhHcIQLHL70P3M/U5dqn8uwZ9fc4ZqDmpwzpuyu9zH2qVHQDKnuA==
-  dependencies:
-    "@bfchain/util-event" "^5.0.0"
-    "@bfchain/util-extends-error" "^5.0.0"
-    "@bfchain/util-extends-promise-out" "^5.0.0"
-    "@bfchain/util-extends-promise-safe" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
-"@bfchain/util-extends-set@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-extends-set/-/util-extends-set-5.0.0.tgz#884e89d1a068e2d8fe47bba8311273e78132a66e"
-  integrity sha512-Vx+SnWIS+2i8RGoZ83MgXODNT2sBnl40KwNNEqbWxzak88et0ucNKX6UuNygTAh8uZtOt8RhfqD8hg84NndRog==
-  dependencies:
-    "@bfchain/util-decorator" "^5.0.0"
-
-"@bfchain/util-fast-deep-equal@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-fast-deep-equal/-/util-fast-deep-equal-5.0.0.tgz#6ae2fb9c8f1f7601cd51216dcc474e22fbc2520c"
-  integrity sha512-V24oGHzYcp7SxpdFOZD7fWxnt2N46F/pdqGQ8CAr69tS5qxTRUvnNmp49JM1725WCF+pNgtVR3dtPCtoAcCU+A==
-  dependencies:
-    "@bfchain/util-type-detect" "^5.0.0"
-
-"@bfchain/util-i18n@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-i18n/-/util-i18n-5.0.0.tgz#b09287833ce89186ab34e13c62b76f19f8760efe"
-  integrity sha512-uVZ2XBU9ykTJJd9ItPIx0WsGMVoYWSWnAlLp54bxxPVFklX6KKifVN4gVrRNoHLdRSL54mlXlCOJWON/Rm8lmg==
-  dependencies:
-    "@bfchain/util-dep-inject" "^5.0.0"
-    "@bfchain/util-exception-error-code" "^5.0.0"
-
-"@bfchain/util-lock-atom@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-lock-atom/-/util-lock-atom-5.0.0.tgz#148e8914dcb869d311fde8f70a265389e84e3976"
-  integrity sha512-2CviTZfsz5UGDkussZU2Yn3KQZAxtgy/mPMXx7abJbs3DpItZQiX0H4KtEaU8gdWLPYCb6JTnT4KCYqRra9bfw==
-
-"@bfchain/util-logger@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-logger/-/util-logger-5.0.0.tgz#824cf80a321b9809b7bea9343c1300a26ac06dd3"
-  integrity sha512-krBmpUL5UoLEMlCMKpSK6f0kq8EajoKXTql/uIk+EstsGbK5zWCVlcSaahTMhhCXcksqO0Wz46kXciE/uxqN2w==
-  dependencies:
-    "@bfchain/util-decorator" "^5.0.0"
-    "@bfchain/util-env" "^5.0.0"
-    "@bfchain/util-extends-map" "^5.0.0"
-    "@bfchain/util-ms" "^5.0.0"
-    "@bfchain/util-platform" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
-"@bfchain/util-ms@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-ms/-/util-ms-5.0.0.tgz#31fcfc81a30313a9fb357e4d08cd76dbc10a31f1"
-  integrity sha512-XQBXIlBd4wF9sWwooJiMNDS356meZczYhuhW+hW7xeiHrEK7KWNA8EHdUtrACXOT3hN5fj2SUfxsvQ/54qvqBw==
-
-"@bfchain/util-platform@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-platform/-/util-platform-5.0.0.tgz#39a1323c398571fb0bb9a291adec745538b21851"
-  integrity sha512-/vUihXXQ+PcVUMhfJwAHV/gQAwZ5FsQagrNEPL8n3bFHVQldx1CY/4MTRY6N7lGHsHCsRyc08cs/OcgNAFNJ0w==
-
-"@bfchain/util-reactive-array@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-reactive-array/-/util-reactive-array-5.0.0.tgz#c3399baaa4599f59a08faef2702d0846f7e81df5"
-  integrity sha512-UIrHkckuVoKi6Q2SnGYI6+1YWPUYo+Ro0fD0nWNVYhQvWdmloUi7ILuIcJOBvpEnHOU3jBzEyOih+ViEd2qfDg==
-  dependencies:
-    "@bfchain/util-extends-promise-is" "^5.0.0"
-    "@bfchain/util-extends-promise-out" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
-"@bfchain/util-reactive-stream@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-reactive-stream/-/util-reactive-stream-5.0.0.tgz#a9fdd44d129bce816e3758ab87fd51642af81697"
-  integrity sha512-15OdCQDKl9m5Ql7eIM0nAZ5IC/rXe7MAANsJAdyhh8D3MXu4afqmKtbL6W/+oSlFNxJTxsAR6b8pFebx3BovWw==
-  dependencies:
-    "@bfchain/util-extends-promise" "^5.0.0"
-    "@bfchain/util-extends-promise-is" "^5.0.0"
-    "@bfchain/util-extends-promise-out" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
-"@bfchain/util-type-detect@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-type-detect/-/util-type-detect-5.0.0.tgz#c85aa8b4ac8da2f970252cf5e677adf37067a39a"
-  integrity sha512-AxKuPM6wdpLtDesafdeFLKH+/3Ma8bC25IhadpD4wByHaH1zrOsD9ZUdrJmSZ/fKKX02qckEn+B44DK7EuyhCQ==
-
-"@bfchain/util-typings@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util-typings/-/util-typings-5.0.0.tgz#bd94660a2bcaf38ca7c545099a73aaf5174c28df"
-  integrity sha512-JHQ0fPBoOEO9klAKL8RhUA114Nofe2wTbbByixFKeiRP6K+OkE7asIBDbYzWpXuIEwuReL4yXR6HYrvWaJQBQQ==
-
-"@bfchain/util@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@bfchain/util/-/util-5.0.0.tgz#8fa05c92091406508b2ce85f3896b6242edb2050"
-  integrity sha512-IzDl/chmbVfspUOUgwIJFCbyg8kFieB7RmaQ+sCfcSEJWkNTelfdX3ftrI0X96UEv5RtB80yrvz0EjzDQ5lk5Q==
-  dependencies:
-    "@bfchain/util-aborter" "^5.0.0"
-    "@bfchain/util-buffer" "^5.0.0"
-    "@bfchain/util-decorator" "^5.0.0"
-    "@bfchain/util-deepcopy" "^5.0.0"
-    "@bfchain/util-deepmix" "^5.0.0"
-    "@bfchain/util-dep-inject" "^5.0.0"
-    "@bfchain/util-encoding-binary" "^5.0.0"
-    "@bfchain/util-encoding-hex" "^5.0.0"
-    "@bfchain/util-encoding-utf8" "^5.0.0"
-    "@bfchain/util-env" "^5.0.0"
-    "@bfchain/util-event" "^5.0.0"
-    "@bfchain/util-exception" "^5.0.0"
-    "@bfchain/util-extends-array" "^5.0.0"
-    "@bfchain/util-extends-async-iterator" "^5.0.0"
-    "@bfchain/util-extends-error" "^5.0.0"
-    "@bfchain/util-extends-function" "^5.0.0"
-    "@bfchain/util-extends-iterator" "^5.0.0"
-    "@bfchain/util-extends-map" "^5.0.0"
-    "@bfchain/util-extends-object" "^5.0.0"
-    "@bfchain/util-extends-promise" "^5.0.0"
-    "@bfchain/util-extends-promise-out" "^5.0.0"
-    "@bfchain/util-extends-set" "^5.0.0"
-    "@bfchain/util-fast-deep-equal" "^5.0.0"
-    "@bfchain/util-i18n" "^5.0.0"
-    "@bfchain/util-lock-atom" "^5.0.0"
-    "@bfchain/util-logger" "^5.0.0"
-    "@bfchain/util-ms" "^5.0.0"
-    "@bfchain/util-platform" "^5.0.0"
-    "@bfchain/util-reactive-array" "^5.0.0"
-    "@bfchain/util-reactive-stream" "^5.0.0"
-    "@bfchain/util-type-detect" "^5.0.0"
-    "@bfchain/util-typings" "^5.0.0"
-
 "@bfmeta/node-sdk@3.0.9":
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/@bfmeta/node-sdk/-/node-sdk-3.0.9.tgz#e3774d2d4eecc1c9fc9266b7cac4db8c9e4f72f5"
@@ -377,6 +37,13 @@
   integrity sha512-GzcZZtM/2E0h+h4nOhBTcqxvppmJEZSwkQ+RIS9wUegQfimU5aDmaiGW8NJxk4lbfAGLNGh9H9wm5AZ9KnxIAw==
   dependencies:
     tslib "^2.4.1"
+
+"@bnqkl/util-node@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@bnqkl/util-node/-/util-node-1.1.2.tgz#12b3dc4992d28e3de8aacd78f70260953a3f4c93"
+  integrity sha512-M8uAbg+0ucYp5gAQ+pfloD7CKTCeSX/7rB6StOzoH4SaRH+oonLac7pO3D+rmQmP+ojZQ1tGlRT0p3mRCf3WZA==
+  dependencies:
+    tslib "2.3.1"
 
 "@ethereumjs/common@2.5.0":
   version "2.5.0"
@@ -4307,7 +3974,7 @@ kind-of@^6.0.2, kind-of@^6.0.3:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-lerna@^6.6.1:
+lerna@6.6.1:
   version "6.6.1"
   resolved "https://registry.yarnpkg.com/lerna/-/lerna-6.6.1.tgz#4897171aed64e244a2d0f9000eef5c5b228f9332"
   integrity sha512-WJtrvmbmR+6hMB9b5pvsxJzew0lRL6hARgW/My9BM4vYaxwPIA2I0riv3qQu5Zd7lYse7FEqJkTnl9Kn1bXhLA==
@@ -6048,11 +5715,6 @@ redent@^3.0.0:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
 
-reflect-metadata@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
-  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
-
 request@^2.79.0:
   version "2.88.2"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.2.tgz#d73c918731cb5a87da047e207234146f664d12b3"
@@ -6782,7 +6444,12 @@ tsconfig-paths@^4.1.2:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tslib@^2.1.0, tslib@^2.2.0, tslib@^2.3.0, tslib@^2.3.1, tslib@^2.4.0, tslib@^2.4.1:
+tslib@2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
+  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
+
+tslib@^2.1.0, tslib@^2.2.0, tslib@^2.3.0, tslib@^2.4.0, tslib@^2.4.1:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.5.0.tgz#42bfed86f5787aeb41d031866c8f402429e0fddf"
   integrity sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==

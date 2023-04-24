@@ -2,7 +2,7 @@ import "@bfmeta/wallet-typings";
 
 import "./@types";
 import { PMCHAIN_PEERS, PMChainApi } from "./core/pmchainApi";
-import { Resolve, ModuleStroge } from "@bfchain/util-dep-inject";
+import { Resolve, ModuleStroge } from "@bnqkl/util-node";
 export const PMChainWalletFactory = (
     config: BFChainWallet.Config["pmchain"],
     parentMap?: ModuleStroge,

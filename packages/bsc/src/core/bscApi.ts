@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@bfchain/util-dep-inject";
+import { Inject, Injectable } from "@bnqkl/util-node";
 import { PeerListHelper, TatumSymbol, BscApiScanSymbol, HttpHelper } from "@bfmeta/wallet-helpers";
 import Web3 from "web3";
 import type * as Web3_Eth from "web3-eth";

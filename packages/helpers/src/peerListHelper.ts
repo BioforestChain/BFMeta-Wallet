@@ -1,4 +1,4 @@
-import { Inject, sleep, Injectable, PromiseOut } from "@bfchain/util";
+import { Inject, sleep, Injectable, PromiseOut } from "@bnqkl/util-node";
 import { LoggerSymbol } from "./constants";
 
 export const PeerListHelperParmas = {

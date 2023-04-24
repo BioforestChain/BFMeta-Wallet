@@ -2,7 +2,7 @@ import "@bfmeta/wallet-typings";
 
 import "./@types";
 import { CCChainApi, CCCHAIN_PEERS } from "./core/ccchainApi";
-import { Resolve, ModuleStroge } from "@bfchain/util-dep-inject";
+import { Resolve, ModuleStroge } from "@bnqkl/util-node";
 export const CCChainWalletFactory = (
     config: BFChainWallet.Config["ccchain"],
     parentMap?: ModuleStroge,

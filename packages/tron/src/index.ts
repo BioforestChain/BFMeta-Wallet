@@ -2,7 +2,7 @@ import "@bfmeta/wallet-typings";
 import "./@types";
 import { PeerListHelperParmas, TatumSymbol } from "@bfmeta/wallet-helpers";
 import { TronApi, PEERS } from "./core/tronApi";
-import { Resolve, ModuleStroge } from "@bfchain/util-dep-inject";
+import { Resolve, ModuleStroge } from "@bnqkl/util-node";
 import { CustomerPeerCheckHelper } from "./core";
 export const TronWalletFactory = (
     config: BFChainWallet.Config["tron"],
