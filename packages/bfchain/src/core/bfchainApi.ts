@@ -18,7 +18,7 @@ export class BFChainApi extends _BaseApi implements BFChainWallet.BFCHAIN.API {
         @Inject(BFCHAIN_PEERS.browser, { optional: true }) public browser: string,
     ) {
         super(httpHelper);
-        this.__sdk = new BFMetaSDK(undefined, {
+        this.__sdk = new BFMetaSDK({
             multiNodes: {
                 enable: true,
                 nodes: this.ips.map((v) => {

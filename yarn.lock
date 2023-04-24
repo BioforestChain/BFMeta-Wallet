@@ -23,15 +23,16 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@bfmeta/node-sdk@3.0.9":
-  version "3.0.9"
-  resolved "https://registry.yarnpkg.com/@bfmeta/node-sdk/-/node-sdk-3.0.9.tgz#e3774d2d4eecc1c9fc9266b7cac4db8c9e4f72f5"
-  integrity sha512-xBj/bVvSzECiSbZKGu4Io2fuK38gRbJ8X67yuGkO4QlG1tGCXnLMXXJ8TM2OVxhZiQU4FugkGawKzJ7SMboBJg==
+"@bfmeta/node-sdk@3.0.16":
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/@bfmeta/node-sdk/-/node-sdk-3.0.16.tgz#e58a87a6ca9ce86f31554ea1da31d5dca08aac93"
+  integrity sha512-M5puxKko00nybDDGDrhnNF0pgSJ+KSWNMCqHJqYh0slkF3UctvPsyTk0ShrX7x8lgAT9d7l2R+AMJ5O2d1eLkA==
   dependencies:
-    "@bfmeta/sign-util" "^1.0.5"
+    "@bfmeta/sign-util" "^1.0.8"
+    "@bnqkl/util-node" "^1.1.3"
     socket.io-client "^2.4.0"
 
-"@bfmeta/sign-util@^1.0.5":
+"@bfmeta/sign-util@^1.0.8":
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/@bfmeta/sign-util/-/sign-util-1.0.8.tgz#e77598cf7d69bf0d6dceeea77c443d4343ae8c2e"
   integrity sha512-GzcZZtM/2E0h+h4nOhBTcqxvppmJEZSwkQ+RIS9wUegQfimU5aDmaiGW8NJxk4lbfAGLNGh9H9wm5AZ9KnxIAw==

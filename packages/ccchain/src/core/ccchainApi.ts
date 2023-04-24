@@ -18,7 +18,7 @@ export class CCChainApi extends _BaseApi implements BFChainWallet.CCCHAIN.API {
         @Inject(CCCHAIN_PEERS.browser, { optional: true }) public browser: string,
     ) {
         super(httpHelper);
-        this.__sdk = new BFMetaSDK(undefined, {
+        this.__sdk = new BFMetaSDK({
             multiNodes: {
                 enable: true,
                 nodes: this.ips.map((v) => {

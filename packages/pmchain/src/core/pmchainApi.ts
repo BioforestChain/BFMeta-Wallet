@@ -18,7 +18,7 @@ export class PMChainApi extends _BaseApi implements BFChainWallet.PMCHAIN.API {
         @Inject(PMCHAIN_PEERS.browser, { optional: true }) public browser: string,
     ) {
         super(httpHelper);
-        this.__sdk = new BFMetaSDK(undefined, {
+        this.__sdk = new BFMetaSDK({
             multiNodes: {
                 enable: true,
                 nodes: this.ips.map((v) => {
