@@ -6,45 +6,18 @@
         "packages/*"
     ],
     "main": "index.js",
-    "bdkMono": {
-        "generateConfigFiles": [
-            {
-                "packages": "*",
-                "type": "mergejson",
-                "from": "$ROOT_PROJECT/config/tsconfig_template/tsconfig.cjs.json",
-                "to": "$PACKAGE/tsconfig.json"
-            },
-            {
-                "packages": "*,-test,-util-exception",
-                "type": "mergejson",
-                "from": "$ROOT_PROJECT/config/tsconfig_template/tsconfig.esm-es5.json",
-                "to": "$PACKAGE/tsconfig.esm-es5.json"
-            },
-            {
-                "packages": "*,-test",
-                "type": "mergejson",
-                "from": "$ROOT_PROJECT/config/tsconfig_template/tsconfig.esm.json",
-                "to": "$PACKAGE/tsconfig.esm.json"
-            }
-        ]
-    },
     "scripts": {
-        "-prepare": "yarn mono",
         "prepare": "husky install",
         "perfect": "node ./scripts/perfectPackageJson.js",
-        "format": "bdk-format",
-        "format:all": "bdk-format --mode all",
-        "clear": "node ./scripts/rmBuild.js",
         "up": "yarn upgrade-interactive --latest",
-        "mono": "bdk-mono && npm run perfect",
-        "publ": "lerna publish",
-        "publ:force": "lerna publish --force-publish",
-        "lsts": "node ./scripts/listAllFile_packages.js",
+        "lsts": "node ./scripts/listAllFile.js",
+        "clear": "node ./scripts/rmBuild.js",
         "dev": "tsc --build -w",
         "dev:all": "tsc --build ./tsconfig.all.json -w",
-        "dev:types": "tsc --build ./tsconfig.@types.json -w",
         "build": "tsc --build ./tsconfig.all.json",
-        "rebuild": "yarn clear & yarn build"
+        "rebuild": "yarn clear & yarn build",
+        "publ": "lerna publish",
+        "publ:force": "lerna publish --force-publish"
     },
     "keywords": [],
     "author": "wzx",
@@ -56,6 +29,7 @@
         "typescript": "^4.9.5"
     },
     "dependencies": {
+        "prettier": "^2.8.8",
         "tslib": "^2.2.0"
     }
 }
