@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-pmchain",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": " wallet pmchain",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -17,8 +17,8 @@
     "types": "build/cjs/index.d.ts",
     "dependencies": {
         "@bfmeta/node-sdk": "3.0.9",
-        "@bfmeta/wallet-helpers": "1.0.7",
-        "@bfmeta/wallet-typings": "1.0.7"
+        "@bfmeta/wallet-helpers": "1.0.8",
+        "@bfmeta/wallet-typings": "1.0.8"
     },
     "files": [
         "build"
