@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@bfmeta/node-sdk@3.0.19":
-  version "3.0.19"
-  resolved "https://registry.yarnpkg.com/@bfmeta/node-sdk/-/node-sdk-3.0.19.tgz#d54ef38d279e38a4c3e4bed91ec6afd33b5db6d7"
-  integrity sha512-h9qXayjKZzkUC6K7h04QrhtbqRF0Dez+7DvKLcxzhF62ho6u5agYNXPp2HxbaM+om6wG/ID0E5pT5aZ3btNQ5Q==
+"@bfmeta/node-sdk@3.0.22":
+  version "3.0.22"
+  resolved "https://registry.yarnpkg.com/@bfmeta/node-sdk/-/node-sdk-3.0.22.tgz#8c67bf2d0b06745dada959beef00ba12a09856b0"
+  integrity sha512-1b+2/5xwUwjwATx+ZmVpXM1yI1BUxDZPcJEThoamU/xo93ixBQNdeZLV17WKpaJY6FunmnwYNRNpMbr0aRt3wA==
   dependencies:
     "@bfmeta/sign-util" "^1.0.8"
     "@bnqkl/util-node" "^1.1.3"
