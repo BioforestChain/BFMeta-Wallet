@@ -8,8 +8,7 @@ export const EthWalletFactory = (config: BFChainWallet.Config["eth"], parentMap?
     if (config && config.enable) {
         const moduleMap = new ModuleStroge(
             [
-                [ETH_PEERS.ips, config.ips],
-                [ETH_PEERS.port, config.port],
+                [ETH_PEERS.host, config.host],
                 [ETH_PEERS.testnet, config.testnet],
                 [PeerListHelperParmas.checkInterval, 30 * 1000 /**config */],
             ],

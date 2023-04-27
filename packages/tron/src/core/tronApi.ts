@@ -3,23 +3,21 @@ import { HttpHelper, PeerListHelper, TatumSymbol } from "@bfmeta/wallet-helpers"
 import { TronHelper } from "./tronHelper";
 
 export const PEERS = {
-    ips: Symbol("ips"),
-    port: Symbol("port"),
+    host: Symbol("host"),
 };
 
 @Injectable()
 export class TronApi implements BFChainWallet.TRON.API {
     constructor(
-        @Inject(PEERS.ips) public ips: string[],
-        @Inject(PEERS.port) public port: number,
+        @Inject(PEERS.host) public host: BFChainWallet.HostType[],
         public httpHelper: HttpHelper,
         public peerListHelper: PeerListHelper,
         public tronHelper: TronHelper,
         @Inject(TatumSymbol) public tatumConfig: BFChainWallet.Config["tatum"],
     ) {
         const peersConfig: BFChainWallet.Helpers.PeerConfigModel[] = [];
-        ips.map((ip) => {
-            peersConfig.push({ ip: ip, port: this.port, protocol: "http" });
+        host.map((v) => {
+            peersConfig.push({ ip: v.ip, port: v.port, protocol: "http" });
         });
         this.peerListHelper.peersConfig = peersConfig;
         this.peerListHelper.init();
@@ -235,10 +233,7 @@ export class TronApi implements BFChainWallet.TRON.API {
     }
 
     private async getApiUrl() {
-        if (this.tatumConfig.apiHost) {
-            return this.tatumConfig.apiHost;
-        }
-        return this.getPeerUrl();
+        return this.tatumConfig.apiHost;
     }
 
     private async getApiHeaders() {

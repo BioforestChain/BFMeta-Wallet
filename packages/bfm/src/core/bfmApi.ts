@@ -2,8 +2,7 @@ import { Inject, Injectable } from "@bnqkl/util-node";
 import { HttpHelper, _BaseApi } from "@bfmeta/wallet-helpers";
 import { BFMetaSDK } from "@bfmeta/node-sdk";
 export const BFM_PEERS = {
-    ips: Symbol("ips"),
-    port: Symbol("port"),
+    host: Symbol("host"),
     browser: Symbol("browser"),
 };
 
@@ -12,8 +11,7 @@ export class BfmApi extends _BaseApi implements BFChainWallet.BFM.API {
     private __sdk: BFMetaSDK;
 
     constructor(
-        @Inject(BFM_PEERS.ips) public ips: string[],
-        @Inject(BFM_PEERS.port) public port: number,
+        @Inject(BFM_PEERS.host) public host: BFChainWallet.HostType[],
         public httpHelper: HttpHelper,
         @Inject(BFM_PEERS.browser, { optional: true }) public browser: string,
     ) {
@@ -21,8 +19,8 @@ export class BfmApi extends _BaseApi implements BFChainWallet.BFM.API {
         this.__sdk = new BFMetaSDK({
             multiNodes: {
                 enable: true,
-                nodes: this.ips.map((v) => {
-                    return { ip: v, port: this.port };
+                nodes: this.host.map((v) => {
+                    return { ip: v.ip, port: v.port };
                 }),
             },
         });

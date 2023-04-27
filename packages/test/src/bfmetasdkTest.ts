@@ -70,6 +70,7 @@ export class BfmetasdkTest {
 (async () => {
     try {
         const test = new BfmetasdkTest();
+        await sleep(500);
         await test.getLastBlock();
         // await test.getAccountInfo();
         // await test.getBlockAverageFee();

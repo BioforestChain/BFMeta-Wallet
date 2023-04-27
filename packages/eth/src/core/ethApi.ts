@@ -5,8 +5,7 @@ import type * as Web3_Eth from "web3-eth";
 import type * as Web3_Utils from "web3-utils";
 import { ETH_ERC20_ABI } from "./constants";
 export const ETH_PEERS = {
-    ips: Symbol("ips"),
-    port: Symbol("port"),
+    host: Symbol("host"),
     testnet: Symbol("testnet"),
 };
 
@@ -24,8 +23,7 @@ export class EthApi implements BFChainWallet.ETH.API {
         this.__web3 = new Web3(await this.getPeerUrl());
     }
     constructor(
-        @Inject(ETH_PEERS.ips) public ips: string[],
-        @Inject(ETH_PEERS.port) public port: number,
+        @Inject(ETH_PEERS.host) public host: BFChainWallet.HostType[],
         @Inject(ETH_PEERS.testnet) public testnet: boolean,
         public httpHelper: HttpHelper,
         public peerListHelper: PeerListHelper,
@@ -33,8 +31,8 @@ export class EthApi implements BFChainWallet.ETH.API {
         @Inject(EthApiScanSymbol) public ethApiScanConfig: BFChainWallet.Config["ethApiScan"],
     ) {
         const peersConfig: BFChainWallet.Helpers.PeerConfigModel[] = [];
-        ips.map((ip) => {
-            peersConfig.push({ ip: ip, port: this.port, protocol: "http" });
+        host.map((v) => {
+            peersConfig.push({ ip: v.ip, port: v.port, protocol: "http" });
         });
         this.peerListHelper.peersConfig = peersConfig;
         this.peerListHelper.init();
@@ -256,10 +254,7 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     private async getApiUrl() {
-        if (this.tatumConfig.apiHost) {
-            return this.tatumConfig.apiHost;
-        }
-        return this.getPeerUrl();
+        return this.tatumConfig.apiHost;
     }
 
     private async getApiHeaders() {

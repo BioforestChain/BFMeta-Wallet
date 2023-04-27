@@ -2,8 +2,7 @@ import { Inject, Injectable } from "@bnqkl/util-node";
 import { HttpHelper, _BaseApi } from "@bfmeta/wallet-helpers";
 import { BFMetaSDK } from "@bfmeta/node-sdk";
 export const CCCHAIN_PEERS = {
-    ips: Symbol("ips"),
-    port: Symbol("port"),
+    host: Symbol("host"),
     browser: Symbol("browser"),
 };
 
@@ -12,8 +11,7 @@ export class CCChainApi extends _BaseApi implements BFChainWallet.CCCHAIN.API {
     private __sdk: BFMetaSDK;
 
     constructor(
-        @Inject(CCCHAIN_PEERS.ips) public ips: string[],
-        @Inject(CCCHAIN_PEERS.port) public port: number,
+        @Inject(CCCHAIN_PEERS.host) public host: BFChainWallet.HostType[],
         public httpHelper: HttpHelper,
         @Inject(CCCHAIN_PEERS.browser, { optional: true }) public browser: string,
     ) {
@@ -21,8 +19,8 @@ export class CCChainApi extends _BaseApi implements BFChainWallet.CCCHAIN.API {
         this.__sdk = new BFMetaSDK({
             multiNodes: {
                 enable: true,
-                nodes: this.ips.map((v) => {
-                    return { ip: v, port: this.port };
+                nodes: this.host.map((v) => {
+                    return { ip: v.ip, port: v.port };
                 }),
             },
         });

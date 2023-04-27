@@ -7,8 +7,7 @@ export const BscWalletFactory = (config: BFChainWallet.Config["bsc"], parentMap?
     if (config && config.enable) {
         const moduleMap = new ModuleStroge(
             [
-                [BSC_PEERS.ips, config.ips],
-                [BSC_PEERS.port, config.port],
+                [BSC_PEERS.host, config.host],
                 [BSC_PEERS.testnet, config.testnet],
                 [PeerListHelperParmas.checkInterval, 30 * 1000 /**config */],
             ],

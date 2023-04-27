@@ -1,52 +1,50 @@
 declare namespace BFChainWallet {
+    type HostType = {
+        ip: string;
+        port: number;
+    };
+
     type Config = {
         bfchain?: {
             enable: boolean;
-            ips: string[];
-            port: number;
+            host: HostType[];
             browserPath?: string;
         };
         ccchain?: {
             enable: boolean;
-            ips: string[];
-            port: number;
+            host: HostType[];
             browserPath?: string;
         };
         bfm?: {
             enable: boolean;
-            ips: string[];
-            port: number;
+            host: HostType[];
             browserPath?: string;
         };
         pmchain?: {
             enable: boolean;
-            ips: string[];
-            port: number;
+            host: HostType[];
             browserPath?: string;
         };
         tron?: {
             enable: boolean;
-            ips: string[];
-            port: number;
+            host: HostType[];
         };
         eth?: {
             enable: boolean;
-            ips: string[];
-            port: number;
+            host: HostType[];
             testnet: boolean;
         };
         bsc?: {
             enable: boolean;
-            ips: string[];
-            port: number;
+            host: HostType[];
             testnet: boolean;
         };
         tatum: {
             enable: boolean;
             apiKey: string;
             host: string;
+            apiHost: string;
             ethTest?: string;
-            apiHost?: string;
         };
 
         bscApiScan?: {

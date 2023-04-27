@@ -9,8 +9,7 @@ export const BFMWalletFactory = (config: BFChainWallet.Config["bfm"], parentMap?
             BfmApi,
             new ModuleStroge(
                 [
-                    [BFM_PEERS.ips, config.ips],
-                    [BFM_PEERS.port, config.port],
+                    [BFM_PEERS.host, config.host],
                     [BFM_PEERS.browser, config.browserPath],
                 ],
                 parentMap,

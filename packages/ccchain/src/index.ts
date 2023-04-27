@@ -12,8 +12,7 @@ export const CCChainWalletFactory = (
             CCChainApi,
             new ModuleStroge(
                 [
-                    [CCCHAIN_PEERS.ips, config.ips],
-                    [CCCHAIN_PEERS.port, config.port],
+                    [CCCHAIN_PEERS.host, config.host],
                     [CCCHAIN_PEERS.browser, config.browserPath],
                 ],
                 parentMap,

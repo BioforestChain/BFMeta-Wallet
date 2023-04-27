@@ -13,8 +13,7 @@ export const BFChainWalletFactory = (
             BFChainApi,
             new ModuleStroge(
                 [
-                    [BFCHAIN_PEERS.ips, config.ips],
-                    [BFCHAIN_PEERS.port, config.port],
+                    [BFCHAIN_PEERS.host, config.host],
                     [BFCHAIN_PEERS.browser, config.browserPath],
                 ],
                 parentMap,

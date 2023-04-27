@@ -4,8 +4,7 @@ import Web3 from "web3";
 import type * as Web3_Eth from "web3-eth";
 import { BSC_BEP20_ABI } from "./constants";
 export const BSC_PEERS = {
-    ips: Symbol("ips"),
-    port: Symbol("port"),
+    host: Symbol("host"),
     testnet: Symbol("testnet"),
 };
 @Injectable()
@@ -23,8 +22,7 @@ export class BscApi implements BFChainWallet.BSC.API {
     }
 
     constructor(
-        @Inject(BSC_PEERS.ips) public ips: string[],
-        @Inject(BSC_PEERS.port) public port: number,
+        @Inject(BSC_PEERS.host) public host: BFChainWallet.HostType[],
         @Inject(BSC_PEERS.testnet) public testnet: boolean,
         public httpHelper: HttpHelper,
         public peerListHelper: PeerListHelper,
@@ -32,8 +30,8 @@ export class BscApi implements BFChainWallet.BSC.API {
         @Inject(BscApiScanSymbol) public bscApiScanConfig: BFChainWallet.Config["bscApiScan"],
     ) {
         const peersConfig: BFChainWallet.Helpers.PeerConfigModel[] = [];
-        ips.map((ip) => {
-            peersConfig.push({ ip: ip, port: this.port, protocol: "http" });
+        host.map((v) => {
+            peersConfig.push({ ip: v.ip, port: v.port, protocol: "http" });
         });
         this.peerListHelper.peersConfig = peersConfig;
         this.peerListHelper.init();
@@ -246,10 +244,7 @@ export class BscApi implements BFChainWallet.BSC.API {
     }
 
     private async getApiUrl() {
-        if (this.tatumConfig.apiHost) {
-            return this.tatumConfig.apiHost;
-        }
-        return this.getPeerUrl();
+        return this.tatumConfig.apiHost;
     }
 
     private async getApiHeaders() {

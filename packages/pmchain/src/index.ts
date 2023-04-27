@@ -12,8 +12,7 @@ export const PMChainWalletFactory = (
             PMChainApi,
             new ModuleStroge(
                 [
-                    [PMCHAIN_PEERS.ips, config.ips],
-                    [PMCHAIN_PEERS.port, config.port],
+                    [PMCHAIN_PEERS.host, config.host],
                     [PMCHAIN_PEERS.browser, config.browserPath],
                 ],
                 parentMap,

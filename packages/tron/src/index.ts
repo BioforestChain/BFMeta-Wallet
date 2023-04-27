@@ -11,8 +11,7 @@ export const TronWalletFactory = (
     if (config && config.enable) {
         const moduleMap = new ModuleStroge(
             [
-                [PEERS.ips, config.ips],
-                [PEERS.port, config.port],
+                [PEERS.host, config.host],
                 [PeerListHelperParmas.checkInterval, 30 * 1000 /**config */],
             ],
             parentMap,
