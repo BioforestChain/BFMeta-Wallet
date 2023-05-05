@@ -282,8 +282,8 @@ export class EthApi implements BFChainWallet.ETH.API {
         }
     }
 
-    getTransactionFromSignature(signature: string, option: ethereumjs.TransactionOptions) {
-        const tx = new ethereumjs.Transaction(signature, option);
+    getTransactionFromSignature(signature: string) {
+        const tx = new ethereumjs.Transaction(signature, { chain: this.testnet ? 5 : 1 });
         return tx;
     }
 }

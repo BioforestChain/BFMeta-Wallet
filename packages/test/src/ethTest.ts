@@ -173,9 +173,7 @@ class DemoLogger {
         console.log("rawTransaction : %s", rawTransaction);
         // const txHash = await ethApi.sendSignedTransaction(rawTransaction);
         // console.log("txHash : %s", txHash);
-        const tx = ethApi.getTransactionFromSignature(rawTransaction, {
-            chain: chainId,
-        });
+        const tx = ethApi.getTransactionFromSignature(rawTransaction);
         console.log(tx);
         console.log(tx.to.toString("hex"));
         console.log(tx.value.toString("hex"));
