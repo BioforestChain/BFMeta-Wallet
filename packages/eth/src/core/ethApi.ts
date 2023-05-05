@@ -4,6 +4,7 @@ import Web3 from "web3";
 import type * as Web3_Eth from "web3-eth";
 import type * as Web3_Utils from "web3-utils";
 import { ETH_ERC20_ABI } from "./constants";
+import * as ethereumjs from "ethereumjs-tx";
 export const ETH_PEERS = {
     host: Symbol("host"),
     testnet: Symbol("testnet"),
@@ -279,5 +280,10 @@ export class EthApi implements BFChainWallet.ETH.API {
             /** @TODO 因内网节点问题，暂时不带端口 */
             return `http://${p.ip}`;
         }
+    }
+
+    getTransactionFromSignature(signature: string, option: ethereumjs.TransactionOptions) {
+        const tx = new ethereumjs.Transaction(signature, option);
+        return tx;
     }
 }

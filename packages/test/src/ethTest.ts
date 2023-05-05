@@ -156,20 +156,29 @@ class DemoLogger {
         const contractGas = await ethApi.getContractGas(from, to, amount, contractAddress_link);
         console.log("contractGas : %s", contractGas);
 
+        const chainId = 3;
         const contracTxObjcet = {
             from: from,
             to: contractAddress_link,
-            value: "0",
+            value: "31",
             gas: contractGas,
             gasPrice: gasPrice,
             nonce: txCount,
             data: data,
+            chainId,
         };
 
         const signTx = { trans: contracTxObjcet, privateKey: privateKey };
         const rawTransaction = await ethApi.signTransaction(signTx);
-        const txHash = await ethApi.sendSignedTransaction(rawTransaction);
-        console.log("txHash : %s", txHash);
+        console.log("rawTransaction : %s", rawTransaction);
+        // const txHash = await ethApi.sendSignedTransaction(rawTransaction);
+        // console.log("txHash : %s", txHash);
+        const tx = ethApi.getTransactionFromSignature(rawTransaction, {
+            chain: chainId,
+        });
+        console.log(tx);
+        console.log(tx.to.toString("hex"));
+        console.log(tx.value.toString("hex"));
         console.log("====================================");
     }
 
