@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-typings",
-    "version": "1.0.16",
+    "version": "1.0.17",
     "description": " wallet typings",
     "main": "build/cjs/index.js",
     "keywords": [
