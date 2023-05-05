@@ -3,6 +3,9 @@ import { PeerListHelper, TatumSymbol, BscApiScanSymbol, HttpHelper } from "@bfme
 import Web3 from "web3";
 import type * as Web3_Eth from "web3-eth";
 import { BSC_BEP20_ABI } from "./constants";
+import * as ethereumjs from "ethereumjs-tx";
+import ethereumcommon from "ethereumjs-common";
+
 export const BSC_PEERS = {
     host: Symbol("host"),
     testnet: Symbol("testnet"),
@@ -21,6 +24,24 @@ export class BscApi implements BFChainWallet.BSC.API {
         this.__web3 = new Web3(await this.getPeerUrl());
     }
 
+    private __bscMainnetCommon = ethereumcommon.forCustomChain(
+        "testnet",
+        {
+            name: "my-network",
+            networkId: 56,
+            chainId: 56,
+        },
+        "petersburg",
+    );
+    private __bscTestnetCommon = ethereumcommon.forCustomChain(
+        "testnet",
+        {
+            name: "my-network",
+            networkId: 97,
+            chainId: 97,
+        },
+        "petersburg",
+    );
     constructor(
         @Inject(BSC_PEERS.host) public host: BFChainWallet.HostType[],
         @Inject(BSC_PEERS.testnet) public testnet: boolean,
@@ -267,5 +288,12 @@ export class BscApi implements BFChainWallet.BSC.API {
             /** @TODO 因内网节点问题，暂时不带端口 */
             return `http://${p.ip}`;
         }
+    }
+
+    getTransactionFromSignature(signature: string) {
+        const tx = new ethereumjs.Transaction(signature, {
+            common: this.testnet ? this.__bscTestnetCommon : this.__bscMainnetCommon,
+        });
+        return tx;
     }
 }

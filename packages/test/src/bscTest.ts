@@ -26,13 +26,13 @@ class DemoLogger {
     // getContractBalanceAndDecimal();
 
     // commonTrans();
-    // BEP20Trans();
+    BEP20Trans();
 
     // getTransaction();
 
     // getTransactionReceipt();
 
-    getNormalTransHistory();
+    // getNormalTransHistory();
     // getBep20TransHistory();
 
     // getTokenInfo();
@@ -192,21 +192,29 @@ class DemoLogger {
 
         const data = await bscApi.getContractTransData(from, to, amount, contractAddress);
         console.log("data : %s", data);
-
+        const chainId = 97;
         const contracTxObjcet = {
             from: from,
             to: contractAddress,
-            value: "0",
+            value: "60",
             gas: contractGas,
             gasPrice: gasPrice,
             nonce: txCount,
             data: data,
+            chainId,
         };
 
         const signTx = { trans: contracTxObjcet, privateKey: privateKey };
         const rawTransaction = await bscApi.signTransaction(signTx);
-        const txHash = await bscApi.sendSignedTransaction(rawTransaction);
-        console.log("txHash : %s", txHash);
+        console.log("rawTransaction : %s", rawTransaction);
+        // const txHash = await bscApi.sendSignedTransaction(rawTransaction);
+        // console.log("txHash : %s", txHash);
+        const tx = bscApi.getTransactionFromSignature(rawTransaction);
+        // console.log(tx);
+        console.log(contracTxObjcet.to);
+        console.log(contracTxObjcet.value);
+        console.log(tx.to.toString("hex"));
+        console.log(tx.value.toString("hex"));
         console.log("====================================");
     }
 
