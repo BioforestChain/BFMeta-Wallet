@@ -25,7 +25,7 @@ export class BscApi implements BFChainWallet.BSC.API {
     }
 
     private __bscMainnetCommon = ethereumcommon.forCustomChain(
-        "testnet",
+        "mainnet",
         {
             name: "my-network",
             networkId: 56,
@@ -34,7 +34,7 @@ export class BscApi implements BFChainWallet.BSC.API {
         "petersburg",
     );
     private __bscTestnetCommon = ethereumcommon.forCustomChain(
-        "testnet",
+        "mainnet",
         {
             name: "my-network",
             networkId: 97,
@@ -295,5 +295,15 @@ export class BscApi implements BFChainWallet.BSC.API {
             common: this.testnet ? this.__bscTestnetCommon : this.__bscMainnetCommon,
         });
         return tx;
+    }
+
+    /**
+     *
+     * @param inputs 将abi的input放进去
+     * @param hex 将 toSring("hex") 后的data放进来。注意是 0x开头
+     * @returns
+     */
+    decodeParameters<T>(inputs: any[], hex: string) {
+        return this.web3.eth.abi.decodeParameters(inputs, hex) as T;
     }
 }

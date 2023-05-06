@@ -286,4 +286,14 @@ export class EthApi implements BFChainWallet.ETH.API {
         const tx = new ethereumjs.Transaction(signature, { chain: this.testnet ? 5 : 1 });
         return tx;
     }
+
+    /**
+     *
+     * @param inputs 将abi的input放进去
+     * @param hex 将 toSring("hex") 后的data放进来。注意是 0x开头
+     * @returns
+     */
+    decodeParameters<T>(inputs: any[], hex: string) {
+        return this.web3.eth.abi.decodeParameters(inputs, hex) as T;
+    }
 }
