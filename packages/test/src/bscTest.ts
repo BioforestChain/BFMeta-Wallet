@@ -1,7 +1,11 @@
 import { WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
+import { BSC_TEST_USTD_ABI } from "@bfmeta/wallet-bsc";
 import { ModuleStroge, Injectable, sleep } from "@bnqkl/util-node";
 const config: BFChainWallet.Config = require(`../../assets/config.json`);
+// import { abi } from "./path/to/abi"; // 导入合约ABI
+const { rawDecode } = require("ethereumjs-abi");
+import { bufferToHex } from "ethereumjs-util";
 
 @Injectable(LoggerSymbol)
 class DemoLogger {
@@ -181,7 +185,7 @@ class DemoLogger {
         const txCount = await bscApi.getTransactionCount(from);
         console.log("txCount : %s", txCount);
 
-        const amount = 1000000000;
+        const amount = 11000000;
 
         const contractGas = await bscApi.getContractGas(from, to, amount, contractAddress);
         console.log("contractGas : %s", contractGas);
@@ -215,6 +219,13 @@ class DemoLogger {
         console.log(contracTxObjcet.value);
         console.log(tx.to.toString("hex"));
         console.log(tx.value.toString("hex"));
+        console.log(tx.data.toString("hex"));
+        const txData = "0x" + tx.data.toString("hex");
+        const result = bscApi.decodeParameters<{ recipient: string; amount: string }>(
+            BSC_TEST_USTD_ABI[5].inputs,
+            txData.substring(10),
+        );
+        console.log(result);
         console.log("====================================");
     }
 

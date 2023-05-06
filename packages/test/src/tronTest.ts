@@ -2,6 +2,8 @@ import { WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
 import { ModuleStroge, Injectable } from "@bnqkl/util-node";
 const config: BFChainWallet.Config = require(`../../assets/config.json`);
+const TronWeb = require("tronweb");
+
 @Injectable(LoggerSymbol)
 class DemoLogger {
     constructor() {}
@@ -31,13 +33,13 @@ class DemoLogger {
     // getTransactionInfoById();
     // parameterEncode();
     // parameterDecode();
-    // trc20Transaction();
+    trc20Transaction();
     // parameterEncode2();
     // parameterDecode2();
     // getTrc20Balance();
     // getTRC20Decimal();
-    getCommonTransHistory();
-    getTrc20TransHistory();
+    // getCommonTransHistory();
+    // getTrc20TransHistory();
     // getAccountBalance();
 
     async function getAccountBalance() {
@@ -213,6 +215,23 @@ class DemoLogger {
     }
 
     async function trc20Transaction() {
+        const account = TronWeb.utils.accounts.generateAccountWithMnemonic(
+            "mistake kitten proud latin end jump gun flash grid method pet until",
+        );
+        console.log(account);
+        const publicKey = TronWeb.address.fromPrivateKey(
+            "117f7ad8e97dff1e1a4d53db38d96235325c193e582dfa17e4a861bd81f27e70",
+        );
+        console.log(publicKey);
+        function verifyTronTransaction(tx: any, publicKey: string) {
+            const { raw_data, signature } = tx;
+            const txID = TronWeb.utils.sha3(TronWeb.utils.toHex(raw_data));
+            const hexSig = signature[0];
+            const sig = TronWeb.utils.hexStr2byteArray(hexSig);
+            const pubKeyBytes = TronWeb.utils.hexStr2byteArray(publicKey);
+            const isValid = TronWeb.utils.crypto.verifySignature(pubKeyBytes, sig, txID);
+            return isValid;
+        }
         // 进行trc20协议的 USTD 交易流程
         const contractReq: BFChainWallet.TRON.TriggerSmartContractReq = {
             owner_address: "41ac18e577192d1353879e31c83d1be47d4b1070be",
@@ -226,6 +245,7 @@ class DemoLogger {
             call_value: 0,
         };
         // 创建交易
+        console.log("zzz");
         const contractTx: BFChainWallet.TRON.TriggerSmartContractRes = await tronApi.triggerSmartContract(
             contractReq,
         );
@@ -240,7 +260,7 @@ class DemoLogger {
         }
         const signBody: BFChainWallet.TRON.GetTransactionSignReq = {
             transaction: contractTx.transaction,
-            privateKey: "117f7ad8e97dff1e1a4d53db38d96235325c193e582dfa17e4a861bd81f27e70",
+            privateKey: account.privateKey, // "117f7ad8e97dff1e1a4d53db38d96235325c193e582dfa17e4a861bd81f27e70",
         };
 
         const transactionWithSign:
