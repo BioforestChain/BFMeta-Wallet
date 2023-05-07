@@ -17,7 +17,8 @@
     "types": "build/cjs/index.d.ts",
     "dependencies": {
         "@bfmeta/wallet-typings": "1.0.19",
-        "ethers": "^5.7.1"
+        "ethers": "^5.7.1",
+        "tronweb": "^5.1.0"
     },
     "files": [
         "build"

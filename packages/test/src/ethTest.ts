@@ -1,5 +1,6 @@
 import { WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
+import { ETH_TEST_USTD_ABI } from "@bfmeta/wallet-eth";
 import { ModuleStroge, Injectable, sleep } from "@bnqkl/util-node";
 import * as ethereumjs from "ethereumjs-tx";
 const config: BFChainWallet.Config = require(`../../assets/config.json`);
@@ -156,7 +157,7 @@ class DemoLogger {
         const contractGas = await ethApi.getContractGas(from, to, amount, contractAddress_link);
         console.log("contractGas : %s", contractGas);
 
-        const chainId = 3;
+        const chainId = 5;
         const contracTxObjcet = {
             from: from,
             to: contractAddress_link,
@@ -177,6 +178,13 @@ class DemoLogger {
         console.log(tx);
         console.log(tx.to.toString("hex"));
         console.log(tx.value.toString("hex"));
+        console.log(tx.data.toString("hex"));
+        const txData = "0x" + tx.data.toString("hex");
+        const result = ethApi.decodeParameters<{ _to: string; _value: string }>(
+            ETH_TEST_USTD_ABI[5].inputs,
+            txData.substring(10),
+        );
+        console.log(result);
         console.log("====================================");
     }
 
