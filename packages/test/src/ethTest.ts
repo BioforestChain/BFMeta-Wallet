@@ -1,4 +1,4 @@
-import { WalletFactory } from "@bfmeta/wallet";
+import { ABISupportFunctionEnum, WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
 import { ETH_TEST_USTD_ABI } from "@bfmeta/wallet-eth";
 import { ModuleStroge, Injectable, sleep } from "@bnqkl/util-node";
@@ -181,8 +181,8 @@ class DemoLogger {
         console.log(tx.data.toString("hex"));
         const txData = "0x" + tx.data.toString("hex");
         const result = ethApi.decodeParameters<{ _to: string; _value: string }>(
-            ETH_TEST_USTD_ABI[5].inputs,
             txData.substring(10),
+            ABISupportFunctionEnum.transfer,
         );
         console.log(result);
         console.log("====================================");

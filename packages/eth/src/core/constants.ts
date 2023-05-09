@@ -1,5 +1,6 @@
+import type { AbiItem } from "web3-utils";
 export const ETH_TEST_USTD_ADDRESS = "0x5AB6F31B29Fc2021436B3Be57dE83Ead3286fdc7";
-export const ETH_TEST_USTD_ABI = [
+export const ETH_TEST_USTD_ABI: AbiItem[] = [
     {
         constant: true,
         inputs: [],
@@ -61,7 +62,7 @@ export const ETH_TEST_USTD_ABI = [
 
 export const ETH_USTD_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 
-export const ETH_USTD_ABI = [
+export const ETH_USTD_ABI: AbiItem[] = [
     {
         constant: true,
         inputs: [],
@@ -733,7 +734,7 @@ export const ETH_USTD_ABI = [
     },
 ];
 
-export const ETH_ERC20_ABI = [
+export const ETH_ERC20_ABI: AbiItem[] = [
     {
         constant: true,
         inputs: [],

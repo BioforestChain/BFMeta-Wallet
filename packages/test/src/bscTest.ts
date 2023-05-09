@@ -1,8 +1,9 @@
-import { WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
-import { BSC_TEST_USTD_ABI } from "@bfmeta/wallet-bsc";
+import { ABISupportFunctionEnum, WalletFactory } from "@bfmeta/wallet";
+import { BSC_BEP20_ABI } from "@bfmeta/wallet-bsc";
 import { ModuleStroge, Injectable, sleep } from "@bnqkl/util-node";
 const config: BFChainWallet.Config = require(`../../assets/config.json`);
+import type { AbiItem } from "web3-utils";
 
 @Injectable(LoggerSymbol)
 class DemoLogger {
@@ -38,6 +39,19 @@ class DemoLogger {
 
     // getTokenInfo();
     // getAccountBalance();
+
+    // signFunction();
+
+    async function signFunction() {
+        const methodABI: AbiItem | undefined = BSC_BEP20_ABI.find((a: any) => {
+            return a.type === "function" && a.name === "transfer";
+        });
+        if (methodABI) {
+            console.log(methodABI.inputs);
+            const result = bscApi.web3.eth.abi.encodeFunctionSignature(methodABI);
+            console.log(result);
+        }
+    }
 
     async function getAccountBalance() {
         const address = "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48";
@@ -219,8 +233,8 @@ class DemoLogger {
         console.log(tx.data.toString("hex"));
         const txData = "0x" + tx.data.toString("hex");
         const result = bscApi.decodeParameters<{ recipient: string; amount: string }>(
-            BSC_TEST_USTD_ABI[5].inputs,
             txData.substring(10),
+            ABISupportFunctionEnum.transfer,
         );
         console.log(result);
         console.log("====================================");

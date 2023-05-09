@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@bnqkl/util-node";
 import { HttpHelper, PeerListHelper, TatumSymbol } from "@bfmeta/wallet-helpers";
 import { TronHelper } from "./tronHelper";
+const TronWeb = require("tronweb");
 
 export const PEERS = {
     host: Symbol("host"),
@@ -8,6 +9,20 @@ export const PEERS = {
 
 @Injectable()
 export class TronApi implements BFChainWallet.TRON.API {
+    private __tronWeb!: any;
+
+    get tronWeb() {
+        if (this.__tronWeb) {
+            return this.__tronWeb;
+        } else {
+            throw new Error(`tronWeb is not init`);
+        }
+    }
+
+    private async newTronWeb() {
+        this.__tronWeb = new TronWeb({ fullHost: "https://nile.trongrid.io" });
+    }
+
     constructor(
         @Inject(PEERS.host) public host: BFChainWallet.HostType[],
         public httpHelper: HttpHelper,
@@ -21,14 +36,17 @@ export class TronApi implements BFChainWallet.TRON.API {
         });
         this.peerListHelper.peersConfig = peersConfig;
         this.peerListHelper.init();
+        this.newTronWeb();
+    }
+
+    async getBalanceV2(address: string): Promise<number> {
+        return await this.tronWeb.trx.getBalance(address);
     }
 
     async getCommonTransHistory(req: BFChainWallet.TRON.TronTransHistoryReq): Promise<any> {
         const host = `${await this.getPeerUrl()}/v1/accounts/${req.address}/transactions`;
-        const result: BFChainWallet.TRON.CommonTransByAddressResult = await this.httpHelper.sendGetRequest(
-            host,
-            req,
-        );
+        const result: BFChainWallet.TRON.CommonTransByAddressResult =
+            await this.httpHelper.sendGetRequest(host, req);
         if (result?.success && !result?.error) {
             let resData: BFChainWallet.TRON.CommonTransHistoryResData[] = [];
             result.data?.forEach((a) => {
@@ -75,10 +93,8 @@ export class TronApi implements BFChainWallet.TRON.API {
 
     async getTrc20TransHistory(req: BFChainWallet.TRON.TronTransHistoryReq): Promise<any> {
         const host = `${await this.getPeerUrl()}/v1/accounts/${req.address}/transactions/trc20`;
-        const result: BFChainWallet.TRON.Trc20TransHistoryResult = await this.httpHelper.sendGetRequest(
-            host,
-            req,
-        );
+        const result: BFChainWallet.TRON.Trc20TransHistoryResult =
+            await this.httpHelper.sendGetRequest(host, req);
         if (result?.success && !result?.error) {
             let resData: BFChainWallet.TRON.Trc20TransHistoryResData[] = [];
             result.data?.forEach((a) => {
@@ -116,11 +132,8 @@ export class TronApi implements BFChainWallet.TRON.API {
 
     async getAccountBalance(address: string): Promise<BFChainWallet.TRON.TronAccountBalanceRes> {
         const host = `${await this.getApiUrl()}/tron/account/${address}`;
-        const result: BFChainWallet.TRON.TronAccountBalanceRes = await this.httpHelper.sendApiGetRequest(
-            host,
-            {},
-            await this.getApiHeaders(),
-        );
+        const result: BFChainWallet.TRON.TronAccountBalanceRes =
+            await this.httpHelper.sendApiGetRequest(host, {}, await this.getApiHeaders());
         if (result) {
             let trc20List: { contractAddress: string; amount: string }[] = [];
             result.trc20?.forEach((item) => {
@@ -208,10 +221,8 @@ export class TronApi implements BFChainWallet.TRON.API {
             // 先对 input 数据进行编码
             const parameter = this.tronHelper.encodeParameter(contractReq.input);
             contractReq.parameter = parameter;
-            const res: BFChainWallet.TRON.TriggerSmartContractRes = await this.httpHelper.sendPostRequest(
-                host,
-                contractReq,
-            );
+            const res: BFChainWallet.TRON.TriggerSmartContractRes =
+                await this.httpHelper.sendPostRequest(host, contractReq);
             const selector = contractReq.function_selector;
             // 需要做解码操作的业务
             if (selector == "balanceOf(address)" || selector == "decimals()") {

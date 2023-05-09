@@ -1,10 +1,17 @@
 import { Inject, Injectable } from "@bnqkl/util-node";
-import { EthApiScanSymbol, HttpHelper, PeerListHelper, TatumSymbol } from "@bfmeta/wallet-helpers";
+import {
+    ABISupportFunctionEnum,
+    EthApiScanSymbol,
+    HttpHelper,
+    PeerListHelper,
+    TatumSymbol,
+} from "@bfmeta/wallet-helpers";
 import Web3 from "web3";
 import type * as Web3_Eth from "web3-eth";
 import type * as Web3_Utils from "web3-utils";
 import { ETH_ERC20_ABI } from "./constants";
 import * as ethereumjs from "ethereumjs-tx";
+import type { AbiItem } from "web3-utils";
 export const ETH_PEERS = {
     host: Symbol("host"),
     testnet: Symbol("testnet"),
@@ -49,10 +56,8 @@ export class EthApi implements BFChainWallet.ETH.API {
         req: BFChainWallet.ETH.TransHistoryReq,
     ): Promise<BFChainWallet.ETH.NormalTransHistoryRes> {
         const host = `${await this.getApiScanUrl()}&module=account&action=txlist`;
-        const normalResult: BFChainWallet.ETH.NormalTransHistoryResult = await this.httpHelper.sendGetRequest(
-            host,
-            req,
-        );
+        const normalResult: BFChainWallet.ETH.NormalTransHistoryResult =
+            await this.httpHelper.sendGetRequest(host, req);
         let result: BFChainWallet.ETH.NormalTransRes[] = [];
         if (normalResult?.status === "1") {
             normalResult.result?.forEach((a) => {
@@ -84,10 +89,8 @@ export class EthApi implements BFChainWallet.ETH.API {
         req: BFChainWallet.ETH.TransHistoryReq,
     ): Promise<BFChainWallet.ETH.Erc20TransHistoryRes> {
         const host = `${await this.getApiScanUrl()}&module=account&action=tokentx`;
-        const erc20Result: BFChainWallet.ETH.Erc20TransHistoryResult = await this.httpHelper.sendGetRequest(
-            host,
-            req,
-        );
+        const erc20Result: BFChainWallet.ETH.Erc20TransHistoryResult =
+            await this.httpHelper.sendGetRequest(host, req);
         let result: BFChainWallet.ETH.Erc20TransRes[] = [];
         if (erc20Result?.status === "1") {
             result = erc20Result?.result?.map((a) => {
@@ -228,9 +231,8 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     async getTransactionReceipt(txHash: string) {
-        const transactionReceipt: Web3_Eth.TransactionReceipt = await this.web3.eth.getTransactionReceipt(
-            txHash,
-        );
+        const transactionReceipt: Web3_Eth.TransactionReceipt =
+            await this.web3.eth.getTransactionReceipt(txHash);
         return transactionReceipt;
     }
 
@@ -288,12 +290,19 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     /**
-     *
-     * @param inputs 将abi的input放进去
-     * @param hex 将 toSring("hex") 后的data放进来。注意是 0x开头
-     * @returns
+     * 参数解码
+     * @param hex  将 toSring("hex") 后的data放进来。注意是 0x开头
+     * @param functionName  合约ABI中可以调用方法的方法名
      */
-    decodeParameters<T>(inputs: any[], hex: string) {
-        return this.web3.eth.abi.decodeParameters(inputs, hex) as T;
+    decodeParameters<T>(hex: string, functionName: ABISupportFunctionEnum) {
+        const methodABI: any = this.getMethodABI(functionName);
+        return this.web3.eth.abi.decodeParameters(methodABI.inputs, hex) as T;
+    }
+
+    getMethodABI(functionName: ABISupportFunctionEnum) {
+        const methodABI: AbiItem | undefined = ETH_ERC20_ABI.find((a: AbiItem) => {
+            return a.type === "function" && a.name === functionName;
+        });
+        return methodABI;
     }
 }
