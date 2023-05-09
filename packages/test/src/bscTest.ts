@@ -196,7 +196,7 @@ class DemoLogger {
         const txCount = await bscApi.getTransactionCount(from);
         console.log("txCount : %s", txCount);
 
-        const amount = 11000000;
+        const amount = "10000000";
 
         const contractGas = await bscApi.getContractGas(from, to, amount, contractAddress);
         console.log("contractGas : %s", contractGas);

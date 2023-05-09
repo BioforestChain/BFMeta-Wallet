@@ -169,7 +169,7 @@ export class BscApi implements BFChainWallet.BSC.API {
         return { name, symbol, decimals, totalSupply };
     }
 
-    async getContractGas(from: string, to: string, amount: number, contractAddress: string) {
+    async getContractGas(from: string, to: string, amount: string, contractAddress: string) {
         const contract = await this.getContract(from, contractAddress);
         return await contract.methods.transfer(to, amount).estimateGas();
     }
@@ -229,7 +229,7 @@ export class BscApi implements BFChainWallet.BSC.API {
     async getContractTransData(
         from: string,
         to: string,
-        amount: number,
+        amount: string,
         contractAddress: string,
     ): Promise<string> {
         const contract = await this.getContract(from, contractAddress);

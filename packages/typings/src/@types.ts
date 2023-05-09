@@ -304,7 +304,7 @@ declare namespace BFChainWallet {
             getContractTransData(
                 from: string,
                 to: string,
-                amount: number,
+                amount: string,
                 contractAddress: string,
             ): Promise<string>;
 

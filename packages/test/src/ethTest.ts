@@ -150,7 +150,7 @@ class DemoLogger {
         const gasPrice = await ethApi.getGasPrice();
         console.log("gasPrice : %s", gasPrice);
 
-        const amount = 10000000000;
+        const amount = "10000000000";
         const data = await ethApi.getContractTransData(from, to, amount, contractAddress_link);
         console.log("data : %s", data);
 

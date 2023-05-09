@@ -141,7 +141,7 @@ export class EthApi implements BFChainWallet.ETH.API {
         return baseGas;
     }
 
-    async getContractGas(from: string, to: string, amount: number, contractAddress: string) {
+    async getContractGas(from: string, to: string, amount: string, contractAddress: string) {
         const contract = await this.getContract(from, contractAddress);
         return await contract.methods.transfer(to, amount).estimateGas();
     }
@@ -176,7 +176,7 @@ export class EthApi implements BFChainWallet.ETH.API {
     async getContractTransData(
         from: string,
         to: string,
-        amount: number,
+        amount: string,
         contractAddress: string,
     ): Promise<string> {
         const contract = await this.getContract(from, contractAddress);
