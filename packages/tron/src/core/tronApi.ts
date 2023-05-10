@@ -265,7 +265,12 @@ export class TronApi implements BFChainWallet.TRON.API {
             return `${this.tatumConfig.host}/TRON/${this.tatumConfig.apiKey}`;
         } else {
             const p = await this.peerListHelper.getEnableRandom();
-            return `http://${p.ip}:${p.port}`;
+            let url = `http://${p.ip}`;
+            if (p.port) {
+                url += `:${p.port}`;
+            }
+
+            return url;
         }
     }
 
