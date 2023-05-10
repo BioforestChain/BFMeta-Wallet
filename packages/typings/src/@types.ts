@@ -40,6 +40,7 @@ declare namespace BFChainWallet {
             testnet: boolean;
         };
         tatum: {
+            /** 这里配置成true, 将不直连节点，通过tatum连接节点。若配置为false，节点由上述三条链决定 */
             enable: boolean;
             apiKey: string;
             host: string;

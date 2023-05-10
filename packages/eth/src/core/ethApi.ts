@@ -56,8 +56,10 @@ export class EthApi implements BFChainWallet.ETH.API {
         req: BFChainWallet.ETH.TransHistoryReq,
     ): Promise<BFChainWallet.ETH.NormalTransHistoryRes> {
         const host = `${await this.getApiScanUrl()}&module=account&action=txlist`;
-        const normalResult: BFChainWallet.ETH.NormalTransHistoryResult =
-            await this.httpHelper.sendGetRequest(host, req);
+        const normalResult: BFChainWallet.ETH.NormalTransHistoryResult = await this.httpHelper.sendGetRequest(
+            host,
+            req,
+        );
         let result: BFChainWallet.ETH.NormalTransRes[] = [];
         if (normalResult?.status === "1") {
             normalResult.result?.forEach((a) => {
@@ -89,8 +91,10 @@ export class EthApi implements BFChainWallet.ETH.API {
         req: BFChainWallet.ETH.TransHistoryReq,
     ): Promise<BFChainWallet.ETH.Erc20TransHistoryRes> {
         const host = `${await this.getApiScanUrl()}&module=account&action=tokentx`;
-        const erc20Result: BFChainWallet.ETH.Erc20TransHistoryResult =
-            await this.httpHelper.sendGetRequest(host, req);
+        const erc20Result: BFChainWallet.ETH.Erc20TransHistoryResult = await this.httpHelper.sendGetRequest(
+            host,
+            req,
+        );
         let result: BFChainWallet.ETH.Erc20TransRes[] = [];
         if (erc20Result?.status === "1") {
             result = erc20Result?.result?.map((a) => {
@@ -231,8 +235,9 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     async getTransactionReceipt(txHash: string) {
-        const transactionReceipt: Web3_Eth.TransactionReceipt =
-            await this.web3.eth.getTransactionReceipt(txHash);
+        const transactionReceipt: Web3_Eth.TransactionReceipt = await this.web3.eth.getTransactionReceipt(
+            txHash,
+        );
         return transactionReceipt;
     }
 
@@ -278,9 +283,7 @@ export class EthApi implements BFChainWallet.ETH.API {
                 : `${this.tatumConfig.host}/ETH/${this.tatumConfig.apiKey}`;
         } else {
             const p = await this.peerListHelper.getEnableRandom();
-            // return `http://${p.ip}:${p.port}`;
-            /** @TODO 因内网节点问题，暂时不带端口 */
-            return `http://${p.ip}`;
+            return `http://${p.ip}:${p.port}`;
         }
     }
 
