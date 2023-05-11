@@ -1,10 +1,6 @@
 import { WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
 import { ModuleStroge, Injectable } from "@bnqkl/util-node";
-const TronWeb = require("tronweb");
-const tronweb = new TronWeb({
-    fullHost: new TronWeb.providers.HttpProvider("https://127.0.0.1"),
-});
 const config: BFChainWallet.Config = require(`../../assets/config.json`);
 @Injectable(LoggerSymbol)
 class DemoLogger {
@@ -25,7 +21,6 @@ const testAccountUsdt =
 
     const tronHelper = tronApi.tronHelper;
 
-    // generateAddress();
     // getNowBlock();
     // getBlockByNum();
     // getBlockById();
@@ -38,7 +33,7 @@ const testAccountUsdt =
     // getTransactionInfoById();
     // parameterEncode();
     // parameterDecode();
-    trc20Transaction();
+    // trc20Transaction();
     // parameterEncode2();
     // parameterDecode2();
     // getTrc20Balance();
@@ -46,6 +41,78 @@ const testAccountUsdt =
     // getCommonTransHistory();
     // getTrc20TransHistory();
     // getAccountBalance();
+
+    // createAccount();
+    // recoverAccount();
+    // addressConvert();
+    // isAddress();
+    // getAccountV2();
+    // getAccountResourceV2();
+    signAndVerify();
+
+    // getBalance();
+
+    async function createAccount() {
+        const needMnemonic = true;
+        if (needMnemonic) {
+            const account = await tronApi.createAccountWithMnemonic();
+            console.log(account);
+        } else {
+            const newAccount = await tronApi.createAccount();
+            console.log(newAccount);
+            // console.log("新账号地址：", newAccount.address.base58);
+            // console.log("新账号私钥：", newAccount.privateKey);
+        }
+    }
+    async function recoverAccount() {
+        const mnemonic =
+            "drill repair donate near knee science cloud unique until web dynamic weird";
+        const account = await tronApi.recoverAccount(mnemonic);
+        console.log(account);
+    }
+
+    async function addressConvert() {
+        const base58 = "TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh";
+        const hex = await tronApi.addressToHex(base58);
+        console.log(hex);
+        const _hex = "41edecb44919df66095ff647ec3754db2c1aa11eba";
+        const _base58 = await tronApi.addressToBase58(_hex);
+        console.log(_base58);
+    }
+
+    async function isAddress() {
+        const base58 = "THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh";
+        const hex = "414EE38CD8E412F5F25801964169E07740C5E7A630";
+        const isAddress = await tronApi.isAddress(base58);
+        console.log(isAddress);
+    }
+
+    async function getAccountV2() {
+        const address = "THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh";
+        const account = await tronApi.getAccountV2(address);
+        console.log(account);
+    }
+
+    async function getAccountResourceV2() {
+        const address = "THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh";
+        const account = await tronApi.getAccountResourceV2(address);
+        console.log(account);
+    }
+
+    async function signAndVerify() {
+        const message = "helloworld";
+        const privateKey = "F714D4A373FAC3CCB331A466EA4022FBEF1F5357536E0A219DC32427F3B1B0C5";
+        const signature = await tronApi.signMessageV2(message, privateKey);
+        console.log(signature);
+        const verify = await tronApi.verifyMessageV2(message, signature);
+        console.log(verify);
+    }
+
+    async function getBalance() {
+        const address = "THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh";
+        const balance = await tronApi.getBalanceV2(address);
+        console.log(balance);
+    }
 
     async function getAccountBalance() {
         const address = "TZGGgtFmQjMzaeVdWfVHbRuNRSR2rHiCKT";
@@ -78,13 +145,6 @@ const testAccountUsdt =
         };
         const result = await tronApi.getTrc20TransHistory(req);
         console.log("======== 获取用户地址合约交易 ========");
-        console.log(result);
-        console.log("====================================");
-    }
-
-    async function generateAddress() {
-        const result: BFChainWallet.TRON.GenerateAddressRes = await tronApi.generateAddress();
-        console.log("========生成私钥和账户地址========");
         console.log(result);
         console.log("====================================");
     }
@@ -141,6 +201,7 @@ const testAccountUsdt =
     async function transaction() {
         try {
             // 进行交易流程
+            const tronweb = tronApi.tronWeb;
             const { privateKey, publicKey, address } = tronweb.fromMnemonic(testAccountTrx);
             const { address: addressUsdt } = tronweb.fromMnemonic(testAccountUsdt);
             const addressHex = tronweb.address.toHex(address);
@@ -156,9 +217,8 @@ const testAccountUsdt =
                 extra_data: Buffer.from("这个是一个测试备注", "utf-8").toString("hex"),
             };
             // 创建交易
-            const transactionFirst: BFChainWallet.TRON.TronTransation = await tronApi.createTransaction(
-                txBody,
-            );
+            const transactionFirst: BFChainWallet.TRON.TronTransation =
+                await tronApi.createTransaction(txBody);
             console.log("============ 创建交易 ============");
             console.log(JSON.stringify(transactionFirst));
             console.log("====================================");
@@ -177,9 +237,8 @@ const testAccountUsdt =
             console.log(JSON.stringify(transactionWithSign));
             console.log("====================================");
             // 交易广播
-            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes = await tronApi.broadcastTransaction(
-                transactionWithSign,
-            );
+            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes =
+                await tronApi.broadcastTransaction(transactionWithSign);
             console.log("============ 交易广播 ============");
             console.log(JSON.stringify(broadcastResult));
             console.log("====================================");
@@ -236,6 +295,7 @@ const testAccountUsdt =
 
     async function trc20Transaction() {
         try {
+            const tronweb = tronApi.tronWeb;
             const { privateKey, publicKey, address } = tronweb.fromMnemonic(testAccountUsdt);
             const { address: addressTrx } = tronweb.fromMnemonic(testAccountTrx);
             const addressHex = tronweb.address.toHex(address);
@@ -257,9 +317,8 @@ const testAccountUsdt =
                 call_value: 0,
             };
             // 创建交易
-            const contractTx: BFChainWallet.TRON.TriggerSmartContractRes = await tronApi.triggerSmartContract(
-                contractReq,
-            );
+            const contractTx: BFChainWallet.TRON.TriggerSmartContractRes =
+                await tronApi.triggerSmartContract(contractReq);
             console.log("============ 创建交易 ============");
             console.log(JSON.stringify(contractTx));
             console.log("====================================");
@@ -284,9 +343,8 @@ const testAccountUsdt =
             console.log(JSON.stringify(transactionWithSign));
             console.log("====================================");
             // 交易广播
-            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes = await tronApi.broadcastTransaction(
-                transactionWithSign,
-            );
+            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes =
+                await tronApi.broadcastTransaction(transactionWithSign);
             console.log("============ 交易广播 ============");
             console.log(JSON.stringify(broadcastResult));
             console.log("====================================");
@@ -324,9 +382,8 @@ const testAccountUsdt =
             input: [{ type: "address", value: "41ac18e577192d1353879e31c83d1be47d4b1070be" }],
         };
         // 获取TRC20代币余额
-        const contractTx: BFChainWallet.TRON.TriggerSmartContractRes = await tronApi.triggerSmartContract(
-            contractReq,
-        );
+        const contractTx: BFChainWallet.TRON.TriggerSmartContractRes =
+            await tronApi.triggerSmartContract(contractReq);
         console.log("============ TRC20代币余额 ============");
         console.log(JSON.stringify(contractTx));
         console.log("====================================");
@@ -340,9 +397,8 @@ const testAccountUsdt =
             input: [{ type: "address", value: "41ac18e577192d1353879e31c83d1be47d4b1070be" }],
         };
         // 获取TRC20代币精度
-        const contractTx: BFChainWallet.TRON.TriggerSmartContractRes = await tronApi.triggerSmartContract(
-            contractReq,
-        );
+        const contractTx: BFChainWallet.TRON.TriggerSmartContractRes =
+            await tronApi.triggerSmartContract(contractReq);
         console.log("============ TRC20代币精度 ============");
         console.log(JSON.stringify(contractTx));
         console.log("====================================");

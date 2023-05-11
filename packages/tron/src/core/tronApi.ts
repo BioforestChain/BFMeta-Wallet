@@ -38,6 +38,89 @@ export class TronApi implements BFChainWallet.TRON.API {
         this.peerListHelper.init();
         this.newTronWeb();
     }
+    /**
+     * Creates a new TRON account using the tronWeb instance associated with this BFChainWallet,
+     * and returns the new account object.
+     *
+     * @return {Promise<BFChainWallet.TRON.TronNewAccount>} A Promise that resolves to the new account object.
+     */
+    async createAccount(): Promise<BFChainWallet.TRON.TronNewAccount> {
+        return await this.tronWeb.createAccount();
+    }
+
+    /**
+     * Creates a new Tron account with a randomly generated mnemonic phrase.
+     *
+     * @return {Promise<BFChainWallet.TRON.TronNewAccountWithMnemonic>} The new Tron account with mnemonic phrase.
+     */
+    async createAccountWithMnemonic(): Promise<BFChainWallet.TRON.TronNewAccountWithMnemonic> {
+        return await this.tronWeb.createRandom();
+    }
+
+    /**
+     * Recovers a TRON account using a given mnemonic phrase.
+     *
+     * @param {string} mnemonic - The mnemonic phrase to recover the account from.
+     * @return {Promise<BFChainWallet.TRON.TronNewAccountWithMnemonic>} - A promise that resolves to a new TRON account with the recovered mnemonic.
+     */
+    async recoverAccount(mnemonic: string): Promise<BFChainWallet.TRON.TronNewAccountWithMnemonic> {
+        return await this.tronWeb.fromMnemonic(mnemonic);
+    }
+
+    /**
+     * Converts a given Tron address to its corresponding hex format.
+     *
+     * @param {string} address - The address to convert.
+     * @return {Promise<string>} The hexadecimal representation of the given address.
+     */
+    async addressToHex(address: string): Promise<string> {
+        return await this.tronWeb.address.toHex(address);
+    }
+
+    /**
+     * Converts a Tron address in hex format to its base58 representation.
+     *
+     * @param {string} address - The Tron address in hex format to convert.
+     * @return {Promise<string>} - A Promise that resolves to the base58 representation of the Tron address.
+     */
+    async addressToBase58(address: string): Promise<string> {
+        return await this.tronWeb.address.fromHex(address);
+    }
+
+    /**
+     * Checks if the given string is a valid Tron address.
+     *
+     * @param {string} address - The address to validate.
+     * @return {Promise<boolean>} - True if the address is valid, false otherwise.
+     */
+    async isAddress(address: string): Promise<boolean> {
+        return await this.tronWeb.isAddress(address);
+    }
+
+    /**
+     * Gets the TronAccount of the specified address.
+     *
+     * @param {string} address - the address of the account to retrieve
+     * @return {Promise<BFChainWallet.TRON.TronAccount>} - a Promise that resolves to the TronAccount of the specified address
+     */
+    async getAccountV2(address: string): Promise<BFChainWallet.TRON.TronAccount> {
+        return await this.tronWeb.trx.getAccount(address);
+    }
+    async getAccountResourceV2(address: string): Promise<any> {
+        return await this.tronWeb.trx.getAccountResources(address);
+    }
+
+    async signMessageV2(message: string, privateKey: string): Promise<string> {
+        return await this.tronWeb.trx.signMessageV2(message, privateKey);
+    }
+
+    async verifyMessageV2(message: string, signature: string): Promise<string> {
+        return await this.tronWeb.trx.verifyMessageV2(message, signature);
+    }
+
+    async getCurrentBlock(): Promise<any> {
+        return await this.tronWeb.trx.getCurrentBlock();
+    }
 
     async getBalanceV2(address: string): Promise<number> {
         return await this.tronWeb.trx.getBalance(address);
@@ -151,11 +234,6 @@ export class TronApi implements BFChainWallet.TRON.API {
             result.trc20List = trc20List;
         }
         return result;
-    }
-
-    async generateAddress(): Promise<BFChainWallet.TRON.GenerateAddressRes> {
-        const host = `${await this.getPeerUrl()}/wallet/generateaddress`;
-        return await this.httpHelper.sendGetRequest(host);
     }
 
     async getAccount(address: string, visible = false): Promise<BFChainWallet.TRON.TronAccountRes> {

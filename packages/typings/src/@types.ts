@@ -497,14 +497,14 @@ declare namespace BFChainWallet {
                 lastest_consume_time_for_energy?: number;
             };
             owner_permission: {
-                keys: [{ address: string; weight: number }];
+                keys: { address: string; weight: number }[];
                 threshold: number;
                 permission_name: string;
             };
             active_permission: [
                 {
                     operations: string;
-                    keys: [{ addrss: string; weight: number }];
+                    keys: { addrss: string; weight: number }[];
                     threshold: number;
                     id: number;
                     type: string;
@@ -512,7 +512,7 @@ declare namespace BFChainWallet {
                 },
             ];
             witness_premission?: {
-                keys: [{ address: string; weight: number }];
+                keys: { address: string; weight: number }[];
                 threshold: number;
                 id: number;
                 type: string;
@@ -557,12 +557,6 @@ declare namespace BFChainWallet {
             TotalEnergyWeight?: number;
         };
 
-        type GenerateAddressRes = {
-            privateKey: string;
-            address: string;
-            hexAddress: string;
-        };
-
         type TronBlock = {
             blockID: string;
             block_header: {
@@ -581,15 +575,13 @@ declare namespace BFChainWallet {
         };
 
         type TransactionRawData = {
-            contract: [
-                {
-                    parameter: {
-                        value: { amount: number; owner_address: string; to_address: string };
-                        type_url: string;
-                    };
-                    type: string;
-                },
-            ];
+            contract: {
+                parameter: {
+                    value: { amount: number; owner_address: string; to_address: string };
+                    type_url: string;
+                };
+                type: string;
+            }[];
             ref_block_bytes: string;
             ref_block_hash: string;
             expiration: number;
@@ -599,19 +591,17 @@ declare namespace BFChainWallet {
         };
 
         type TRC20TransactionRawData = {
-            contract: [
-                {
-                    parameter: {
-                        value: {
-                            data: string;
-                            owner_address: string;
-                            contract_address: string;
-                        };
-                        type_url: string;
+            contract: {
+                parameter: {
+                    value: {
+                        data: string;
+                        owner_address: string;
+                        contract_address: string;
                     };
-                    type: string;
-                },
-            ];
+                    type_url: string;
+                };
+                type: string;
+            }[];
             ref_block_bytes: string;
             ref_block_hash: string;
             expiration: number;
@@ -632,7 +622,7 @@ declare namespace BFChainWallet {
             raw_data: TransactionRawData;
             /** 交易 raw_data 通过 protobuf 序列化后的二进制，Hex格式 */
             raw_data_hex: string;
-            ret?: [{ contractRet: string }];
+            ret?: { contractRet: string }[];
         };
 
         type TRC20Transation = {
@@ -646,7 +636,7 @@ declare namespace BFChainWallet {
             raw_data: TRC20TransactionRawData;
             /** 交易 raw_data 通过 protobuf 序列化后的二进制，Hex格式 */
             raw_data_hex: string;
-            ret?: [{ contractRet: string }];
+            ret?: { contractRet: string }[];
         };
 
         type CreateTransactionReq = {
@@ -743,11 +733,9 @@ declare namespace BFChainWallet {
         };
 
         type ListNodes = {
-            nodes: [
-                {
-                    address: { host: string; port: number };
-                },
-            ];
+            nodes: {
+                address: { host: string; port: number };
+            }[];
         };
 
         type TronTransHistoryReq = {
@@ -835,7 +823,7 @@ declare namespace BFChainWallet {
         };
 
         type CommonTransHistoryResultData = {
-            ret: [{ contractRet: string; fee: number }];
+            ret: { contractRet: string; fee: number }[];
             signature: string[];
             txID: string;
             raw_data_hex: string;
@@ -847,19 +835,17 @@ declare namespace BFChainWallet {
             blockNumber: number;
             block_timestamp: number;
             raw_data: {
-                contract: [
-                    {
-                        parameter: {
-                            value: {
-                                amount: number;
-                                owner_address: string;
-                                to_address: string;
-                            };
-                            type_url: string;
+                contract: {
+                    parameter: {
+                        value: {
+                            amount: number;
+                            owner_address: string;
+                            to_address: string;
                         };
-                        type: string;
-                    },
-                ];
+                        type_url: string;
+                    };
+                    type: string;
+                }[];
                 ref_block_bytes: string;
                 ref_block_hash: string;
                 expiration: number;
@@ -919,9 +905,93 @@ declare namespace BFChainWallet {
             freeNetLimit: number;
         };
 
+        type TronNewAccount = {
+            /** 私钥 */
+            privateKey: string;
+            /** 公钥 */
+            publicKey: string;
+            /** 地址 */
+            address: {
+                base58: string;
+                hex: string;
+            };
+        };
+
+        type TronNewAccountWithMnemonic = {
+            /** 助记词 */
+            mnemonic: { phrase: string; path: string; locale: string };
+            /** 私钥 */
+            privateKey: string;
+            /** 公钥 */
+            publicKey: string;
+            /** base58地址 */
+            address: string;
+        };
+
+        type TronAccount = {
+            address: string;
+            balance: number;
+            create_time: number;
+        };
+
+        type TronAccountResourceV2 = {};
+
+        type TronBlockV2 = {};
         interface API {
-            /** 生成私钥和账户地址(GET) */
-            generateAddress(): Promise<GenerateAddressRes>;
+            /**
+             * 生成新账户：不包含助记词
+             */
+            createAccount(): Promise<TronNewAccount>;
+            /**
+             * 生成新账户：包含助记词
+             */
+            createAccountWithMnemonic(): Promise<TronNewAccountWithMnemonic>;
+
+            /**
+             * 根据助记词恢复账户信息
+             * @param mnemonic 助记词
+             */
+            recoverAccount(mnemonic: string): Promise<TronNewAccountWithMnemonic>;
+            /**
+             * 是否是波场的地址
+             * @param address hex格式地址或base58格式地址
+             */
+            isAddress(address: string): Promise<boolean>;
+
+            /**
+             * base58地址转 Hex地址
+             * @param address base58格式地址（T开头的地址）
+             */
+            addressToHex(address: string): Promise<string>;
+
+            /**
+             * hex格式地址转 base58地址
+             * @param address hex格式地址（41开头的地址）
+             */
+            addressToBase58(address: string): Promise<string>;
+
+            getAccountV2(address: string): Promise<TronAccount>;
+
+            /**
+             *
+             * @param message 待签名的消息，可以是明文也可以是hex的字符串
+             * @param privateKey 私钥
+             * @returns signature 加密后的签名
+             */
+            signMessageV2(message: string, privateKey: string): Promise<string>;
+
+            /**
+             * 验证签名
+             * @param message 待加密消息，可以是明文也可以是hex的字符串
+             * @param signature 加密签名
+             * @returns address 返回加密用户的地址（地址为base58格式）
+             */
+            verifyMessageV2(message: string, signature: string): Promise<string>;
+
+            /** @TODO 记得补充类型 */
+            getAccountResourceV2(address: string): Promise<any>;
+
+            getCurrentBlock(): Promise<any>;
 
             /**
              * 查询账号信息，包含余额，质押资源，权限等(GET)
