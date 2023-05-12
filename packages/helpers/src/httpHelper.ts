@@ -20,8 +20,7 @@ export class HttpHelper {
                 url,
                 { method: "POST", headers: { "content-type": "application/json" } },
                 async (res) => {
-                    const body = parsePostRequestParameter(res, resolve, reject);
-                    return resolve(body as any);
+                    parsePostRequestParameter(res, resolve, reject);
                 },
             );
             req.setTimeout(10 * 1000, () => {
@@ -45,8 +44,7 @@ export class HttpHelper {
                 : "");
         return new Promise<T>((resolve, reject) => {
             const req = this.checkHttp(url).get(completeUrl, async (res) => {
-                const body = parsePostRequestParameter(res, resolve, reject);
-                return resolve(body as any);
+                parsePostRequestParameter(res, resolve, reject);
             });
             req.setTimeout(10 * 1000, () => {
                 return reject("timeout");
@@ -65,8 +63,7 @@ export class HttpHelper {
         const completeUrl = url + (argv ? `?${parseGetRequestParamter(argv)}` : "");
         return new Promise<T>((resolve, reject) => {
             const req = this.checkHttp(url).get(completeUrl, { headers }, async (res) => {
-                const body = parsePostRequestParameter<T>(res, resolve, reject);
-                return resolve(body as any);
+                parsePostRequestParameter<T>(res, resolve, reject);
             });
             req.setTimeout(10 * 1000, () => {
                 return reject("timeout");
