@@ -20,7 +20,7 @@ export class HttpHelper {
                 url,
                 { method: "POST", headers: { "content-type": "application/json" } },
                 async (res) => {
-                    const body = await parsePostRequestParameter(res);
+                    const body = parsePostRequestParameter(res, resolve, reject);
                     return resolve(body as any);
                 },
             );
@@ -45,7 +45,7 @@ export class HttpHelper {
                 : "");
         return new Promise<T>((resolve, reject) => {
             const req = this.checkHttp(url).get(completeUrl, async (res) => {
-                const body = await parsePostRequestParameter(res);
+                const body = parsePostRequestParameter(res, resolve, reject);
                 return resolve(body as any);
             });
             req.setTimeout(10 * 1000, () => {
@@ -65,7 +65,7 @@ export class HttpHelper {
         const completeUrl = url + (argv ? `?${parseGetRequestParamter(argv)}` : "");
         return new Promise<T>((resolve, reject) => {
             const req = this.checkHttp(url).get(completeUrl, { headers }, async (res) => {
-                const body = await parsePostRequestParameter(res);
+                const body = parsePostRequestParameter<T>(res, resolve, reject);
                 return resolve(body as any);
             });
             req.setTimeout(10 * 1000, () => {
@@ -89,20 +89,22 @@ function parseGetRequestParamter(argv: { [key: string]: any }) {
     return param;
 }
 
-function parsePostRequestParameter(imcomingMessage: IncomingMessage) {
-    return new Promise<{ [key: string]: any }>((resolve, reject) => {
-        const buffers: Uint8Array[] = [];
-        imcomingMessage.on("error", (error) => {
-            return reject(error.message);
-        });
-        imcomingMessage.on("data", (chunk: Uint8Array) => buffers.push(chunk));
-        imcomingMessage.on("end", () => {
-            const requestString = Buffer.concat(buffers).toString();
-            try {
-                return resolve(JSON.parse(requestString));
-            } catch (e) {
-                return reject(`parse parameter error`);
-            }
-        });
+function parsePostRequestParameter<T>(
+    imcomingMessage: IncomingMessage,
+    resolve: (value: T | PromiseLike<T>) => void,
+    reject: (reason?: any) => void,
+) {
+    const buffers: Uint8Array[] = [];
+    imcomingMessage.on("error", (error) => {
+        return reject(error.message);
+    });
+    imcomingMessage.on("data", (chunk: Uint8Array) => buffers.push(chunk));
+    imcomingMessage.on("end", () => {
+        const requestString = Buffer.concat(buffers).toString();
+        try {
+            return resolve(JSON.parse(requestString));
+        } catch (e) {
+            return reject(`parse parameter error`);
+        }
     });
 }
