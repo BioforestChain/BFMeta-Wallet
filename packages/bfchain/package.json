@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-bfchain",
-    "version": "1.0.26",
+    "version": "1.0.27",
     "description": " wallet bfchain",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -17,8 +17,8 @@
     "types": "build/cjs/index.d.ts",
     "dependencies": {
         "@bfmeta/node-sdk": "3.0.22",
-        "@bfmeta/wallet-helpers": "1.0.26",
-        "@bfmeta/wallet-typings": "1.0.26"
+        "@bfmeta/wallet-helpers": "1.0.27",
+        "@bfmeta/wallet-typings": "1.0.27"
     },
     "files": [
         "build"
