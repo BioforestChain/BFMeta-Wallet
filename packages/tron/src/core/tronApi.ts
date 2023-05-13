@@ -290,34 +290,6 @@ export class TronApi implements BFChainWallet.TRON.API {
         return result;
     }
 
-    async getAccount(address: string, visible = false): Promise<BFChainWallet.TRON.TronAccountRes> {
-        const host = `${await this.getPeerUrl()}/wallet/getaccount`;
-        return await this.httpHelper.sendGetRequest(host, { address, visible });
-    }
-
-    async getAccountResource(
-        address: string,
-        visible = false,
-    ): Promise<BFChainWallet.TRON.TronAccountResource> {
-        const host = `${await this.getPeerUrl()}/wallet/getaccountresource`;
-        return await this.httpHelper.sendGetRequest(host, { address, visible });
-    }
-
-    async getNowBlock(): Promise<BFChainWallet.TRON.TronBlock> {
-        const host = `${await this.getPeerUrl()}/wallet/getnowblock`;
-        return await this.httpHelper.sendGetRequest(host);
-    }
-
-    async getBlockByNum(num: number): Promise<BFChainWallet.TRON.TronBlock> {
-        const host = `${await this.getPeerUrl()}/wallet/getblockbynum`;
-        return await this.httpHelper.sendGetRequest(host, { num });
-    }
-
-    async getBlockById(value: string): Promise<BFChainWallet.TRON.TronBlock> {
-        const host = `${await this.getPeerUrl()}/wallet/getblockbyid`;
-        return await this.httpHelper.sendGetRequest(host, { value });
-    }
-
     async createTransaction(
         req: BFChainWallet.TRON.CreateTransactionReq,
     ): Promise<BFChainWallet.TRON.TronTransation> {
@@ -377,11 +349,6 @@ export class TronApi implements BFChainWallet.TRON.API {
             return res;
         }
         return {} as any;
-    }
-
-    async listNodes(): Promise<BFChainWallet.TRON.ListNodes> {
-        const host = `${await this.getPeerUrl()}/wallet/listnodes`;
-        return await this.httpHelper.sendGetRequest(host);
     }
 
     private async getApiUrl() {

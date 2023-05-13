@@ -29,14 +29,7 @@ const testAccountUsdt =
     const address_empty = "TSECGE2YCPtzWn4wdV63J9wZw5Fj8n6dx5";
     const privateKey_empty = "3dd645997783d34f2cda84ed18668cd9de42f956b55019a75ef38e81ab9de37c";
 
-    // getNowBlock();
-    // getBlockByNum();
-    // getBlockById();
-    // getAccount();
-    // getAccountResource();
-    // listNodes();
     // transaction();
-    // easyTransfer();
     // getTransactionById();
     // getTransactionInfoById();
     // parameterEncode();
@@ -182,55 +175,6 @@ const testAccountUsdt =
         console.log("====================================");
     }
 
-    async function getNowBlock() {
-        const nowBlock = await tronApi.getNowBlock();
-        console.log("========获取最新区块信息========");
-        console.log(nowBlock);
-        console.log("====================================");
-    }
-
-    async function getBlockByNum() {
-        const blockNum = 30506670;
-        const block = await tronApi.getBlockByNum(blockNum);
-        console.log("========通过高度查询区块内容========");
-        console.log(block);
-        console.log("====================================");
-    }
-
-    async function getBlockById() {
-        const valuse = "0000000001d17eae2fd5a16f3c1689da44f91e9371115798a61fe455ce376b73";
-        const blockById = await tronApi.getBlockById(valuse);
-        console.log("========通过区块ID, 查询区块========");
-        console.log(blockById);
-        console.log("====================================");
-    }
-
-    async function listNodes() {
-        // tslint:disable-next-line: no-shadowed-variable
-        const listNodes = await tronApi.listNodes();
-        console.log("=====查询api所在机器链接的节点列表=====");
-        console.log(listNodes);
-        console.log("====================================");
-    }
-
-    async function getAccount() {
-        // const address = "TRfB3t8q8KPXRvsvzvWomzpLvf8kVxBhgq";
-        const address = "TZGGgtFmQjMzaeVdWfVHbRuNRSR2rHiCKT";
-        const visible = true;
-        const account = await tronApi.getAccount(address, visible);
-        console.log("========查询账号信息，包含余额========");
-        console.log(account);
-        console.log("====================================");
-    }
-
-    async function getAccountResource() {
-        const address = "41ac18e577192d1353879e31c83d1be47d4b1070be";
-        const resource = await tronApi.getAccountResource(address);
-        console.log("======== 查询账户的资源信息 ========");
-        console.log(resource);
-        console.log("====================================");
-    }
-
     async function transaction() {
         try {
             // 进行交易流程
@@ -281,9 +225,7 @@ const testAccountUsdt =
     }
 
     async function getTransactionById() {
-        // const value = "6452d237f7465f27c26403b5f9961d824b0ffbc6c5051ef5a3ac4067d85528c2";
         const value = "2169f832dabbed1148d414bcf7883582d9d65010d4e5c1f802cbf13f61ba7a0d";
-        // const visible = false;
         const transactionById = await tronApi.getTransactionById(value);
         console.log("============ 交易查询 ============");
         console.log(JSON.stringify(transactionById));
@@ -291,7 +233,6 @@ const testAccountUsdt =
     }
 
     async function getTransactionInfoById() {
-        // const value = "6452d237f7465f27c26403b5f9961d824b0ffbc6c5051ef5a3ac4067d85528c2";
         const value = "48d1d874f0c4a49c65bba6d9235ba277d5e94b886a28f88f5f5b33db7898dbe7";
         const transactionInfo = await tronApi.getTransactionInfoById(value);
         console.log("============ 交易INFO查询 ============");
@@ -300,11 +241,6 @@ const testAccountUsdt =
     }
 
     async function parameterEncode() {
-        // const input = [
-        //     { type: "address", value: "412ed5dd8a98aea00ae32517742ea5289761b2710e" },
-        //     { type: "uint256", value: "50000000000" },
-        // ]
-        //0000000000000000000000002ed5dd8a98aea00ae32517742ea5289761b2710e0000000000000000000000000000000000000000000000000000000ba43b7400
         const input = [
             { type: "address", value: "41e82af0e99c9ed76b3100a643126948c03d27ef8e" },
             { type: "uint256", value: "100" },
@@ -388,7 +324,7 @@ const testAccountUsdt =
 
     async function parameterEncode2() {
         const input = [{ type: "address", value: "41ac18e577192d1353879e31c83d1be47d4b1070be" }];
-        const parameterEncode = await tronHelper.encodeParameter(input);
+        const parameterEncode = tronHelper.encodeParameter(input);
         console.log("============ 合约参数编码 ============");
         console.log(parameterEncode);
         console.log("====================================");

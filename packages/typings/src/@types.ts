@@ -730,12 +730,6 @@ declare namespace BFChainWallet {
             value: string | number;
         };
 
-        type ListNodes = {
-            nodes: {
-                address: { host: string; port: number };
-            }[];
-        };
-
         type TronTransHistoryReq = {
             // 查询地址
             address: string;
@@ -1073,31 +1067,6 @@ declare namespace BFChainWallet {
             sign(trans: TronTransaction, privateKey: string): Promise<TronSignTrans>;
 
             sendTransaction(signTrans: TronSignTrans): Promise<any>;
-            /**
-             * 查询账号信息，包含余额，质押资源，权限等(GET)
-             * @param address 账户地址，Base58check 格式 或 Hex 格式
-             * @param visible 账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址
-             */
-            getAccount(address: string, visible?: boolean): Promise<TronAccountRes>;
-
-            /**
-             * 查询账户的资源信息（带宽，能量）
-             * @param address 账户地址，Base58check 格式 或 Hex 格式
-             * @param visible 账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址
-             */
-            getAccountResource(address: string, visible?: boolean): Promise<TronAccountResource>;
-            /** 获取最新区块信息(GET) */
-            getNowBlock(): Promise<TronBlock>;
-            /**
-             *  通过高度查询区块内容(GET)
-             * @param num 区块高度
-             */
-            getBlockByNum(num: number): Promise<TronBlock>;
-            /**
-             * 通过区块ID，查询区块(GET)
-             * @param value 区块ID，即区块哈希
-             */
-            getBlockById(value: string): Promise<TronBlock>;
 
             /**
              * 创建 Transaction(POST)
@@ -1140,9 +1109,6 @@ declare namespace BFChainWallet {
             triggerSmartContract(
                 contractReq: TriggerSmartContractReq,
             ): Promise<TriggerSmartContractRes>;
-
-            /** 查询api所在机器链接的节点列表(GET) */
-            listNodes(): Promise<ListNodes>;
 
             /**
              * 查询指定地址的普通交易历史
