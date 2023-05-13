@@ -96,34 +96,88 @@ export class TronApi implements BFChainWallet.TRON.API {
     async isAddress(address: string): Promise<boolean> {
         return await this.tronWeb.isAddress(address);
     }
-
     /**
-     * Gets the TronAccount of the specified address.
+     * Retrieves a Tron account by its address.
      *
-     * @param {string} address - the address of the account to retrieve
-     * @return {Promise<BFChainWallet.TRON.TronAccount>} - a Promise that resolves to the TronAccount of the specified address
+     * @async
+     * @param {string} address - The address of the account to retrieve.
+     * @return {Promise<BFChainWallet.TRON.TronAccount | null>} A promise that resolves to the retrieved
+     * account or null if it does not exist.
      */
-    async getAccountV2(address: string): Promise<BFChainWallet.TRON.TronAccount> {
-        return await this.tronWeb.trx.getAccount(address);
+    async getAccountV2(address: string): Promise<BFChainWallet.TRON.TronAccount | null> {
+        const account: BFChainWallet.TRON.TronWebAccount = await this.tronWeb.trx.getAccount(
+            address,
+        );
+        if (account && account.address) {
+            const tronAccount: BFChainWallet.TRON.TronAccount = {
+                address: {
+                    hex: account.address,
+                    base58: await this.addressToBase58(account.address),
+                },
+                balance: account.balance,
+            };
+            return tronAccount;
+        }
+        return null;
     }
     async getAccountResourceV2(address: string): Promise<any> {
         return await this.tronWeb.trx.getAccountResources(address);
     }
 
+    /**
+     * Signs a message with the provided private key using SignMessageV2.
+     *
+     * @param {string} message - The message to sign.
+     * @param {string} privateKey - The private key to use for signing.
+     * @return {Promise<string>} - The signed message.
+     */
     async signMessageV2(message: string, privateKey: string): Promise<string> {
         return await this.tronWeb.trx.signMessageV2(message, privateKey);
     }
-
+    /**
+     * Verifies a message using a specified signature.
+     *
+     * @param {string} message - The message to be verified.
+     * @param {string} signature - The signature to be used for verification.
+     * @return {Promise<string>} - A promise that resolves to the verified message.
+     */
     async verifyMessageV2(message: string, signature: string): Promise<string> {
         return await this.tronWeb.trx.verifyMessageV2(message, signature);
     }
 
-    async getCurrentBlock(): Promise<any> {
+    async getCurrentBlock(): Promise<BFChainWallet.TRON.TronBlock> {
         return await this.tronWeb.trx.getCurrentBlock();
     }
 
     async getBalanceV2(address: string): Promise<number> {
-        return await this.tronWeb.trx.getBalance(address);
+        return await this.tronWeb.trx.getBalance(address).catch((err: any) => {
+            throw new Error(err);
+        });
+    }
+
+    async sendTrx(req: BFChainWallet.TRON.SendTrxReq): Promise<any> {
+        const { to, from, amount } = req;
+        if (!amount || amount <= 0 || !Number.isInteger(amount)) {
+            throw new Error("amount must be a positive integer greater than 0");
+        }
+        return await this.tronWeb.transactionBuilder.sendTrx(to, amount, from).catch((err: any) => {
+            throw new Error(err);
+        });
+    }
+
+    async sign(
+        trans: BFChainWallet.TRON.TronTransaction,
+        privateKey: string,
+    ): Promise<BFChainWallet.TRON.TronSignTrans> {
+        return await this.tronWeb.trx.sign(trans, privateKey).catch((err: any) => {
+            throw new Error(err);
+        });
+    }
+
+    async sendTransaction(signTrans: BFChainWallet.TRON.TronSignTrans): Promise<any> {
+        return await this.tronWeb.trx.sendRawTransaction(signTrans).catch((err: any) => {
+            throw new Error(err);
+        });
     }
 
     async getCommonTransHistory(req: BFChainWallet.TRON.TronTransHistoryReq): Promise<any> {

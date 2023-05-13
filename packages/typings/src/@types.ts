@@ -501,16 +501,14 @@ declare namespace BFChainWallet {
                 threshold: number;
                 permission_name: string;
             };
-            active_permission: [
-                {
-                    operations: string;
-                    keys: { addrss: string; weight: number }[];
-                    threshold: number;
-                    id: number;
-                    type: string;
-                    permission_name: string;
-                },
-            ];
+            active_permission: {
+                operations: string;
+                keys: { addrss: string; weight: number }[];
+                threshold: number;
+                id: number;
+                type: string;
+                permission_name: string;
+            }[];
             witness_premission?: {
                 keys: { address: string; weight: number }[];
                 threshold: number;
@@ -929,14 +927,79 @@ declare namespace BFChainWallet {
         };
 
         type TronAccount = {
-            address: string;
+            /** 地址 */
+            address: {
+                base58: string;
+                hex: string;
+            };
+            /** 余额 */
             balance: number;
+        };
+
+        type TronWebAccount = {
+            /** hex格式地址 */
+            address: string;
+            /** 余额 */
+            balance: number;
+            /** 创建时间 */
             create_time: number;
         };
 
         type TronAccountResourceV2 = {};
 
-        type TronBlockV2 = {};
+        type SendTrxReq = {
+            from: string;
+            to: string;
+            amount: number;
+        };
+
+        type TronTransactionRawData = {
+            contract: {
+                parameter: {
+                    value: {
+                        /** 交易金额 */
+                        amount: number;
+                        /** 交易发起地址 */
+                        owner_address: string;
+                        /** 交易接收地址 */
+                        to_address: string;
+                    };
+                    type_url: string;
+                };
+                type: string;
+            }[];
+            ref_block_bytes: string;
+            ref_block_hash: string;
+            expiration: number;
+            timestamp: number;
+        };
+
+        type TronTransaction = {
+            visible: boolean;
+            txID: string;
+            raw_data: TronTransactionRawData[];
+            raw_data_hex: string;
+        };
+
+        type TronSignTrans = {
+            visible: boolean;
+            txID: string;
+            raw_data: TronTransactionRawData[];
+            raw_data_hex: string;
+            signature: string[];
+        };
+
+        type TronTransReceipt = {
+            /** 交易ID */
+            txid: string;
+            /** 广播结果 */
+            result?: boolean;
+            /** 错误码，不是数字，而是错误信息 */
+            code: string;
+            message: string;
+            /** 签名后的交易体 */
+            transaction?: TronSignTrans;
+        };
         interface API {
             /**
              * 生成新账户：不包含助记词
@@ -970,7 +1033,7 @@ declare namespace BFChainWallet {
              */
             addressToBase58(address: string): Promise<string>;
 
-            getAccountV2(address: string): Promise<TronAccount>;
+            getAccountV2(address: string): Promise<TronAccount | null>;
 
             /**
              *
@@ -988,11 +1051,28 @@ declare namespace BFChainWallet {
              */
             verifyMessageV2(message: string, signature: string): Promise<string>;
 
+            /**
+             * 获取波场最新区块信息
+             */
+            getCurrentBlock(): Promise<TronBlock>;
+
+            /**
+             * 获取指定地址的trx余额
+             * @param address 地址
+             * @returns balance trx余额
+             */
+            getBalanceV2(address: string): Promise<number>;
+
             /** @TODO 记得补充类型 */
             getAccountResourceV2(address: string): Promise<any>;
 
-            getCurrentBlock(): Promise<any>;
+            getCurrentBlock(): Promise<TronBlock>;
 
+            sendTrx(req: SendTrxReq): Promise<TronTransaction>;
+
+            sign(trans: TronTransaction, privateKey: string): Promise<TronSignTrans>;
+
+            sendTransaction(signTrans: TronSignTrans): Promise<any>;
             /**
              * 查询账号信息，包含余额，质押资源，权限等(GET)
              * @param address 账户地址，Base58check 格式 或 Hex 格式

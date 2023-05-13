@@ -20,6 +20,14 @@ const testAccountUsdt =
     const tronApi = walletFactory.TronApi;
 
     const tronHelper = tronApi.tronHelper;
+    const address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh = "THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh";
+    const privateKey_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh =
+        "F714D4A373FAC3CCB331A466EA4022FBEF1F5357536E0A219DC32427F3B1B0C5";
+    const address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh = "TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh";
+    const privateKey_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh =
+        "1dd7e26534288ca17d2aed5f4653d6bb642d1c7fcc18f94eb961c968a6d2c79b";
+    const address_empty = "TSECGE2YCPtzWn4wdV63J9wZw5Fj8n6dx5";
+    const privateKey_empty = "3dd645997783d34f2cda84ed18668cd9de42f956b55019a75ef38e81ab9de37c";
 
     // getNowBlock();
     // getBlockByNum();
@@ -48,9 +56,10 @@ const testAccountUsdt =
     // isAddress();
     // getAccountV2();
     // getAccountResourceV2();
-    signAndVerify();
-
-    // getBalance();
+    // signAndVerify();
+    // getCurrentBlock();
+    // getBalanceV2();
+    trxTrans();
 
     async function createAccount() {
         const needMnemonic = true;
@@ -82,20 +91,20 @@ const testAccountUsdt =
 
     async function isAddress() {
         const base58 = "THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh";
-        const hex = "414EE38CD8E412F5F25801964169E07740C5E7A630";
+        // const hex = "414EE38CD8E412F5F25801964169E07740C5E7A630";
         const isAddress = await tronApi.isAddress(base58);
         console.log(isAddress);
     }
 
     async function getAccountV2() {
-        const address = "THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh";
-        const account = await tronApi.getAccountV2(address);
+        const account = await tronApi.getAccountV2(address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh);
         console.log(account);
     }
 
     async function getAccountResourceV2() {
-        const address = "THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh";
-        const account = await tronApi.getAccountResourceV2(address);
+        const account = await tronApi.getAccountResourceV2(
+            address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh,
+        );
         console.log(account);
     }
 
@@ -108,10 +117,34 @@ const testAccountUsdt =
         console.log(verify);
     }
 
-    async function getBalance() {
-        const address = "THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh";
-        const balance = await tronApi.getBalanceV2(address);
+    async function getCurrentBlock() {
+        const block = await tronApi.getCurrentBlock();
+        console.log(block);
+    }
+
+    async function getBalanceV2() {
+        const balance = await tronApi.getBalanceV2(address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh);
         console.log(balance);
+    }
+
+    async function trxTrans() {
+        // trx 精度为 6
+        const amount = 10000000;
+        const sendTrxReq: BFChainWallet.TRON.SendTrxReq = {
+            from: address_empty,
+            to: address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
+            amount: amount,
+        };
+        const trxTrans = await tronApi.sendTrx(sendTrxReq);
+        console.log("====== 创建交易 ======");
+        console.log(trxTrans);
+        const signTrans = await tronApi.sign(trxTrans, privateKey_empty);
+        console.log("====== 签名交易 ======");
+        console.log(signTrans);
+        // await sleep(70);
+        const result = await tronApi.sendTransaction(signTrans);
+        console.log("====== 广播交易 ======");
+        console.log(result);
     }
 
     async function getAccountBalance() {
@@ -402,5 +435,15 @@ const testAccountUsdt =
         console.log("============ TRC20代币精度 ============");
         console.log(JSON.stringify(contractTx));
         console.log("====================================");
+    }
+
+    /**
+     * 休眠函数sleep
+     * @param ms
+     * @returns
+     */
+    function sleep(s: number) {
+        console.log(`开始等待，等待时间为 ${s} s`);
+        return new Promise((resolve) => setTimeout(resolve, s * 1000));
     }
 })();
