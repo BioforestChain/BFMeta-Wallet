@@ -18,16 +18,19 @@ const testAccountUsdt =
     moduleMap.set(LoggerSymbol, DemoLogger);
     const walletFactory = new WalletFactory(config, moduleMap);
     const tronApi = walletFactory.TronApi;
-
-    const tronHelper = tronApi.tronHelper;
     const address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh = "THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh";
     const privateKey_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh =
         "F714D4A373FAC3CCB331A466EA4022FBEF1F5357536E0A219DC32427F3B1B0C5";
     const address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh = "TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh";
     const privateKey_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh =
         "1dd7e26534288ca17d2aed5f4653d6bb642d1c7fcc18f94eb961c968a6d2c79b";
-    const address_empty = "TSECGE2YCPtzWn4wdV63J9wZw5Fj8n6dx5";
-    const privateKey_empty = "3dd645997783d34f2cda84ed18668cd9de42f956b55019a75ef38e81ab9de37c";
+    const address_TSECGE2YCPtzWn4wdV63J9wZw5Fj8n6dx5 = "TSECGE2YCPtzWn4wdV63J9wZw5Fj8n6dx5";
+    const privateKey_TSECGE2YCPtzWn4wdV63J9wZw5Fj8n6dx5 =
+        "3dd645997783d34f2cda84ed18668cd9de42f956b55019a75ef38e81ab9de37c";
+    const address_empty = "THeHX3TmWWgRwYd7j8HBiaJHP5iXgaMtbZ";
+    const privateKey_empty = "a42480f1f9a60009c57ec70cdcab44672edae18ad61e6136d8c59d4dd11fd9a0";
+
+    const contract_usdt = "TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj";
 
     // transaction();
     // getTransactionById();
@@ -47,12 +50,15 @@ const testAccountUsdt =
     // recoverAccount();
     // addressConvert();
     // isAddress();
-    // getAccountV2();
-    // getAccountResourceV2();
+    // getAccount();
+    // getAccountResources();
     // signAndVerify();
     // getCurrentBlock();
-    // getBalanceV2();
-    trxTrans();
+    // getTrxBalance();
+    // trxTrans();
+    // trc20Trans();
+    getContractBalance();
+    // getTransactionReceipt();
 
     async function createAccount() {
         const needMnemonic = true;
@@ -89,14 +95,14 @@ const testAccountUsdt =
         console.log(isAddress);
     }
 
-    async function getAccountV2() {
-        const account = await tronApi.getAccountV2(address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh);
+    async function getAccount() {
+        const account = await tronApi.getAccount(address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh);
         console.log(account);
     }
 
-    async function getAccountResourceV2() {
-        const account = await tronApi.getAccountResourceV2(
-            address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh,
+    async function getAccountResources() {
+        const account = await tronApi.getAccountResources(
+            address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
         );
         console.log(account);
     }
@@ -115,8 +121,8 @@ const testAccountUsdt =
         console.log(block);
     }
 
-    async function getBalanceV2() {
-        const balance = await tronApi.getBalanceV2(address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh);
+    async function getTrxBalance() {
+        const balance = await tronApi.getTrxBalance(address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh);
         console.log(balance);
     }
 
@@ -124,22 +130,64 @@ const testAccountUsdt =
         // trx 精度为 6
         const amount = 10000000;
         const sendTrxReq: BFChainWallet.TRON.SendTrxReq = {
-            from: address_empty,
-            to: address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
+            from: address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
+            to: address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh,
             amount: amount,
         };
-        const trxTrans = await tronApi.sendTrx(sendTrxReq);
         console.log("====== 创建交易 ======");
+        const trxTrans = await tronApi.sendTrx(sendTrxReq);
         console.log(trxTrans);
-        const signTrans = await tronApi.sign(trxTrans, privateKey_empty);
         console.log("====== 签名交易 ======");
+        const signTrans = await tronApi.signTrx(
+            trxTrans,
+            privateKey_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
+        );
         console.log(signTrans);
-        // await sleep(70);
-        const result = await tronApi.sendTransaction(signTrans);
         console.log("====== 广播交易 ======");
+        // await sleep(70);
+        const result = await tronApi.broadcast(signTrans);
         console.log(result);
     }
 
+    async function trc20Trans() {
+        const amount = "1000000";
+        const SendTrc20Req: BFChainWallet.TRON.SendTrc20Req = {
+            from: address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
+            to: address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh,
+            amount: amount,
+            contractAddress: contract_usdt,
+        };
+        console.log("====== 创建trc20交易 ======");
+        const trc20Trans = await tronApi.sendTrc20(SendTrc20Req);
+        console.log(trc20Trans);
+        console.log("====== 签名交易 ======");
+        const signTrans = await tronApi.signTrc20(
+            trc20Trans,
+            privateKey_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
+        );
+        console.log(signTrans);
+        console.log("====== 广播交易 ======");
+        // await sleep(70);
+        const result = await tronApi.broadcast(signTrans);
+        console.log(result);
+    }
+
+    async function getContractBalance() {
+        const contractAddress = "TRYCsQN7mfyCVYvXQuc2LTAUC4EDxDMoMJ";
+        const balance = await tronApi.getContractBalance(
+            address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
+            contractAddress,
+        );
+        console.log("====== 获取合约余额 ======");
+        console.log(JSON.stringify(balance));
+    }
+
+    async function getTransactionReceipt() {
+        const txId = "f90122e85efb1114a1df24005ef1d671c7cbd7fc6ebe4804c9920fd73b1eaac3";
+        const result = await tronApi.getTransactionReceipt(txId);
+        console.log("====== 根据txid查询交易 ======");
+        console.log(result);
+    }
     async function getAccountBalance() {
         const address = "TZGGgtFmQjMzaeVdWfVHbRuNRSR2rHiCKT";
         // const address = "TRfB3t8q8KPXRvsvzvWomzpLvf8kVxBhgq";
@@ -240,27 +288,27 @@ const testAccountUsdt =
         console.log("====================================");
     }
 
-    async function parameterEncode() {
-        const input = [
-            { type: "address", value: "41e82af0e99c9ed76b3100a643126948c03d27ef8e" },
-            { type: "uint256", value: "100" },
-        ];
+    // async function parameterEncode() {
+    //     const input = [
+    //         { type: "address", value: "41e82af0e99c9ed76b3100a643126948c03d27ef8e" },
+    //         { type: "uint256", value: "100" },
+    //     ];
 
-        const parameterEncode = await tronHelper.encodeParameter(input);
-        console.log("============ 合约参数编码 ============");
-        console.log(parameterEncode);
-        console.log("====================================");
-    }
+    //     const parameterEncode = TronHelper.encodeParams(input);
+    //     console.log("============ 合约参数编码 ============");
+    //     console.log(parameterEncode);
+    //     console.log("====================================");
+    // }
 
-    async function parameterDecode() {
-        const data =
-            "a9059cbb000000000000000000000000e82af0e99c9ed76b3100a643126948c03d27ef8e00000000000000000000000000000000000000000000000000000000000f4240";
-        const types = ["address", "uint256"];
-        const result = await tronHelper.decodeParameter(types, data, true);
-        console.log("============ 合约参数解码 ============");
-        console.log(result);
-        console.log("====================================");
-    }
+    // async function parameterDecode() {
+    //     const data =
+    //         "a9059cbb000000000000000000000000e82af0e99c9ed76b3100a643126948c03d27ef8e00000000000000000000000000000000000000000000000000000000000f4240";
+    //     const types = ["address", "uint256"];
+    //     const result = TronHelper.decodeParams(types, data, true);
+    //     console.log("============ 合约参数解码 ============");
+    //     console.log(result);
+    //     console.log("====================================");
+    // }
 
     async function trc20Transaction() {
         try {
@@ -322,26 +370,26 @@ const testAccountUsdt =
         }
     }
 
-    async function parameterEncode2() {
-        const input = [{ type: "address", value: "41ac18e577192d1353879e31c83d1be47d4b1070be" }];
-        const parameterEncode = tronHelper.encodeParameter(input);
-        console.log("============ 合约参数编码 ============");
-        console.log(parameterEncode);
-        console.log("====================================");
-    }
+    // async function parameterEncode2() {
+    //     const input = [{ type: "address", value: "41ac18e577192d1353879e31c83d1be47d4b1070be" }];
+    //     const parameterEncode = TronHelper.encodeParams(input);
+    //     console.log("============ 合约参数编码 ============");
+    //     console.log(parameterEncode);
+    //     console.log("====================================");
+    // }
 
-    async function parameterDecode2() {
-        // const data = "0x0000000000000000000000000000000000000000000000000000000ba438665c";
-        const data = "0x0000000000000000000000000000000000000000000000000000000000000006";
-        const types = ["uint256"];
-        const result = await tronHelper.decodeParameter(types, data, false);
+    // async function parameterDecode2() {
+    //     // const data = "0x0000000000000000000000000000000000000000000000000000000ba438665c";
+    //     const data = "0x0000000000000000000000000000000000000000000000000000000000000006";
+    //     const types = ["uint256"];
+    //     const result = TronHelper.decodeParams(types, data, false);
 
-        // 直接转换为数字
-        console.log(result.toString());
-        console.log("============ 合约参数解码 ============");
-        console.log(result);
-        console.log("====================================");
-    }
+    //     // 直接转换为数字
+    //     console.log(result.toString());
+    //     console.log("============ 合约参数解码 ============");
+    //     console.log(result);
+    //     console.log("====================================");
+    // }
 
     async function getTrc20Balance() {
         const contractReq: BFChainWallet.TRON.TriggerSmartContractReq = {

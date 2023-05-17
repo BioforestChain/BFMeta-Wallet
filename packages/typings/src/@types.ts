@@ -568,8 +568,6 @@ declare namespace BFChainWallet {
                 };
                 witness_signature: string;
             };
-            // 暂时关闭
-            // transaction?: TronTransation[] | TRC20Transation[];
         };
 
         type TransactionRawData = {
@@ -897,6 +895,8 @@ declare namespace BFChainWallet {
             freeNetLimit: number;
         };
 
+        // 以下是新的类型
+
         type TronNewAccount = {
             /** 私钥 */
             privateKey: string;
@@ -939,12 +939,42 @@ declare namespace BFChainWallet {
             create_time: number;
         };
 
-        type TronAccountResourceV2 = {};
+        type TronAccountResources = {
+            /** 免费带宽总量 */
+            freeNetLimit?: number;
+            /** 已使用的免费带宽 */
+            freeNetUsed?: number;
+            /** 已使用的通过质押获得的带宽 */
+            NetUsed?: number;
+            /** 质押获得的带宽总量 */
+            NetLimit?: number;
+            /** 拥有的投票权 */
+            tronPowerLimit?: number;
+            /** 已使用的能量 */
+            EnergyUsed?: number;
+            /** 质押获取的总能量 */
+            EnergyLimit?: number;
+            /** 全网通过质押获取的带宽总量 */
+            TotalNetLimit?: number;
+            /** 全网用于获取带宽的质押TRX总量 */
+            TotalNetWeight?: number;
+            /** 全网通过质押获取的能量总量 */
+            TotalEnergyLimit?: number;
+            /** 全网用于获取能量的质押TRX总量 */
+            TotalEnergyWeight?: number;
+        };
 
         type SendTrxReq = {
             from: string;
             to: string;
             amount: number;
+        };
+
+        type SendTrc20Req = {
+            from: string;
+            to: string;
+            amount: string;
+            contractAddress: string;
         };
 
         type TronTransactionRawData = {
@@ -968,72 +998,157 @@ declare namespace BFChainWallet {
             timestamp: number;
         };
 
+        type Trc20TransactionRawData = {
+            contract: {
+                parameter: {
+                    value: {
+                        /** 交易加密数据 */
+                        data: string;
+                        /** 交易发起地址 */
+                        owner_address: string;
+                        /** 合约地址 */
+                        contract_address: string;
+                    };
+                    type_url: string;
+                };
+                type: string;
+            }[];
+            ref_block_bytes: string;
+            ref_block_hash: string;
+            expiration: number;
+            timestamp: number;
+        };
+
         type TronTransaction = {
             visible: boolean;
             txID: string;
             raw_data: TronTransactionRawData[];
             raw_data_hex: string;
+            signature?: string[];
         };
 
-        type TronSignTrans = {
+        type Trc20Transaction = {
             visible: boolean;
             txID: string;
-            raw_data: TronTransactionRawData[];
+            raw_data: Trc20TransactionRawData[];
             raw_data_hex: string;
-            signature: string[];
+            /** 签名 */
+            signature?: string[];
         };
 
-        type TronTransReceipt = {
+        type TronOptions = {
+            /** 交易的手续费上限。可以根据交易的复杂性和网络情况选择适当的手续费上限。如果未提供此选项，默认手续费上限为 10 TRX。 */
+            feeLimit: number;
+            /** 调用合约时传输的 TRX 数量。对于 TRC20 转账，一般情况下传输的 TRX 数量为 0。 */
+            callValue: number;
+            /** 发送的代币数量。这是一个可选项，如果您要发送 TRC10 代币，可以使用此选项指定发送的代币数量 */
+            tokenValue?: number;
+            /** 代币的 tokenId。这是一个可选项，如果您要发送 TRC10 代币，可以使用此选项指定代币的 ID */
+            tokenId?: number;
+        };
+
+        type SendTrc20Result = {
+            result: boolean;
+            transaction: Trc20Transaction;
+        };
+
+        type SendTransResult = {
             /** 交易ID */
             txid: string;
             /** 广播结果 */
             result?: boolean;
             /** 错误码，不是数字，而是错误信息 */
-            code: string;
-            message: string;
-            /** 签名后的交易体 */
-            transaction?: TronSignTrans;
+            code?: string;
+            message?: string;
         };
+
+        type BroadcastRes = {
+            /** 广播结果 */
+            result: boolean;
+            /** 交易ID */
+            txId: string;
+            /** 返回消息 */
+            message: string;
+        };
+
+        type TronTransReceipt = {
+            /** txId */
+            id: string;
+            /** 手续费 */
+            fee?: number;
+            /** 区块高度 */
+            blockNumber: number;
+            /** 区块时间: 时间戳 毫秒 */
+            blockTimeStamp: number;
+            contractResult: string[];
+            // 合约地址
+            contract_address?: string;
+            receipt: {
+                // 消耗带宽
+                net_fee?: number;
+                // 免费带宽
+                net_usage?: number;
+                // 消耗能量
+                energy_fee?: number;
+                result?: string;
+            };
+        };
+
         interface API {
             /**
              * 生成新账户：不包含助记词
+             * @returns {TronNewAccount}
              */
             createAccount(): Promise<TronNewAccount>;
             /**
              * 生成新账户：包含助记词
+             * @returns {TronNewAccountWithMnemonic}
              */
             createAccountWithMnemonic(): Promise<TronNewAccountWithMnemonic>;
-
             /**
              * 根据助记词恢复账户信息
              * @param mnemonic 助记词
+             * @returns {TronNewAccountWithMnemonic}
              */
             recoverAccount(mnemonic: string): Promise<TronNewAccountWithMnemonic>;
             /**
              * 是否是波场的地址
              * @param address hex格式地址或base58格式地址
+             * @returns {boolean}
              */
             isAddress(address: string): Promise<boolean>;
-
             /**
              * base58地址转 Hex地址
              * @param address base58格式地址（T开头的地址）
+             * @returns {string}
              */
             addressToHex(address: string): Promise<string>;
-
             /**
              * hex格式地址转 base58地址
              * @param address hex格式地址（41开头的地址）
+             * @returns {string}
              */
             addressToBase58(address: string): Promise<string>;
-
-            getAccountV2(address: string): Promise<TronAccount | null>;
+            /**
+             * 获取指定地址的用户信息（包含两种格式地址）
+             * 如地址存在或地址未激活，统一返回 null
+             * @param address hex格式地址或base58格式地址
+             * @returns {TronAccount | null}
+             */
+            getAccount(address: string): Promise<TronAccount | null>;
 
             /**
-             *
+             * 获取指定地址的账户资源
+             * @param address 地址
+             * @returns {TronAccountResources}
+             */
+            getAccountResources(address: string): Promise<TronAccountResources>;
+
+            /**
+             * 消息签名
              * @param message 待签名的消息，可以是明文也可以是hex的字符串
              * @param privateKey 私钥
-             * @returns signature 加密后的签名
+             * @returns {string} 加密后的签名
              */
             signMessageV2(message: string, privateKey: string): Promise<string>;
 
@@ -1041,32 +1156,71 @@ declare namespace BFChainWallet {
              * 验证签名
              * @param message 待加密消息，可以是明文也可以是hex的字符串
              * @param signature 加密签名
-             * @returns address 返回加密用户的地址（地址为base58格式）
+             * @returns {string} 返回加密用户的地址（地址为base58格式）
              */
             verifyMessageV2(message: string, signature: string): Promise<string>;
 
             /**
              * 获取波场最新区块信息
+             * @returns {TronBlock}
              */
             getCurrentBlock(): Promise<TronBlock>;
 
             /**
              * 获取指定地址的trx余额
              * @param address 地址
-             * @returns balance trx余额
+             * @returns {number} trx余额
              */
-            getBalanceV2(address: string): Promise<number>;
+            getTrxBalance(address: string): Promise<number>;
 
-            /** @TODO 记得补充类型 */
-            getAccountResourceV2(address: string): Promise<any>;
-
-            getCurrentBlock(): Promise<TronBlock>;
-
+            /**
+             * 发起TRX交易
+             * @param req req
+             * @returns {TronTransaction} TRX交易体
+             */
             sendTrx(req: SendTrxReq): Promise<TronTransaction>;
 
-            sign(trans: TronTransaction, privateKey: string): Promise<TronSignTrans>;
+            /**
+             * TRX交易签名
+             * @param trans TRX交易体
+             * @param privateKey 私钥
+             * @returns {TronTransaction} 签名后的TRX交易体
+             */
+            signTrx(trans: TronTransaction, privateKey: string): Promise<TronTransaction>;
 
-            sendTransaction(signTrans: TronSignTrans): Promise<any>;
+            /**
+             * 发起TRC20合约交易
+             * @param req req
+             * @returns {Trc20Transaction} TRC20交易体
+             */
+            sendTrc20(req: SendTrc20Req): Promise<Trc20Transaction>;
+
+            /**
+             * TRC20交易签名
+             * @param trc20Trans TRC20交易体
+             * @param privateKey 私钥
+             * @returns {TronTransaction} 签名后的TRC20交易体
+             */
+            signTrc20(trc20Trans: Trc20Transaction, privateKey: string): Promise<Trc20Transaction>;
+
+            /**
+             * 交易广播
+             * @param signTrans 签名后的交易体
+             * @returns {BroadcastRes} 广播结果
+             */
+            broadcast(signTrans: TronTransaction | Trc20Transaction): Promise<BroadcastRes>;
+
+            /**
+             * 获取指定地址的合约余额
+             * @param address  用户地址
+             * @param contract 合约地址
+             * @returns {string} 合约余额
+             */
+            getContractBalance(address: string, contractAddress: string): Promise<string>;
+
+            getTransaction(txId: string): Promise<any>;
+
+            getTransactionReceipt(txId: string): Promise<any>;
 
             /**
              * 创建 Transaction(POST)
