@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@bnqkl/util-node";
 import { HttpHelper, PeerListHelper, TatumSymbol } from "@bfmeta/wallet-helpers";
 import { TronHelper } from "./tronHelper";
+import { TronFuncionEnum } from "./constants";
 const TronWeb = require("tronweb");
 
 export const PEERS = {
@@ -20,14 +21,18 @@ export class TronApi implements BFChainWallet.TRON.API {
     }
 
     private async newTronWeb() {
-        this.__tronWeb = new TronWeb({ fullHost: "https://nile.trongrid.io" });
+        // this.__tronWeb = new TronWeb({ fullHost: "https://nile.trongrid.io" });
+        /** @TODO 暂时先这样处理 */
+        const fullNodeUrl = await this.fullNodeUrl();
+        const solidityNodeUrl = await this.solidityNodeUrl();
+        const eventServerUrl = await this.eventServerUrl();
+        this.__tronWeb = new TronWeb(fullNodeUrl, solidityNodeUrl, eventServerUrl);
     }
 
     constructor(
         @Inject(PEERS.host) public host: BFChainWallet.HostType[],
         public httpHelper: HttpHelper,
         public peerListHelper: PeerListHelper,
-        public tronHelper: TronHelper,
         @Inject(TatumSymbol) public tatumConfig: BFChainWallet.Config["tatum"],
     ) {
         const peersConfig: BFChainWallet.Helpers.PeerConfigModel[] = [];
@@ -38,17 +43,300 @@ export class TronApi implements BFChainWallet.TRON.API {
         this.peerListHelper.init();
         this.newTronWeb();
     }
+    /**
+     * Creates a new TRON account using the tronWeb instance associated with this BFChainWallet,
+     * and returns the new account object.
+     *
+     * @return {Promise<BFChainWallet.TRON.TronNewAccount>} A Promise that resolves to the new account object.
+     */
+    async createAccount(): Promise<BFChainWallet.TRON.TronNewAccount> {
+        return await this.tronWeb.createAccount();
+    }
 
-    async getBalanceV2(address: string): Promise<number> {
+    /**
+     * Creates a new Tron account with a randomly generated mnemonic phrase.
+     *
+     * @return {Promise<BFChainWallet.TRON.TronNewAccountWithMnemonic>} The new Tron account with mnemonic phrase.
+     */
+    async createAccountWithMnemonic(): Promise<BFChainWallet.TRON.TronNewAccountWithMnemonic> {
+        return await this.tronWeb.createRandom();
+    }
+
+    /**
+     * Recovers a TRON account using a given mnemonic phrase.
+     *
+     * @param {string} mnemonic - The mnemonic phrase to recover the account from.
+     * @return {Promise<BFChainWallet.TRON.TronNewAccountWithMnemonic>} - A promise that resolves to a new TRON account with the recovered mnemonic.
+     */
+    async recoverAccount(mnemonic: string): Promise<BFChainWallet.TRON.TronNewAccountWithMnemonic> {
+        return await this.tronWeb.fromMnemonic(mnemonic);
+    }
+
+    /**
+     * Converts a given Tron address to its corresponding hex format.
+     *
+     * @param {string} address - The address to convert.
+     * @return {Promise<string>} The hexadecimal representation of the given address.
+     */
+    async addressToHex(address: string): Promise<string> {
+        return await this.tronWeb.address.toHex(address);
+    }
+
+    /**
+     * Converts a Tron address in hex format to its base58 representation.
+     *
+     * @param {string} address - The Tron address in hex format to convert.
+     * @return {Promise<string>} - A Promise that resolves to the base58 representation of the Tron address.
+     */
+    async addressToBase58(address: string): Promise<string> {
+        return await this.tronWeb.address.fromHex(address);
+    }
+
+    /**
+     * Checks if the given string is a valid Tron address.
+     *
+     * @param {string} address - The address to validate.
+     * @return {Promise<boolean>} - True if the address is valid, false otherwise.
+     */
+    async isAddress(address: string): Promise<boolean> {
+        return await this.tronWeb.isAddress(address);
+    }
+    /**
+     * Retrieves a Tron account by its address.
+     *
+     * @async
+     * @param {string} address - The address of the account to retrieve.
+     * @return {Promise<BFChainWallet.TRON.TronAccount | null>} A promise that resolves to the retrieved
+     * account or null if it does not exist.
+     */
+    async getAccount(address: string): Promise<BFChainWallet.TRON.TronAccount | null> {
+        const account: BFChainWallet.TRON.TronWebAccount = await this.tronWeb.trx
+            .getAccount(address)
+            .catch((err: any) => {
+                throw new Error(err);
+            });
+        if (account && account.address) {
+            const tronAccount: BFChainWallet.TRON.TronAccount = {
+                address: {
+                    hex: account.address,
+                    base58: await this.addressToBase58(account.address),
+                },
+                balance: account.balance,
+            };
+            return tronAccount;
+        }
+        return null;
+    }
+
+    /**
+     * Retrieves TRON account resources for a given address.
+     *
+     * @param {string} address - The address to retrieve TRON account resources for.
+     * @return {Promise<BFChainWallet.TRON.TronAccountResources>} - A promise that resolves to an object containing the TRON account resources.
+     */
+    async getAccountResources(address: string): Promise<BFChainWallet.TRON.TronAccountResources> {
+        return await this.tronWeb.trx.getAccountResources(address);
+    }
+
+    /**
+     * Signs a message with the provided private key using SignMessageV2.
+     *
+     * @param {string} message - The message to sign.
+     * @param {string} privateKey - The private key to use for signing.
+     * @return {Promise<string>} - The signed message.
+     */
+    async signMessageV2(message: string, privateKey: string): Promise<string> {
+        return await this.tronWeb.trx.signMessageV2(message, privateKey);
+    }
+    /**
+     * Verifies a message using a specified signature.
+     *
+     * @param {string} message - The message to be verified.
+     * @param {string} signature - The signature to be used for verification.
+     * @return {Promise<string>} - A promise that resolves to the verified message.
+     */
+    async verifyMessageV2(message: string, signature: string): Promise<string> {
+        return await this.tronWeb.trx.verifyMessageV2(message, signature);
+    }
+    /**
+     * Returns a Promise of the current TronBlock.
+     *
+     * @return {Promise<BFChainWallet.TRON.TronBlock>} Block object of the current block.
+     */
+    async getCurrentBlock(): Promise<BFChainWallet.TRON.TronBlock> {
+        const block: BFChainWallet.TRON.TronBlock = await this.tronWeb.trx.getCurrentBlock();
+        return block;
+    }
+
+    /**
+     * Retrieves the TRX balance of a given address using the TronWeb API.
+     *
+     * @param {string} address - The address to retrieve the balance of.
+     * @return {Promise<number>} - A promise that resolves with the balance of the address.
+     */
+    async getTrxBalance(address: string): Promise<number> {
         return await this.tronWeb.trx.getBalance(address);
     }
 
+    /**
+     * Send a TronTransaction with the given parameters.
+     *
+     * @param {BFChainWallet.TRON.SendTrxReq} req - Object containing to, from, and amount of the transaction
+     * @throws {Error} amount must be a positive integer greater than 0
+     * @return {Promise<BFChainWallet.TRON.TronTransaction>} - The TronTransaction object representing the transaction
+     */
+    async sendTrx(req: BFChainWallet.TRON.SendTrxReq): Promise<BFChainWallet.TRON.TronTransaction> {
+        const { to, from, amount } = req;
+        if (!amount || amount <= 0 || !Number.isInteger(amount)) {
+            throw new Error("amount must be a positive integer greater than 0");
+        }
+        const result: BFChainWallet.TRON.TronTransaction =
+            await this.tronWeb.transactionBuilder.sendTrx(to, amount, from);
+        return result;
+    }
+
+    /**
+     * Signs a Tron transaction with the provided private key.
+     *
+     * @param {BFChainWallet.TRON.TronTransaction} trans - The transaction to sign.
+     * @param {string} privateKey - The private key to use for signing.
+     * @return {Promise<BFChainWallet.TRON.TronTransaction>} A promise that resolves with the signed transaction.
+     */
+    async signTrx(
+        trans: BFChainWallet.TRON.TronTransaction,
+        privateKey: string,
+    ): Promise<BFChainWallet.TRON.TronTransaction> {
+        const result: BFChainWallet.TRON.TronTransaction = await this.tronWeb.trx.sign(
+            trans,
+            privateKey,
+        );
+        return result;
+    }
+    /**
+     * Send a TRC20 transaction from one address to another.
+     *
+     * @async
+     * @param {BFChainWallet.TRON.SendTrc20Req} req - The request object.
+     * @return {Promise<BFChainWallet.TRON.Trc20Transaction>} - The TRC20 transaction object.
+     */
+    async sendTrc20(
+        req: BFChainWallet.TRON.SendTrc20Req,
+    ): Promise<BFChainWallet.TRON.Trc20Transaction> {
+        const { from, to, amount, contractAddress } = req;
+        const parameter: BFChainWallet.TRON.TronContractParameter[] = [
+            { type: "address", value: to },
+            { type: "uint256", value: amount },
+        ];
+        // const options = {
+        //     feeLimit: 100000000,
+        //     callValue: 0,
+        //     // tokenValue: 10,
+        //     // tokenId: 1000001,
+        // };
+        const result: BFChainWallet.TRON.SendTrc20Result =
+            await this.tronWeb.transactionBuilder.triggerSmartContract(
+                contractAddress,
+                TronFuncionEnum.TRANSFER,
+                {},
+                parameter,
+                from,
+            );
+        return result?.transaction;
+    }
+
+    /**
+     * Sign a Trc20 transaction using the provided private key.
+     *
+     * @param {BFChainWallet.TRON.Trc20Transaction} trc20Trans - The Trc20 transaction to sign.
+     * @param {string} privateKey - The private key to use for signing.
+     * @return {Promise<BFChainWallet.TRON.Trc20Transaction>} The signed Trc20 transaction.
+     */
+    async signTrc20(
+        trc20Trans: BFChainWallet.TRON.Trc20Transaction,
+        privateKey: string,
+    ): Promise<BFChainWallet.TRON.Trc20Transaction> {
+        const result: BFChainWallet.TRON.Trc20Transaction = await this.tronWeb.trx.sign(
+            trc20Trans,
+            privateKey,
+        );
+        return result;
+    }
+
+    /**
+     * Broadcast signed TRON transaction to the network.
+     *
+     * @param {BFChainWallet.TRON.Trc20Transaction | BFChainWallet.TRON.TronTransaction} signTrans
+     *        The signed TRON transaction.
+     * @return {Promise<BFChainWallet.TRON.BroadcastRes>} The broadcast result, which includes
+     *         whether the broadcast was successful, the transaction ID, and a message if an error
+     *         occurred.
+     */
+    async broadcast(
+        signTrans: BFChainWallet.TRON.Trc20Transaction | BFChainWallet.TRON.TronTransaction,
+    ): Promise<BFChainWallet.TRON.BroadcastRes> {
+        const result: BFChainWallet.TRON.SendTransResult =
+            await this.tronWeb.trx.sendRawTransaction(signTrans);
+        const res: BFChainWallet.TRON.BroadcastRes = {
+            result: result.result && !result.code ? true : false,
+            txId: result.txid,
+            message: result.code && result.code.length > 0 ? result.code : "success",
+        };
+        return res;
+    }
+
+    /**
+     * Retrieves the balance of a contract for a given address.
+     *
+     * @param {string} address - the address of the user
+     * @param {string} contractAddress - the address of the contract
+     * @return {Promise<string>} - the balance of the contract as a string
+     */
+    async getContractBalance(address: string, contractAddress: string): Promise<string> {
+        const parameter: BFChainWallet.TRON.TronContractParameter[] = [
+            { type: "address", value: address },
+        ];
+        const result = await this.tronWeb.transactionBuilder.triggerSmartContract(
+            contractAddress,
+            TronFuncionEnum.BALANCE_OF,
+            {},
+            parameter,
+            address,
+        );
+
+        console.log(result);
+
+        if (result?.result?.result && result?.constant_result?.length > 0) {
+            const decode = TronHelper.decodeParams(
+                TronHelper.UINT_TYPES,
+                "0x" + result.constant_result[0],
+                false,
+            );
+            return decode.toString();
+        }
+        return "0";
+    }
+
+    async getTransaction(txId: string): Promise<any> {
+        return await this.tronWeb.trx.getTransaction(txId);
+    }
+
+    async getTransactionReceipt(txId: string): Promise<any> {
+        return await this.tronWeb.trx.getTransactionInfo(txId);
+    }
+
+    // async getContractBalance(address: string, contractAddress: string) {
+    //     // 只有设置了地址才可以获取，但是并不适用于当前场景
+    //     this.tronWeb.setAddress(address);
+    //     // 获取合约余额
+    //     const contract = await this.tronWeb.contract().at(contractAddress);
+    //     const result = await contract.balanceOf(address).call();
+    //     return result.toString();
+    // }
+
     async getCommonTransHistory(req: BFChainWallet.TRON.TronTransHistoryReq): Promise<any> {
         const host = `${this.__getTatumUrl()}/v1/accounts/${req.address}/transactions`;
-        const result: BFChainWallet.TRON.CommonTransByAddressResult = await this.httpHelper.sendGetRequest(
-            host,
-            req,
-        );
+        const result: BFChainWallet.TRON.CommonTransByAddressResult =
+            await this.httpHelper.sendGetRequest(host, req);
         if (result?.success && !result?.error) {
             let resData: BFChainWallet.TRON.CommonTransHistoryResData[] = [];
             result.data?.forEach((a) => {
@@ -95,10 +383,8 @@ export class TronApi implements BFChainWallet.TRON.API {
 
     async getTrc20TransHistory(req: BFChainWallet.TRON.TronTransHistoryReq): Promise<any> {
         const host = `${this.__getTatumUrl()}/v1/accounts/${req.address}/transactions/trc20`;
-        const result: BFChainWallet.TRON.Trc20TransHistoryResult = await this.httpHelper.sendGetRequest(
-            host,
-            req,
-        );
+        const result: BFChainWallet.TRON.Trc20TransHistoryResult =
+            await this.httpHelper.sendGetRequest(host, req);
         if (result?.success && !result?.error) {
             let resData: BFChainWallet.TRON.Trc20TransHistoryResData[] = [];
             result.data?.forEach((a) => {
@@ -136,11 +422,8 @@ export class TronApi implements BFChainWallet.TRON.API {
 
     async getAccountBalance(address: string): Promise<BFChainWallet.TRON.TronAccountBalanceRes> {
         const host = `${await this.getApiUrl()}/tron/account/${address}`;
-        const result: BFChainWallet.TRON.TronAccountBalanceRes = await this.httpHelper.sendApiGetRequest(
-            host,
-            {},
-            await this.getApiHeaders(),
-        );
+        const result: BFChainWallet.TRON.TronAccountBalanceRes =
+            await this.httpHelper.sendApiGetRequest(host, {}, await this.getApiHeaders());
         if (result) {
             let trc20List: { contractAddress: string; amount: string }[] = [];
             result.trc20?.forEach((item) => {
@@ -151,39 +434,6 @@ export class TronApi implements BFChainWallet.TRON.API {
             result.trc20List = trc20List;
         }
         return result;
-    }
-
-    async generateAddress(): Promise<BFChainWallet.TRON.GenerateAddressRes> {
-        const host = `${await this.getPeerUrl()}/wallet/generateaddress`;
-        return await this.httpHelper.sendGetRequest(host);
-    }
-
-    async getAccount(address: string, visible = false): Promise<BFChainWallet.TRON.TronAccountRes> {
-        const host = `${await this.getPeerUrl()}/wallet/getaccount`;
-        return await this.httpHelper.sendGetRequest(host, { address, visible });
-    }
-
-    async getAccountResource(
-        address: string,
-        visible = false,
-    ): Promise<BFChainWallet.TRON.TronAccountResource> {
-        const host = `${await this.getPeerUrl()}/wallet/getaccountresource`;
-        return await this.httpHelper.sendGetRequest(host, { address, visible });
-    }
-
-    async getNowBlock(): Promise<BFChainWallet.TRON.TronBlock> {
-        const host = `${await this.getPeerUrl()}/wallet/getnowblock`;
-        return await this.httpHelper.sendGetRequest(host);
-    }
-
-    async getBlockByNum(num: number): Promise<BFChainWallet.TRON.TronBlock> {
-        const host = `${await this.getPeerUrl()}/wallet/getblockbynum`;
-        return await this.httpHelper.sendGetRequest(host, { num });
-    }
-
-    async getBlockById(value: string): Promise<BFChainWallet.TRON.TronBlock> {
-        const host = `${await this.getPeerUrl()}/wallet/getblockbyid`;
-        return await this.httpHelper.sendGetRequest(host, { value });
     }
 
     async createTransaction(
@@ -226,30 +476,26 @@ export class TronApi implements BFChainWallet.TRON.API {
         const host = `${await this.getPeerUrl()}/wallet/triggersmartcontract`;
         if (contractReq && contractReq.input.length > 0) {
             // 先对 input 数据进行编码
-            const parameter = this.tronHelper.encodeParameter(contractReq.input);
+            const parameter = TronHelper.encodeParams(contractReq.input);
             contractReq.parameter = parameter;
-            const res: BFChainWallet.TRON.TriggerSmartContractRes = await this.httpHelper.sendPostRequest(
-                host,
-                contractReq,
-            );
+            const res: BFChainWallet.TRON.TriggerSmartContractRes =
+                await this.httpHelper.sendPostRequest(host, contractReq);
             const selector = contractReq.function_selector;
             // 需要做解码操作的业务
             if (selector == "balanceOf(address)" || selector == "decimals()") {
                 if (res.constant_result && res.constant_result.length > 0) {
                     const output = res.constant_result[0];
-                    const types = ["uint256"];
-                    const decode = this.tronHelper.decodeParameter(types, "0x" + output, false);
+                    const decode = TronHelper.decodeParams(
+                        TronHelper.UINT_TYPES,
+                        "0x" + output,
+                        false,
+                    );
                     res.constant_result_decode = decode.toString();
                 }
             }
             return res;
         }
         return {} as any;
-    }
-
-    async listNodes(): Promise<BFChainWallet.TRON.ListNodes> {
-        const host = `${await this.getPeerUrl()}/wallet/listnodes`;
-        return await this.httpHelper.sendGetRequest(host);
     }
 
     private async getApiUrl() {
@@ -276,5 +522,20 @@ export class TronApi implements BFChainWallet.TRON.API {
 
     private __getTatumUrl() {
         return `${this.tatumConfig.host}/TRON/${this.tatumConfig.apiKey}`;
+    }
+
+    private async fullNodeUrl() {
+        const p = await this.peerListHelper.getEnableRandom();
+        return `http://${p.ip}:8090`;
+    }
+
+    private async solidityNodeUrl() {
+        const p = await this.peerListHelper.getEnableRandom();
+        return `http://${p.ip}:8091`;
+    }
+
+    private async eventServerUrl() {
+        const p = await this.peerListHelper.getEnableRandom();
+        return `http://${p.ip}:8092`;
     }
 }

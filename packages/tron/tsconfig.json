@@ -11,6 +11,7 @@
     ],
     "files": [
         "src/@types.ts",
+        "src/core/constants.ts",
         "src/core/customerPeerCheckHelper.ts",
         "src/core/index.ts",
         "src/core/tronApi.ts",

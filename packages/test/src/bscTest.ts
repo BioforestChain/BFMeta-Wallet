@@ -38,7 +38,7 @@ class DemoLogger {
     // getBep20TransHistory();
 
     // getTokenInfo();
-    // getAccountBalance();
+    getAccountBalance();
 
     // signFunction();
 
