@@ -9,7 +9,7 @@
         "declarationMap": false,
         "sourceMap": false,
         "noEmitOnError": true,
-        "removeComments": true,
+        // "removeComments": true,
         "importsNotUsedAsValues": "error",
         "strict": true,
         "strictBindCallApply": true,

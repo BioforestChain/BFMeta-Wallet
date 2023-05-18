@@ -57,7 +57,8 @@ const testAccountUsdt =
     // getTrxBalance();
     // trxTrans();
     // trc20Trans();
-    getContractBalance();
+    // getContractBalance();
+    getContractDecimal();
     // getTransactionReceipt();
 
     async function createAccount() {
@@ -128,7 +129,7 @@ const testAccountUsdt =
 
     async function trxTrans() {
         // trx 精度为 6
-        const amount = 10000000;
+        const amount = "10000000";
         const sendTrxReq: BFChainWallet.TRON.SendTrxReq = {
             from: address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
             to: address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh,
@@ -136,7 +137,7 @@ const testAccountUsdt =
         };
         console.log("====== 创建交易 ======");
         const trxTrans = await tronApi.sendTrx(sendTrxReq);
-        console.log(trxTrans);
+        console.log(JSON.stringify(trxTrans));
         console.log("====== 签名交易 ======");
         const signTrans = await tronApi.signTrx(
             trxTrans,
@@ -173,13 +174,17 @@ const testAccountUsdt =
     }
 
     async function getContractBalance() {
-        const contractAddress = "TRYCsQN7mfyCVYvXQuc2LTAUC4EDxDMoMJ";
         const balance = await tronApi.getContractBalance(
             address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
-            contractAddress,
+            contract_usdt,
         );
         console.log("====== 获取合约余额 ======");
         console.log(JSON.stringify(balance));
+    }
+
+    async function getContractDecimal() {
+        const decimal = await tronApi.getContractDecimal(contract_usdt);
+        console.log(decimal);
     }
 
     async function getTransactionReceipt() {

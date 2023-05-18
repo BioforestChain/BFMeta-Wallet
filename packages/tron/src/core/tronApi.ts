@@ -172,10 +172,11 @@ export class TronApi implements BFChainWallet.TRON.API {
      * Retrieves the TRX balance of a given address using the TronWeb API.
      *
      * @param {string} address - The address to retrieve the balance of.
-     * @return {Promise<number>} - A promise that resolves with the balance of the address.
+     * @return {Promise<string>} - A promise that resolves with the balance of the address.
      */
-    async getTrxBalance(address: string): Promise<number> {
-        return await this.tronWeb.trx.getBalance(address);
+    async getTrxBalance(address: string): Promise<string> {
+        const balance = await this.tronWeb.trx.getBalance(address);
+        return balance.toString();
     }
 
     /**
@@ -187,9 +188,6 @@ export class TronApi implements BFChainWallet.TRON.API {
      */
     async sendTrx(req: BFChainWallet.TRON.SendTrxReq): Promise<BFChainWallet.TRON.TronTransaction> {
         const { to, from, amount } = req;
-        if (!amount || amount <= 0 || !Number.isInteger(amount)) {
-            throw new Error("amount must be a positive integer greater than 0");
-        }
         const result: BFChainWallet.TRON.TronTransaction =
             await this.tronWeb.transactionBuilder.sendTrx(to, amount, from);
         return result;
@@ -302,18 +300,34 @@ export class TronApi implements BFChainWallet.TRON.API {
             parameter,
             address,
         );
+        const decode = TronHelper.decodeParams(
+            TronHelper.UINT_TYPES,
+            "0x" + result.constant_result[0],
+            false,
+        );
+        return decode.toString();
+    }
 
-        console.log(result);
-
-        if (result?.result?.result && result?.constant_result?.length > 0) {
-            const decode = TronHelper.decodeParams(
-                TronHelper.UINT_TYPES,
-                "0x" + result.constant_result[0],
-                false,
-            );
-            return decode.toString();
-        }
-        return "0";
+    /**
+     * Retrieves the decimal value of a smart contract on the Tron network.
+     *
+     * @param {string} contractAddress - The address of the smart contract.
+     * @return {Promise<number>} - Returns the decimal value of the smart contract as a Promise.
+     */
+    async getContractDecimal(contractAddress: string): Promise<number> {
+        const result = await this.tronWeb.transactionBuilder.triggerSmartContract(
+            contractAddress,
+            TronFuncionEnum.DECIMALS,
+            {},
+            [],
+            contractAddress,
+        );
+        const decode = TronHelper.decodeParams(
+            TronHelper.UINT_TYPES,
+            "0x" + result.constant_result[0],
+            false,
+        );
+        return Number(decode);
     }
 
     async getTransaction(txId: string): Promise<any> {

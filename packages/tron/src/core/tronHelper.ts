@@ -7,29 +7,6 @@ export class TronHelper {
     static UINT_TYPES = ["uint256"];
 
     static TRANS_TYPES = ["address", "uint256"];
-
-    // encodeParameter(input: BFChainWallet.TRON.TronContractParameter[]): string {
-    //     const AbiCoder = utils.AbiCoder;
-    //     const abiCoder = new AbiCoder();
-    //     let parameter = "";
-    //     let types = [];
-    //     let values = [];
-    //     if (input.length == 0) {
-    //         return parameter;
-    //     }
-    //     for (let i = 0; i < input.length; i++) {
-    //         let { type, value } = input[i];
-    //         if (type == "address" && typeof value == "string") {
-    //             value = value.replace(TronHelper.ADDRESS_PREFIX_REGEX, "0x");
-    //         }
-    //         types.push(type);
-    //         values.push(value);
-    //     }
-    //     // this.logger.log(types, values);
-    //     parameter = abiCoder.encode(types, values).replace(/^(0x)/, "");
-    //     return parameter;
-    // }
-
     /**
      * 加密
      * @param input 待加密数据

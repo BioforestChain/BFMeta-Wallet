@@ -967,7 +967,7 @@ declare namespace BFChainWallet {
         type SendTrxReq = {
             from: string;
             to: string;
-            amount: number;
+            amount: string;
         };
 
         type SendTrc20Req = {
@@ -1169,9 +1169,9 @@ declare namespace BFChainWallet {
             /**
              * 获取指定地址的trx余额
              * @param address 地址
-             * @returns {number} trx余额
+             * @returns {string} trx余额
              */
-            getTrxBalance(address: string): Promise<number>;
+            getTrxBalance(address: string): Promise<string>;
 
             /**
              * 发起TRX交易
@@ -1217,6 +1217,13 @@ declare namespace BFChainWallet {
              * @returns {string} 合约余额
              */
             getContractBalance(address: string, contractAddress: string): Promise<string>;
+
+            /**
+             * 获取指定地址的合约精度
+             * @param contractAddress 合约地址
+             * @returns {number} 合约精度
+             */
+            getContractDecimal(contractAddress: string): Promise<number>;
 
             getTransaction(txId: string): Promise<any>;
 
