@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-pmchain",
-    "version": "1.0.32",
+    "version": "1.0.33",
     "description": " wallet pmchain",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -16,12 +16,12 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet-helpers": "1.0.32",
-        "@bfmeta/wallet-typings": "1.0.32"
+        "@bfmeta/wallet-helpers": "1.0.33",
+        "@bfmeta/wallet-typings": "1.0.33"
     },
     "files": [
         "build"
     ],
     "module": "build/esm/index.js",
-    "gitHead": "613869747a152d44fd66d2f138228afd2421b809"
+    "gitHead": "455a402c1970ec61058df3c0d0284ae87506711c"
 }
