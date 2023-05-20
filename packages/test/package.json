@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@bfmeta/wallet-test",
-    "version": "1.0.33",
+    "version": "1.0.34",
     "description": " wallet test",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -17,8 +17,8 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet": "1.0.33",
-        "@bfmeta/wallet-typings": "1.0.33",
+        "@bfmeta/wallet": "1.0.34",
+        "@bfmeta/wallet-typings": "1.0.34",
         "ethereumjs-tx": "^2.1.2"
     },
     "files": [
