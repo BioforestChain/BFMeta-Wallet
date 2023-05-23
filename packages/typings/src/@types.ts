@@ -1022,18 +1022,21 @@ declare namespace BFChainWallet {
         type TronTransaction = {
             visible: boolean;
             txID: string;
-            raw_data: TronTransactionRawData[];
+            raw_data: TronTransactionRawData;
             raw_data_hex: string;
             signature?: string[];
+            ret?: { contractRet: string }[];
         };
 
         type Trc20Transaction = {
             visible: boolean;
             txID: string;
-            raw_data: Trc20TransactionRawData[];
+            raw_data: Trc20TransactionRawData;
             raw_data_hex: string;
             /** 签名 */
             signature?: string[];
+            /** 查询 */
+            ret?: { contractRet: string }[];
         };
 
         type TronOptions = {
@@ -1071,7 +1074,7 @@ declare namespace BFChainWallet {
             message: string;
         };
 
-        type TronTransReceipt = {
+        type TronTransInfo = {
             /** txId */
             id: string;
             /** 手续费 */
@@ -1092,6 +1095,52 @@ declare namespace BFChainWallet {
                 energy_fee?: number;
                 result?: string;
             };
+        };
+
+        type TronTransInfoRes = {
+            /** txId */
+            txId: string;
+            /** 手续费 */
+            fee: number;
+            /** 区块高度 */
+            blockNumber: number;
+            /** 区块时间: 时间戳 毫秒 */
+            blockTimeStamp: number;
+            // 消耗带宽
+            netFee: number;
+            // 免费带宽
+            netUsage: number;
+            // 消耗能量
+            energyFee: number;
+            // 合约地址
+            contractAddress: string;
+        };
+
+        type TronTransReceipt = {
+            /** 交易ID */
+            txId: string;
+            /** 区块高度 */
+            blockNumber: number;
+            /** 区块时间: 时间戳 毫秒 */
+            blockTimeStamp: number;
+            /** 交易发起地址 */
+            from: string;
+            /** 交易接收地址 */
+            to: string;
+            /** 合约地址 */
+            contractAddress: string;
+            /** 交易金额 */
+            amount: string;
+            /** 手续费：消耗TRX */
+            fee: number;
+            /** 网络费(免费) */
+            netUsage: number;
+            /** 网络费 */
+            netFee: number;
+            /** 能量费 */
+            energyFee: number;
+            /** 交易时间戳 */
+            timestamp: number;
         };
 
         interface API {
@@ -1227,7 +1276,19 @@ declare namespace BFChainWallet {
 
             getTransaction(txId: string): Promise<any>;
 
-            getTransactionReceipt(txId: string): Promise<any>;
+            /**
+             * 获取交易详情，包含手续费等信息(只能获取已上链成功的交易)
+             * @param txId 交易ID
+             * @returns {TronTransInfoRes | null} 交易详情
+             */
+            getTransInfo(txId: string): Promise<TronTransInfoRes | null>;
+
+            /**
+             * 获取交易回执信息(只能获取已上链成功的交易)
+             * @param txId 交易ID
+             * @returns {TronTransReceipt | null} 交易回执
+             */
+            getTransReceipt(txId: string): Promise<TronTransReceipt | null>;
 
             /**
              * 创建 Transaction(POST)

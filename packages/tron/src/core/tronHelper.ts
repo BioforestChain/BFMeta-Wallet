@@ -44,9 +44,7 @@ export class TronHelper {
         }
 
         if (output.replace(/^0x/, "").length % 64 !== 0) {
-            return new Error(
-                "the Encode string is not valed, Its length must be a multiple of 64.",
-            );
+            throw new Error("the Encode string is not valed, Its length must be a multiple of 64.");
         }
         const AbiCoder = utils.AbiCoder;
         const abiCoder = new AbiCoder();

@@ -58,8 +58,9 @@ const testAccountUsdt =
     // trxTrans();
     // trc20Trans();
     // getContractBalance();
-    getContractDecimal();
-    // getTransactionReceipt();
+    // getContractDecimal();
+    // getTransInfo();
+    getTransactionReceipt();
 
     async function createAccount() {
         const needMnemonic = true;
@@ -137,7 +138,7 @@ const testAccountUsdt =
         };
         console.log("====== 创建交易 ======");
         const trxTrans = await tronApi.sendTrx(sendTrxReq);
-        console.log(JSON.stringify(trxTrans));
+        console.log(trxTrans);
         console.log("====== 签名交易 ======");
         const signTrans = await tronApi.signTrx(
             trxTrans,
@@ -187,9 +188,18 @@ const testAccountUsdt =
         console.log(decimal);
     }
 
+    async function getTransInfo() {
+        const contractTxId = "e473be87320b182c4da27497b6a8baff8c5de721bef1c9ba413a3726466cef7d";
+        const txId = "f6fc748c8a2d2fd39a25aae99ddcdc49d02a346557d6901ce3264123bdf80283";
+        const result = await tronApi.getTransInfo(txId);
+        console.log("====== 根据txid查询交易详情 ======");
+        console.log(result);
+    }
+
     async function getTransactionReceipt() {
-        const txId = "f90122e85efb1114a1df24005ef1d671c7cbd7fc6ebe4804c9920fd73b1eaac3";
-        const result = await tronApi.getTransactionReceipt(txId);
+        const contractTxId = "e473be87320b182c4da27497b6a8baff8c5de721bef1c9ba413a3726466cef7d";
+        const txId = "f6fc748c8a2d2fd39a25aae99ddcdc49d02a346557d6901ce3264123bdf80283";
+        const result = await tronApi.getTransReceipt(contractTxId);
         console.log("====== 根据txid查询交易 ======");
         console.log(result);
     }

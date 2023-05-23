@@ -334,8 +334,89 @@ export class TronApi implements BFChainWallet.TRON.API {
         return await this.tronWeb.trx.getTransaction(txId);
     }
 
-    async getTransactionReceipt(txId: string): Promise<any> {
-        return await this.tronWeb.trx.getTransactionInfo(txId);
+    /**
+     *  Retrieves Transaction information from the Tron network.
+     *
+     * @param {string} txId - The transaction ID to fetch information for.
+     * @return {Promise<BFChainWallet.TRON.TronTransInfoRes | null>} - A promise that resolves with the
+     * transaction information, or null if it cannot be found.
+     */
+    async getTransInfo(txId: string): Promise<BFChainWallet.TRON.TronTransInfoRes | null> {
+        const transInfo: BFChainWallet.TRON.TronTransInfo =
+            await this.tronWeb.trx.getTransactionInfo(txId);
+        if (transInfo) {
+            const res: BFChainWallet.TRON.TronTransInfoRes = {
+                txId: transInfo.id,
+                fee: transInfo.fee ? transInfo.fee : 0,
+                blockNumber: transInfo.blockNumber,
+                blockTimeStamp: transInfo.blockTimeStamp,
+                netFee: transInfo.receipt.net_fee ? transInfo.receipt.net_fee : 0,
+                netUsage: transInfo.receipt.net_usage ? transInfo.receipt.net_usage : 0,
+                energyFee: transInfo.receipt.energy_fee ? transInfo.receipt.energy_fee : 0,
+                contractAddress: transInfo.contract_address ? transInfo.contract_address : "",
+            };
+            return res;
+        }
+        return null;
+    }
+
+    /**
+     * Retrieves the confirmed transaction information for a given transaction ID and returns
+     * the transaction receipt. If there is no confirmed transaction, null is returned.
+     *
+     * @param {string} txId - the ID of the transaction to retrieve information for
+     * @return {Promise<BFChainWallet.TRON.TronTransReceipt | null>} - the transaction receipt or
+     * null if there is no confirmed transaction
+     */
+    async getTransReceipt(txId: string): Promise<BFChainWallet.TRON.TronTransReceipt | null> {
+        // 获取确认交易信息
+        const confirmTrans:
+            | BFChainWallet.TRON.TronTransaction
+            | BFChainWallet.TRON.Trc20Transaction = await this.tronWeb.trx.getConfirmedTransaction(
+            txId,
+        );
+        if (confirmTrans) {
+            let from: string;
+            let to: string;
+            let amount: string;
+            if (
+                (<BFChainWallet.TRON.Trc20Transaction>confirmTrans).raw_data.contract[0].parameter
+                    .value.data
+            ) {
+                const value = (<BFChainWallet.TRON.Trc20Transaction>confirmTrans).raw_data
+                    .contract[0].parameter.value;
+                const decode = TronHelper.decodeParams(TronHelper.TRANS_TYPES, value.data, true);
+                from = value.owner_address;
+                to = decode[0]?.toString();
+                amount = decode[1]?.toString();
+            } else {
+                const value = (<BFChainWallet.TRON.TronTransaction>confirmTrans).raw_data
+                    .contract[0].parameter.value;
+                from = value.owner_address;
+                to = value.to_address;
+                amount = value.amount.toString();
+            }
+            const transInfoRes = await this.getTransInfo(txId);
+            if (transInfoRes) {
+                const receipt: BFChainWallet.TRON.TronTransReceipt = {
+                    txId: transInfoRes.txId,
+                    blockNumber: transInfoRes.blockNumber,
+                    blockTimeStamp: transInfoRes.blockTimeStamp,
+                    from,
+                    to,
+                    contractAddress: transInfoRes.contractAddress,
+                    amount,
+                    fee: transInfoRes.fee,
+                    netUsage: transInfoRes.netUsage,
+                    netFee: transInfoRes.netFee,
+                    energyFee: transInfoRes.energyFee,
+                    timestamp: confirmTrans.raw_data.timestamp,
+                };
+                return receipt;
+            }
+        }
+
+        return null;
     }
 
     // async getContractBalance(address: string, contractAddress: string) {
