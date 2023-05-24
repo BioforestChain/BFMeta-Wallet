@@ -59,6 +59,7 @@ const testAccountUsdt =
     // trc20Trans();
     // getContractBalance();
     // getContractDecimal();
+    // getTrans();
     // getTransInfo();
     getTransactionReceipt();
 
@@ -170,7 +171,9 @@ const testAccountUsdt =
         console.log(signTrans);
         console.log("====== 广播交易 ======");
         // await sleep(70);
-        const result = await tronApi.broadcast(signTrans);
+        const transHex = await tronApi.transToPbHex(signTrans);
+        const result = await tronApi.broadcastHexTrans(transHex);
+        // const result = await tronApi.broadcast(signTrans);
         console.log(result);
     }
 
@@ -186,6 +189,17 @@ const testAccountUsdt =
     async function getContractDecimal() {
         const decimal = await tronApi.getContractDecimal(contract_usdt);
         console.log(decimal);
+    }
+
+    async function getTrans() {
+        const contractTxId = "e473be87320b182c4da27497b6a8baff8c5de721bef1c9ba413a3726466cef7d";
+        const txId = "f6fc748c8a2d2fd39a25aae99ddcdc49d02a346557d6901ce3264123bdf80283";
+        const result = await tronApi.getTrans(contractTxId);
+        console.log("====== 根据txid查询交易体 ======");
+        console.log(result);
+        console.log("====== 交易Json获取交易Body ======");
+        const transBody = await tronApi.getTransBody(result);
+        console.log(transBody);
     }
 
     async function getTransInfo() {

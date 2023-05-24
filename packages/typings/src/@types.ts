@@ -1143,6 +1143,16 @@ declare namespace BFChainWallet {
             timestamp: number;
         };
 
+        type TronTransBody = {
+            txId: string;
+            from: string;
+            to: string;
+            amount: string;
+            /** 合约地址：该字段不会为空，非合约交易时为空字符串 */
+            contractAddress: string;
+            signature: string;
+        };
+
         interface API {
             /**
              * 生成新账户：不包含助记词
@@ -1260,6 +1270,30 @@ declare namespace BFChainWallet {
             broadcast(signTrans: TronTransaction | Trc20Transaction): Promise<BroadcastRes>;
 
             /**
+             * 交易广播
+             * 该方法的参数是签名后的交易信息转换 hex 后的字符串
+             * ps：并非简单hex转换，需要调用方法#API.transToPbHex() 才可获取到正确的hex数据
+             * @param {string} signTransHex 签名后交易体Hex字符串
+             * @returns {BroadcastRes} 广播结果
+             */
+            broadcastHexTrans(signTransHex: string): Promise<BroadcastRes>;
+
+            /**
+             * 交易JSON转换成交易Protobuf的HEX格式
+             * @param signTrans 签名后的交易体
+             * @returns {string} 交易
+             */
+            transToPbHex(signTrans: TronTransaction | Trc20Transaction): Promise<string>;
+
+            /**
+             * 获取交易体中的具体交易数据
+             * ps: 主要是用于在不熟悉复杂交易结构的前提下能更直观的获取交易体数据，同时也会对于合约交易进行数据解析
+             * @param trans 交易数据
+             * @returns {TronTransBody} 交易体数据
+             */
+            getTransBody(trans: TronTransaction | Trc20Transaction): Promise<TronTransBody>;
+
+            /**
              * 获取指定地址的合约余额
              * @param address  用户地址
              * @param contract 合约地址
@@ -1274,7 +1308,12 @@ declare namespace BFChainWallet {
              */
             getContractDecimal(contractAddress: string): Promise<number>;
 
-            getTransaction(txId: string): Promise<any>;
+            /**
+             * 获取指定txId的交易信息
+             * @param {string} txId 交易ID
+             * @returns {TronTransaction | Trc20Transaction} 交易信息
+             */
+            getTrans(txId: string): Promise<TronTransaction | Trc20Transaction>;
 
             /**
              * 获取交易详情，包含手续费等信息(只能获取已上链成功的交易)

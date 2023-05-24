@@ -275,9 +275,27 @@ export class TronApi implements BFChainWallet.TRON.API {
         const result: BFChainWallet.TRON.SendTransResult =
             await this.tronWeb.trx.sendRawTransaction(signTrans);
         const res: BFChainWallet.TRON.BroadcastRes = {
-            result: result.result && !result.code ? true : false,
+            result: result.result ? true : false,
             txId: result.txid,
-            message: result.code && result.code.length > 0 ? result.code : "success",
+            message: result.code && result.code.length > 0 ? result.code : "SUCCESS",
+        };
+        return res;
+    }
+
+    /**
+     * Broadcasts a signed transaction in hex format and returns the broadcast result.
+     *
+     * @param {string} signTransHex - The signed transaction in hex format.
+     * @return {Promise<BFChainWallet.TRON.BroadcastRes>} An object containing the broadcast result, including a boolean 'result',
+     * the transaction ID 'txId', and a message 'message' indicating the status of the broadcast.
+     */
+    async broadcastHexTrans(signTransHex: string): Promise<BFChainWallet.TRON.BroadcastRes> {
+        const result: BFChainWallet.TRON.SendTransResult =
+            await this.tronWeb.trx.sendHexTransaction(signTransHex);
+        const res: BFChainWallet.TRON.BroadcastRes = {
+            result: result.result ? true : false,
+            txId: result.txid,
+            message: result.code && result.code.length > 0 ? result.code : "SUCCESS",
         };
         return res;
     }
@@ -330,8 +348,18 @@ export class TronApi implements BFChainWallet.TRON.API {
         return Number(decode);
     }
 
-    async getTransaction(txId: string): Promise<any> {
-        return await this.tronWeb.trx.getTransaction(txId);
+    /**
+     * Retrieves a TronTransaction or Trc20Transaction from the blockchain using a transaction ID.
+     *
+     * @param {string} txId - The ID of the transaction to retrieve.
+     * @return {Promise<BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction>} - A Promise that resolves to the retrieved transaction object.
+     */
+    async getTrans(
+        txId: string,
+    ): Promise<BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction> {
+        const result: BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction =
+            await this.tronWeb.trx.getTransaction(txId);
+        return result;
     }
 
     /**
@@ -376,36 +404,17 @@ export class TronApi implements BFChainWallet.TRON.API {
             txId,
         );
         if (confirmTrans) {
-            let from: string;
-            let to: string;
-            let amount: string;
-            if (
-                (<BFChainWallet.TRON.Trc20Transaction>confirmTrans).raw_data.contract[0].parameter
-                    .value.data
-            ) {
-                const value = (<BFChainWallet.TRON.Trc20Transaction>confirmTrans).raw_data
-                    .contract[0].parameter.value;
-                const decode = TronHelper.decodeParams(TronHelper.TRANS_TYPES, value.data, true);
-                from = value.owner_address;
-                to = decode[0]?.toString();
-                amount = decode[1]?.toString();
-            } else {
-                const value = (<BFChainWallet.TRON.TronTransaction>confirmTrans).raw_data
-                    .contract[0].parameter.value;
-                from = value.owner_address;
-                to = value.to_address;
-                amount = value.amount.toString();
-            }
+            const transBody = await this.getTransBody(confirmTrans);
             const transInfoRes = await this.getTransInfo(txId);
             if (transInfoRes) {
                 const receipt: BFChainWallet.TRON.TronTransReceipt = {
                     txId: transInfoRes.txId,
                     blockNumber: transInfoRes.blockNumber,
                     blockTimeStamp: transInfoRes.blockTimeStamp,
-                    from,
-                    to,
+                    from: transBody.from,
+                    to: transBody.to,
                     contractAddress: transInfoRes.contractAddress,
-                    amount,
+                    amount: transBody.amount,
                     fee: transInfoRes.fee,
                     netUsage: transInfoRes.netUsage,
                     netFee: transInfoRes.netFee,
@@ -417,6 +426,65 @@ export class TronApi implements BFChainWallet.TRON.API {
         }
 
         return null;
+    }
+
+    /**
+     * Transforms a Tron or TRC20 transaction to its corresponding hexadecimal representation.
+     *
+     * @param {BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction} signTrans - The signed transaction object.
+     * @return {Promise<string>} A promise that resolves to the hexadecimal representation of the transaction.
+     */
+    async transToPbHex(
+        signTrans: BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction,
+    ): Promise<string> {
+        const transactionPb = TronWeb.utils.transaction.txJsonToPb(signTrans);
+        signTrans.signature?.forEach((signature: string) => {
+            transactionPb.addSignature(
+                TronWeb.utils.code.base64EncodeToString(
+                    TronWeb.utils.code.hexStr2byteArray(signature),
+                ),
+            );
+        });
+        return await TronWeb.utils.bytes.byteArray2hexStr(transactionPb.serializeBinary());
+    }
+
+    /**
+     * Gets the transaction body for a given TRON or TRC20 transaction.
+     *
+     * @param {BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction} trans - the transaction object to retrieve the body from
+     * @return {Promise<BFChainWallet.TRON.TronTransBody>} the transaction body object containing the transaction ID, sender address, receiver address, amount, contract address, and signature if available
+     */
+    async getTransBody(
+        trans: BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction,
+    ): Promise<BFChainWallet.TRON.TronTransBody> {
+        let from, to, amount, contractAddress: string;
+        if (
+            (<BFChainWallet.TRON.Trc20Transaction>trans).raw_data.contract[0].parameter.value.data
+        ) {
+            const value = (<BFChainWallet.TRON.Trc20Transaction>trans).raw_data.contract[0]
+                .parameter.value;
+            const decode = TronHelper.decodeParams(TronHelper.TRANS_TYPES, value.data, true);
+            from = value.owner_address;
+            to = decode[0]?.toString();
+            amount = decode[1]?.toString();
+            contractAddress = value.contract_address;
+        } else {
+            const value = (<BFChainWallet.TRON.TronTransaction>trans).raw_data.contract[0].parameter
+                .value;
+            from = value.owner_address;
+            to = value.to_address;
+            amount = value.amount.toString();
+            contractAddress = "";
+        }
+        const res: BFChainWallet.TRON.TronTransBody = {
+            txId: trans.txID,
+            from,
+            to,
+            amount,
+            contractAddress,
+            signature: trans.signature ? trans.signature[0] : "",
+        };
+        return res;
     }
 
     // async getContractBalance(address: string, contractAddress: string) {
