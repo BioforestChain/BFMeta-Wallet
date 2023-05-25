@@ -500,7 +500,7 @@ export class TronApi implements BFChainWallet.TRON.API {
     async getCommonTransHistory(req: BFChainWallet.TRON.TronTransHistoryReq): Promise<any> {
         const host = `${await this.getApiScanUrl()}/v1/accounts/${req.address}/transactions`;
         const result: BFChainWallet.TRON.CommonTransByAddressResult =
-            await this.httpHelper.sendApiGetRequest(host, {}, await this.getApiHeaders());
+            await this.httpHelper.sendApiGetRequest(host, req, await this.getApiHeaders());
         if (result?.success && !result?.error) {
             let resData: BFChainWallet.TRON.CommonTransHistoryResData[] = [];
             result.data?.forEach((a) => {
@@ -548,7 +548,7 @@ export class TronApi implements BFChainWallet.TRON.API {
     async getTrc20TransHistory(req: BFChainWallet.TRON.TronTransHistoryReq): Promise<any> {
         const host = `${await this.getApiScanUrl()}/v1/accounts/${req.address}/transactions/trc20`;
         const result: BFChainWallet.TRON.Trc20TransHistoryResult =
-            await this.httpHelper.sendApiGetRequest(host, {}, await this.getApiHeaders());
+            await this.httpHelper.sendApiGetRequest(host, req, await this.getApiHeaders());
         if (result?.success && !result?.error) {
             let resData: BFChainWallet.TRON.Trc20TransHistoryResData[] = [];
             result.data?.forEach((a) => {
