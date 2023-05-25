@@ -6598,9 +6598,9 @@ trim-newlines@^3.0.0:
   resolved "https://registry.yarnpkg.com/trim-newlines/-/trim-newlines-3.0.1.tgz#260a5d962d8b752425b32f3a7db0dcacd176c144"
   integrity sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==
 
-tronweb@^5.1.0:
+tronweb@^5.2.0:
   version "5.2.0"
-  resolved "https://registry.yarnpkg.com/tronweb/-/tronweb-5.2.0.tgz#3c1b12721176ce9e67d3af9922d7f7c375098142"
+  resolved "https://registry.npmjs.org/tronweb/-/tronweb-5.2.0.tgz#3c1b12721176ce9e67d3af9922d7f7c375098142"
   integrity sha512-DpGqCUjlh48R9+JB96is4Fy3itCzkYGijDhBot3eOYFUruR2KU/BCumhDZ+ofoNfCqHfCWXmw/ClBsG1ygtoxA==
   dependencies:
     "@babel/runtime" "^7.0.0"

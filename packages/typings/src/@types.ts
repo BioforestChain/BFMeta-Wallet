@@ -59,6 +59,12 @@ declare namespace BFChainWallet {
             apiHost: string;
             apiKey: string;
         };
+
+        tronApiScan?: {
+            enable: boolean;
+            apiHost: string;
+            apiKey: string;
+        };
     };
 
     /**以太坊 */

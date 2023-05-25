@@ -43,7 +43,7 @@ const testAccountUsdt =
     // getTrc20Balance();
     // getTRC20Decimal();
     // getCommonTransHistory();
-    // getTrc20TransHistory();
+    getTrc20TransHistory();
     // getAccountBalance();
 
     // createAccount();
@@ -61,7 +61,7 @@ const testAccountUsdt =
     // getContractDecimal();
     // getTrans();
     // getTransInfo();
-    getTransactionReceipt();
+    // getTransactionReceipt();
 
     async function createAccount() {
         const needMnemonic = true;
@@ -228,8 +228,8 @@ const testAccountUsdt =
 
     async function getCommonTransHistory() {
         const req: BFChainWallet.TRON.TronTransHistoryReq = {
-            address: "TZGGgtFmQjMzaeVdWfVHbRuNRSR2rHiCKT",
-            limit: 2,
+            address: address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
+            limit: 10,
             fingerprint: "",
         };
         const result = await tronApi.getCommonTransHistory(req);
@@ -240,11 +240,10 @@ const testAccountUsdt =
 
     async function getTrc20TransHistory() {
         const req: BFChainWallet.TRON.TronTransHistoryReq = {
-            address: "TZGGgtFmQjMzaeVdWfVHbRuNRSR2rHiCKT",
-            contract_address: "TBpfHbf7K8RZP4U4S9mDqGSMCBPBHkCMrf",
-            limit: 2,
-            fingerprint:
-                "T6atjwJE3mif8Kyc1USumd2eYJ6cANGRRiukvTFSqeJP1d9aPKGahfdWdkGsRKhavvYtfjokPkEkvbwPJR9TYkVB8NimJz",
+            address: address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
+            contract_address: contract_usdt,
+            limit: 10,
+            fingerprint: "",
         };
         const result = await tronApi.getTrc20TransHistory(req);
         console.log("======== 获取用户地址合约交易 ========");
