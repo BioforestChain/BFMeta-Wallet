@@ -22,7 +22,6 @@ class DemoLogger {
     await sleep(0);
 
     // latestBlock();
-    // getBlock();
     // getGasPrice();
     // getBalance();
     // getContractBalanceAndDecimal();
@@ -107,14 +106,6 @@ class DemoLogger {
         const lastBlock = await bscApi.getLastBlock();
         console.log("========= 获取区块信息 =========");
         console.log(lastBlock);
-        console.log("====================================");
-    }
-
-    async function getBlock() {
-        const num = 24607405;
-        const block = await bscApi.getBlock(num);
-        console.log("========= 获取指定区块信息 =========");
-        console.log(block);
         console.log("====================================");
     }
 

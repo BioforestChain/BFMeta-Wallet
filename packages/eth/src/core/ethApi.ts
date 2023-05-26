@@ -8,7 +8,6 @@ import {
 } from "@bfmeta/wallet-helpers";
 import Web3 from "web3";
 import type * as Web3_Eth from "web3-eth";
-import type * as Web3_Utils from "web3-utils";
 import { ETH_ERC20_ABI } from "./constants";
 import * as ethereumjs from "ethereumjs-tx";
 import type { AbiItem } from "web3-utils";
@@ -56,10 +55,8 @@ export class EthApi implements BFChainWallet.ETH.API {
         req: BFChainWallet.ETH.TransHistoryReq,
     ): Promise<BFChainWallet.ETH.NormalTransHistoryRes> {
         const host = `${await this.getApiScanUrl()}&module=account&action=txlist`;
-        const normalResult: BFChainWallet.ETH.NormalTransHistoryResult = await this.httpHelper.sendGetRequest(
-            host,
-            req,
-        );
+        const normalResult: BFChainWallet.ETH.NormalTransHistoryResult =
+            await this.httpHelper.sendGetRequest(host, req);
         let result: BFChainWallet.ETH.NormalTransRes[] = [];
         if (normalResult?.status === "1") {
             normalResult.result?.forEach((a) => {
@@ -91,10 +88,8 @@ export class EthApi implements BFChainWallet.ETH.API {
         req: BFChainWallet.ETH.TransHistoryReq,
     ): Promise<BFChainWallet.ETH.Erc20TransHistoryRes> {
         const host = `${await this.getApiScanUrl()}&module=account&action=tokentx`;
-        const erc20Result: BFChainWallet.ETH.Erc20TransHistoryResult = await this.httpHelper.sendGetRequest(
-            host,
-            req,
-        );
+        const erc20Result: BFChainWallet.ETH.Erc20TransHistoryResult =
+            await this.httpHelper.sendGetRequest(host, req);
         let result: BFChainWallet.ETH.Erc20TransRes[] = [];
         if (erc20Result?.status === "1") {
             result = erc20Result?.result?.map((a) => {
@@ -127,10 +122,6 @@ export class EthApi implements BFChainWallet.ETH.API {
 
     async getLastBlock(): Promise<Web3_Eth.BlockTransactionString> {
         return await this.web3.eth.getBlock("latest");
-    }
-
-    async getBlock(num: number): Promise<Web3_Eth.BlockTransactionString> {
-        return await this.web3.eth.getBlock(num);
     }
 
     async getChainId(): Promise<number> {
@@ -206,19 +197,6 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     async sendSignedTransaction(raw: string): Promise<string> {
-        // 返回的交易收据信息，需要交易确定完成才会返回，会造成接口响应时间过长
-        // const txReceipt = await this.web3.eth.sendSignedTransaction(raw, (err, txHash) => {
-        //     if (err) {
-        //         throw new Error(err.message);
-        //     }
-        //     console.log("txHash : %s", txHash);
-        // });
-        // if (txReceipt && txReceipt.transactionHash) {
-        //     return txReceipt;
-        // } else {
-        //     throw new Error("sendSignedTransaction failed, " + txReceipt);
-        // }
-
         return new Promise((resolve, reject) => {
             this.web3.eth.sendSignedTransaction(raw, (err, txHash) => {
                 if (err) {
@@ -235,22 +213,13 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     async getTransactionReceipt(txHash: string) {
-        const transactionReceipt: Web3_Eth.TransactionReceipt = await this.web3.eth.getTransactionReceipt(
-            txHash,
-        );
+        const transactionReceipt: Web3_Eth.TransactionReceipt =
+            await this.web3.eth.getTransactionReceipt(txHash);
         return transactionReceipt;
     }
 
     async getTransactionCount(address: string) {
         return await this.web3.eth.getTransactionCount(address);
-    }
-
-    async getNodeInfo() {
-        return await this.web3.eth.getNodeInfo();
-    }
-
-    async getWeb3Util(): Promise<Web3_Utils.Utils> {
-        return this.web3.utils;
     }
 
     private async getContract(address: string, contractAddress: string) {

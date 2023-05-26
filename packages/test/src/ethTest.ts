@@ -21,7 +21,6 @@ class DemoLogger {
 
     await sleep(0);
     // lastBlock();
-    // getBlock();
     // getGasPrice();
     // getBalance();
     // getERC20Balance();
@@ -32,7 +31,6 @@ class DemoLogger {
     // sendTransaction();
     // getTransaction();
     // getTransactionReceipt();
-    // sendSignedTransaction();
 
     // test();
 
@@ -51,14 +49,6 @@ class DemoLogger {
         const lastBlock = await ethApi.getLastBlock();
         console.log("========= 获取最新区块信息 =========");
         console.log(lastBlock);
-        console.log("====================================");
-    }
-
-    async function getBlock() {
-        const num = 6;
-        const block = await ethApi.getBlock(num);
-        console.log("========= 获取指定区块信息 =========");
-        console.log(block);
         console.log("====================================");
     }
 
@@ -206,50 +196,12 @@ class DemoLogger {
 
     async function test() {
         const chainId = await ethApi.getChainId();
-        const nodeInfo = await ethApi.getNodeInfo();
         const transCount = await ethApi.getTransactionCount(
             "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48",
         );
         console.log("========= 以太坊的一些接口测试 =========");
         console.log("ChainId : %s", chainId);
-        console.log("nodeInfo : %s", nodeInfo);
         console.log("transCount : %s", transCount);
         console.log("====================================");
-    }
-
-    async function sendSignedTransaction2() {
-        const address1 = "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48";
-        const address2 = "0x551B1AE3AA1d19e7976F5Fd8D69B412D595eE9C4";
-        const privateKey1 = "7d672dd3c7e63a856e11a114464448f3f320e52d22e5268c23e485d11a25119a";
-        const privateKey2 = "addf83b399e8432070963bb810e2417007f0bd6ba3ec2174fdc952a4215f1b82";
-        // 获取交易数量
-        const txCount = await ethApi.getTransactionCount(address1);
-        console.log("txCount : %s", txCount);
-
-        // 准备交易数据
-        const util = await ethApi.getWeb3Util();
-        const txObjcet = {
-            // nonce存在的问题
-            // 如果是同一个地址发起两次交易，它的第一笔交易如果是还处于 pending 状态时，发起第二笔交易时再获取 txCount 是没有变化的，交易失败
-            // 还是上面的情况，如果自行给 txCount 做 +1 的操作理论上是可行的，但是必须自己本地管理每个用户的 txCount，不然就会出现顺序问题
-            // 如果自己不做 txCount 自增操作，还可以通过第二部交易增加 gasPrice 手续费的方式，可以进行交易，但是会直接覆盖第一笔交易记录
-            nonce: util.toHex(txCount),
-            from: address1,
-            to: address2,
-            value: util.toHex(util.toWei("0.1", "ether")),
-            gasLimit: util.toHex(2100000),
-            gasPrice: util.toHex(util.toWei("100", "gwei")),
-        };
-
-        const TX = ethereumjs.Transaction;
-        const tx = new TX(txObjcet, { chain: "goerli", hardfork: "petersburg" });
-        tx.sign(Buffer.from(privateKey1, "hex"));
-
-        const serializedTx = tx.serialize();
-        const raw = "0x" + serializedTx.toString("hex");
-        console.log("raw : %s", raw);
-
-        const transReceipt = await ethApi.sendSignedTransaction(raw);
-        console.log("txHash : %s", transReceipt);
     }
 })();

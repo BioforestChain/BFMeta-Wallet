@@ -246,12 +246,6 @@ declare namespace BFChainWallet {
             getLastBlock(): Promise<any>;
 
             /**
-             * 以太坊指定区块高度，获取区块信息
-             * @param num 区块高度
-             */
-            getBlock(num: number): Promise<any>;
-
-            /**
              * 以太坊获取当前链ID
              */
             getChainId(): Promise<number>;

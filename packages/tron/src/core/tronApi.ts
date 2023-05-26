@@ -556,7 +556,7 @@ export class TronApi implements BFChainWallet.TRON.API {
                     const b: BFChainWallet.TRON.Trc20TransHistoryResData = {
                         txID: a.transaction_id,
                         from: a.from,
-                        to: a.from,
+                        to: a.to,
                         value: a.value,
                         token_symbol: a.token_info?.symbol,
                         token_address: a.token_info?.address,
