@@ -1,8 +1,7 @@
 import { ABISupportFunctionEnum, WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
-import { ETH_TEST_USTD_ABI } from "@bfmeta/wallet-eth";
+import { ETH_TEST_USDT_ABI } from "@bfmeta/wallet-eth";
 import { ModuleStroge, Injectable, sleep } from "@bnqkl/util-node";
-import * as ethereumjs from "ethereumjs-tx";
 const config: BFChainWallet.Config = require(`../../assets/config.json`);
 
 @Injectable(LoggerSymbol)
@@ -196,9 +195,7 @@ class DemoLogger {
 
     async function test() {
         const chainId = await ethApi.getChainId();
-        const transCount = await ethApi.getTransactionCount(
-            "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48",
-        );
+        const transCount = await ethApi.getTransactionCount("0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48");
         console.log("========= 以太坊的一些接口测试 =========");
         console.log("ChainId : %s", chainId);
         console.log("transCount : %s", transCount);

@@ -1,8 +1,12 @@
 import { utils } from "ethers";
 export class TronHelper {
-    private static ADDRESS_HEX_PREFIX_REGEX = /^(41)/;
+    static ADDRESS_HEX_PREFIX_REGEX = /^(41)/;
 
-    private static ADDRESS_HEX_PREFIX = "41";
+    static ADDRESS_HEX_PREFIX = "41";
+
+    static HEX_PREFIX_REGEX = /^(0x)/;
+
+    static HEX_PREFIX = "0x";
 
     static UINT_TYPES = ["uint256"];
 
@@ -22,12 +26,12 @@ export class TronHelper {
         const types = input.map(({ type }) => type);
         const values = input.map(({ type, value }) => {
             if (type === "address" && typeof value === "string") {
-                value = value.replace(TronHelper.ADDRESS_HEX_PREFIX_REGEX, "0x");
+                value = value.replace(TronHelper.ADDRESS_HEX_PREFIX_REGEX, TronHelper.HEX_PREFIX);
             }
             return value;
         });
 
-        const parameter = abiCoder.encode(types, values).replace(/^0x/, "");
+        const parameter = abiCoder.encode(types, values).replace(TronHelper.HEX_PREFIX_REGEX, "");
         return parameter;
     }
 
@@ -39,11 +43,11 @@ export class TronHelper {
      * @returns decode
      */
     static decodeParams(types: string[], output: string, ignoreMethodHash: boolean) {
-        if (ignoreMethodHash && output.replace(/^0x/, "").length % 64 === 8) {
-            output = "0x" + output.replace(/^0x/, "").substring(8);
+        if (ignoreMethodHash && output.replace(TronHelper.HEX_PREFIX_REGEX, "").length % 64 === 8) {
+            output = TronHelper.HEX_PREFIX + output.replace(TronHelper.HEX_PREFIX_REGEX, "").substring(8);
         }
 
-        if (output.replace(/^0x/, "").length % 64 !== 0) {
+        if (output.replace(TronHelper.HEX_PREFIX_REGEX, "").length % 64 !== 0) {
             throw new Error("the Encode string is not valed, Its length must be a multiple of 64.");
         }
         const AbiCoder = utils.AbiCoder;

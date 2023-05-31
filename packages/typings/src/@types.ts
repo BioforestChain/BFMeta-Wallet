@@ -278,10 +278,7 @@ declare namespace BFChainWallet {
              * @param address 用户地址
              * @param contractAddress 合约地址
              */
-            getContractBalanceAndDecimal(
-                address: string,
-                contractAddress: string,
-            ): Promise<Contract20Balance>;
+            getContractBalanceAndDecimal(address: string, contractAddress: string): Promise<Contract20Balance>;
 
             /**
              * 以太坊获取指定用户地址交易数(已完成的交易)
@@ -302,12 +299,7 @@ declare namespace BFChainWallet {
              * @param amount 交易金额
              * @param contractAddress 合约地址
              */
-            getContractTransData(
-                from: string,
-                to: string,
-                amount: string,
-                contractAddress: string,
-            ): Promise<string>;
+            getContractTransData(from: string, to: string, amount: string, contractAddress: string): Promise<string>;
 
             /**
              * 以太坊广播签名后的交易数据
@@ -477,8 +469,7 @@ declare namespace BFChainWallet {
             input: string;
             confirmations: string;
         };
-        interface API
-            extends Omit<BFChainWallet.ETH.API, "getNormalTransHistory" | "getErc20TransHistory"> {
+        interface API extends Omit<BFChainWallet.ETH.API, "getNormalTransHistory" | "getErc20TransHistory"> {
             getNormalTransHistory(req: BscTransHistoryReq): Promise<NormalTransHistoryRes>;
             getBep20TransHistory(req: BscTransHistoryReq): Promise<Bep20TransHistoryRes>;
         }
@@ -743,7 +734,7 @@ declare namespace BFChainWallet {
             // 是否成功；ture 成功， false失败
             success: boolean;
             // 交易历史集合
-            data?: CommonTransHistoryResultData[];
+            data: CommonTransHistoryResultData[];
             // 额外参数
             meta?: {
                 // 时间戳
@@ -779,7 +770,7 @@ declare namespace BFChainWallet {
             // 是否成功；ture 成功， false失败
             success: boolean;
             // 交易历史集合
-            data?: Trc20TransHistoryResultData[];
+            data: Trc20TransHistoryResultData[];
             // 额外参数
             meta?: {
                 // 时间戳
@@ -1339,9 +1330,7 @@ declare namespace BFChainWallet {
              * 使用私钥签名交易(POST)，返回签名后的Transaction
              * @param req req#GetTransactionSignReq
              */
-            getTransactionSign(
-                req: GetTransactionSignReq,
-            ): Promise<TronTransation | TRC20Transation>;
+            getTransactionSign(req: GetTransactionSignReq): Promise<TronTransation | TRC20Transation>;
             /**
              * 交易广播(POST)
              * @param transactionWithSign 签名后的交易信息
@@ -1367,9 +1356,7 @@ declare namespace BFChainWallet {
              * 调用智能合约，返回 TRC20Transaction(转账时需要签名后广播完成交易)
              * @param contractReq TriggerSmartContractReq
              */
-            triggerSmartContract(
-                contractReq: TriggerSmartContractReq,
-            ): Promise<TriggerSmartContractRes>;
+            triggerSmartContract(contractReq: TriggerSmartContractReq): Promise<TriggerSmartContractRes>;
 
             /**
              * 查询指定地址的普通交易历史
@@ -1500,14 +1487,8 @@ declare namespace BFChainWallet {
             getBlockAverageFee(): Promise<COMMON_RESPONSE<GetBlockAverageFeeResp>>;
             getAccountAsset(
                 address: string,
-            ): Promise<
-                BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAccountAssetResp>
-            >;
-            getAssets(
-                page: number,
-                pageSize: number,
-                assetType?: string,
-            ): Promise<COMMON_RESPONSE<GetAssetsResp>>;
+            ): Promise<BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAccountAssetResp>>;
+            getAssets(page: number, pageSize: number, assetType?: string): Promise<COMMON_RESPONSE<GetAssetsResp>>;
             getAssetDetails(assetType: string): Promise<COMMON_RESPONSE<GetAssetDetailsResp>>;
         }
 
