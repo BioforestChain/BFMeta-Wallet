@@ -75,29 +75,29 @@ export class BscApi implements BFChainWallet.BSC.API {
         req: BFChainWallet.BSC.BscTransHistoryReq,
     ): Promise<BFChainWallet.BSC.NormalTransHistoryRes> {
         const host = `${await this.getApiScanUrl()}&module=account&action=txlist`;
-        const normalResult: BFChainWallet.BSC.NormalTransHistoryResult =
-            await this.httpHelper.sendGetRequest(host, req);
-        let result: BFChainWallet.BSC.NormalTransRes[] = [];
-        if (normalResult?.status === "1") {
-            normalResult.result?.forEach((a) => {
-                // 合约交易判断过滤
-                if (!a.contractAddress && !a.functionName && a.value !== "0") {
-                    const b: BFChainWallet.BSC.NormalTransRes = {
-                        blockNumber: a.blockNumber,
-                        timeStamp: a.timeStamp,
-                        hash: a.hash,
-                        from: a.from,
-                        to: a.to,
-                        value: a.value,
-                        gas: a.gas,
-                        gasPrice: a.gasPrice,
-                        gasUsed: a.gasUsed,
-                        // txreceipt_status: a.txreceipt_status,
-                    };
-                    result.push(b);
-                }
-            });
-        }
+        const normalResult: BFChainWallet.BSC.NormalTransHistoryResult = await this.httpHelper.sendGetRequest(
+            host,
+            req,
+        );
+        const result: BFChainWallet.BSC.NormalTransRes[] =
+            normalResult?.status === "1"
+                ? normalResult.result
+                      ?.filter((item) => !item.contractAddress && !item.functionName && item.value !== "0")
+                      .map(
+                          ({ blockNumber, timeStamp, hash, from, to, value, gas, gasPrice, gasUsed }) =>
+                              ({
+                                  blockNumber,
+                                  timeStamp,
+                                  hash,
+                                  from,
+                                  to,
+                                  value,
+                                  gas,
+                                  gasPrice,
+                                  gasUsed,
+                              } as BFChainWallet.BSC.NormalTransRes),
+                      )
+                : [];
         const res: BFChainWallet.BSC.NormalTransHistoryRes = {
             status: normalResult?.status,
             message: normalResult?.message,
@@ -110,30 +110,43 @@ export class BscApi implements BFChainWallet.BSC.API {
         req: BFChainWallet.BSC.BscTransHistoryReq,
     ): Promise<BFChainWallet.BSC.Bep20TransHistoryRes> {
         const host = `${await this.getApiScanUrl()}&module=account&action=tokentx`;
-        const bep20Result: BFChainWallet.BSC.Bep20TransHistoryResult =
-            await this.httpHelper.sendGetRequest(host, req);
-        let result: BFChainWallet.BSC.Bep20TransRes[] = [];
-        // status = 1 时为成功状态
-        if (bep20Result?.status === "1") {
-            result = bep20Result?.result?.map((a) => {
-                const b: BFChainWallet.BSC.Bep20TransRes = {
-                    blockNumber: a.blockNumber,
-                    timeStamp: a.timeStamp,
-                    hash: a.hash,
-                    from: a.from,
-                    contractAddress: a.contractAddress,
-                    to: a.to,
-                    value: a.value,
-                    tokenName: a.tokenName,
-                    tokenSymbol: a.tokenSymbol,
-                    tokenDecimal: a.tokenDecimal,
-                    gas: a.gas,
-                    gasPrice: a.gasPrice,
-                    gasUsed: a.gasUsed,
-                };
-                return b;
-            });
-        }
+        const bep20Result: BFChainWallet.BSC.Bep20TransHistoryResult = await this.httpHelper.sendGetRequest(host, req);
+        const result: BFChainWallet.BSC.Bep20TransRes[] =
+            // status = 1 时为成功状态
+            bep20Result?.status === "1"
+                ? bep20Result?.result?.map((item) => {
+                      const {
+                          blockNumber,
+                          timeStamp,
+                          hash,
+                          from,
+                          to,
+                          value,
+                          contractAddress,
+                          tokenName,
+                          tokenSymbol,
+                          tokenDecimal,
+                          gas,
+                          gasPrice,
+                          gasUsed,
+                      } = item;
+                      return {
+                          blockNumber,
+                          timeStamp,
+                          hash,
+                          from,
+                          to,
+                          value,
+                          contractAddress,
+                          tokenName,
+                          tokenSymbol,
+                          tokenDecimal,
+                          gas,
+                          gasPrice,
+                          gasUsed,
+                      } as BFChainWallet.BSC.Bep20TransRes;
+                  })
+                : [];
 
         const res: BFChainWallet.BSC.Bep20TransHistoryRes = {
             status: bep20Result?.status,
@@ -156,8 +169,7 @@ export class BscApi implements BFChainWallet.BSC.API {
     }
 
     async getTokenInfo(contractAddress: string): Promise<any> {
-        const abi: any = BSC_BEP20_ABI;
-        const contract = new this.web3.eth.Contract(abi, contractAddress);
+        const contract = new this.web3.eth.Contract(BSC_BEP20_ABI, contractAddress);
         const name = await contract.methods.name().call();
         const symbol = await contract.methods.symbol().call();
         const decimals = await contract.methods.decimals().call();
@@ -201,33 +213,20 @@ export class BscApi implements BFChainWallet.BSC.API {
         return { balance, decimal };
     }
 
-    async getTransactionCount(address: string) {
-        return await this.web3.eth.getTransactionCount(address);
-    }
-
     async signTransaction(req: BFChainWallet.ETH.SignTransactionReq): Promise<string> {
-        const signedTransaction = await this.web3.eth.accounts.signTransaction(
-            req.trans,
-            req.privateKey,
-            (err, signTransaction) => {
-                if (err) {
-                    // 抛出错误信息
-                    throw new Error(err.message);
-                }
-            },
-        );
+        const signedTransaction = await this.web3.eth.accounts.signTransaction(req.trans, req.privateKey, (err) => {
+            if (err) {
+                // 抛出错误信息
+                throw new Error(err.message);
+            }
+        });
         if (signedTransaction && signedTransaction.rawTransaction) {
             return signedTransaction.rawTransaction;
         } else {
             throw new Error("signTransaction failed, " + signedTransaction);
         }
     }
-    async getContractTransData(
-        from: string,
-        to: string,
-        amount: string,
-        contractAddress: string,
-    ): Promise<string> {
+    async getContractTransData(from: string, to: string, amount: string, contractAddress: string): Promise<string> {
         const contract = await this.getContract(from, contractAddress);
         return await contract.methods.transfer(to, amount).encodeABI();
     }
@@ -243,15 +242,18 @@ export class BscApi implements BFChainWallet.BSC.API {
         });
     }
 
-    async getTransaction(txHash: string) {
-        const transaction: Web3_Eth.Transaction = await this.web3.eth.getTransaction(txHash);
-        return transaction;
+    async getTrans(txHash: string) {
+        const trans: Web3_Eth.Transaction = await this.web3.eth.getTransaction(txHash);
+        return trans;
     }
 
-    async getTransactionReceipt(txHash: string) {
-        const transactionReceipt: Web3_Eth.TransactionReceipt =
-            await this.web3.eth.getTransactionReceipt(txHash);
-        return transactionReceipt;
+    async getTransReceipt(txHash: string) {
+        const receipt: Web3_Eth.TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
+        return receipt;
+    }
+
+    async getTransCount(address: string) {
+        return await this.web3.eth.getTransactionCount(address);
     }
 
     private async getContract(address: string, contractAddress: string) {
@@ -259,7 +261,8 @@ export class BscApi implements BFChainWallet.BSC.API {
     }
 
     private async generateContract(abi: any, contractAddress: string, from: string) {
-        return new this.web3.eth.Contract(abi, contractAddress, { from: from });
+        const contract = new this.web3.eth.Contract(abi, contractAddress, { from: from });
+        return contract;
     }
 
     private async getApiUrl() {
@@ -271,24 +274,12 @@ export class BscApi implements BFChainWallet.BSC.API {
     }
 
     private async getApiScanUrl() {
-        if (this.bscApiScanConfig?.enable) {
-            return `${this.bscApiScanConfig.apiHost}/api?apikey=${this.bscApiScanConfig.apiKey}`;
-        }
-        return null;
+        return `${this.bscApiScanConfig?.apiHost}/api?apikey=${this.bscApiScanConfig?.apiKey}`;
     }
 
     private async getPeerUrl() {
-        if (this.tatumConfig.enable) {
-            return `${this.tatumConfig.host}/BSC/${this.tatumConfig.apiKey}`;
-        } else {
-            const p = await this.peerListHelper.getEnableRandom();
-            let url = `http://${p.ip}`;
-            if (p.port) {
-                url += `:${p.port}`;
-            }
-
-            return url;
-        }
+        const p = await this.peerListHelper.getEnableRandom();
+        return `http://${p.ip}:${p.port}`;
     }
 
     getTransactionFromSignature(signature: string) {

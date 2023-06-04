@@ -22,40 +22,33 @@ class DemoLogger {
     // lastBlock();
     // getGasPrice();
     // getBalance();
-    // getERC20Balance();
-    // getERC20BalanceAndDecimal();
+    getContractBalanceAndDecimal();
     // commonTrans();
-    ERC20Trans();
+    // ERC20Trans();
 
     // sendTransaction();
-    // getTransaction();
-    // getTransactionReceipt();
-
-    // test();
+    // getTrans();
+    // getTransReceipt();
 
     // getAccountBalance();
 
     async function getAccountBalance() {
         const address = "0x5718D9C95D15a766E9DdE6579D7B93Eaa88a26b8";
-        // const address = "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48";
         const result = await ethApi.getAccountBalance(address);
         console.log("========= 获取账户余额信息 =========");
         console.log(result);
-        console.log("====================================");
     }
 
     async function lastBlock() {
         const lastBlock = await ethApi.getLastBlock();
         console.log("========= 获取最新区块信息 =========");
         console.log(lastBlock);
-        console.log("====================================");
     }
 
     async function getBaseGas() {
         const baseGas = await ethApi.getBaseGas();
         console.log("========= 获取 baseGas =========");
         console.log(baseGas);
-        console.log("====================================");
         return baseGas;
     }
 
@@ -63,7 +56,6 @@ class DemoLogger {
         const gasPrice = await ethApi.getGasPrice();
         console.log("========= 获取 gasPrice =========");
         console.log(gasPrice);
-        console.log("====================================");
     }
 
     async function getBalance() {
@@ -73,19 +65,14 @@ class DemoLogger {
         const fromWei = await ethApi.fromWei(balance);
         console.log("========= 获取账户 balance =========");
         console.log("balance : %s, fromWei : %s", balance, fromWei);
-        console.log("====================================");
     }
 
-    async function getERC20BalanceAndDecimal() {
+    async function getContractBalanceAndDecimal() {
         const address = "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48";
-        // const address = "0x551b1ae3aa1d19e7976f5fd8d69b412d595ee9c4";
-        // const contractAddress = "0x5AB6F31B29Fc2021436B3Be57dE83Ead3286fdc7";
-        // const contractAddress = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB";
         const contractAddress = "0x466595626333c55fa7d7Ad6265D46bA5fDbBDd99";
         const erc20Balance = await ethApi.getContractBalanceAndDecimal(address, contractAddress);
         console.log("========= 获取账户 ERC20BalanceAndDecimal =========");
         console.log(erc20Balance);
-        console.log("====================================");
     }
 
     async function commonTrans() {
@@ -95,7 +82,7 @@ class DemoLogger {
         // const privateKey = "7d672dd3c7e63a856e11a114464448f3f320e52d22e5268c23e485d11a25119a";
         const privateKey = "addf83b399e8432070963bb810e2417007f0bd6ba3ec2174fdc952a4215f1b82";
 
-        const txCount = await ethApi.getTransactionCount(from);
+        const txCount = await ethApi.getTransCount(from);
         console.log("txCount : %s", txCount);
 
         const generalGas = (await getBaseGas()).generalGas;
@@ -116,7 +103,6 @@ class DemoLogger {
         const rawTransaction = await ethApi.signTransaction(signTx);
         const txHash = await ethApi.sendSignedTransaction(rawTransaction);
         console.log("txHash : %s", txHash);
-        console.log("====================================");
     }
 
     async function ERC20Trans() {
@@ -133,7 +119,7 @@ class DemoLogger {
         const contractAddress_link = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB";
         // const contractAddress_usdc = "0x466595626333c55fa7d7Ad6265D46bA5fDbBDd99";
 
-        const txCount = await ethApi.getTransactionCount(from);
+        const txCount = await ethApi.getTransCount(from);
         console.log("txCount : %s", txCount);
 
         const gasPrice = await ethApi.getGasPrice();
@@ -163,7 +149,7 @@ class DemoLogger {
         console.log("rawTransaction : %s", rawTransaction);
         // const txHash = await ethApi.sendSignedTransaction(rawTransaction);
         // console.log("txHash : %s", txHash);
-        const tx = ethApi.getTransactionFromSignature(rawTransaction);
+        const tx = await ethApi.getTransactionFromSignature(rawTransaction);
         console.log(tx);
         console.log(tx.to.toString("hex"));
         console.log(tx.value.toString("hex"));
@@ -174,31 +160,19 @@ class DemoLogger {
             ABISupportFunctionEnum.transfer,
         );
         console.log(result);
-        console.log("====================================");
     }
 
-    async function getTransaction() {
+    async function getTrans() {
         const txHash = "0xd588737afc4e92ab85dc35dfc34424abbf605b8941745e978d3b72e2176da719";
-        const trans = await ethApi.getTransaction(txHash);
+        const trans = await ethApi.getTrans(txHash);
         console.log("========= 查询交易信息 =========");
         console.log("trans : %s", trans);
-        console.log("====================================");
     }
 
-    async function getTransactionReceipt() {
+    async function getTransReceipt() {
         const txHash = "0xd588737afc4e92ab85dc35dfc34424abbf605b8941745e978d3b72e2176da719";
-        const transReceipt = await ethApi.getTransactionReceipt(txHash);
+        const transReceipt = await ethApi.getTransReceipt(txHash);
         console.log("========= 查询交易收据 =========");
         console.log("transReceipt : %s", transReceipt);
-        console.log("====================================");
-    }
-
-    async function test() {
-        const chainId = await ethApi.getChainId();
-        const transCount = await ethApi.getTransactionCount("0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48");
-        console.log("========= 以太坊的一些接口测试 =========");
-        console.log("ChainId : %s", chainId);
-        console.log("transCount : %s", transCount);
-        console.log("====================================");
     }
 })();

@@ -27,18 +27,16 @@ class DemoLogger {
     // getContractBalanceAndDecimal();
 
     // commonTrans();
-    BEP20Trans();
+    // BEP20Trans();
 
-    // getTransaction();
-
-    // getTransactionReceipt();
+    // getTrans();
+    // getTransReceipt();
 
     // getNormalTransHistory();
-    // getBep20TransHistory();
+    getBep20TransHistory();
 
+    // getAccountBalance();
     // getTokenInfo();
-    getAccountBalance();
-
     // signFunction();
 
     async function signFunction() {
@@ -57,7 +55,6 @@ class DemoLogger {
         const result = await bscApi.getAccountBalance(address);
         console.log("========= 获取账户余额信息 =========");
         console.log(result);
-        console.log("====================================");
     }
 
     async function getTokenInfo() {
@@ -67,7 +64,6 @@ class DemoLogger {
         const result = await bscApi.getTokenInfo(contractAddress);
         console.log("========= 获取合约基础信息 =========");
         console.log(result);
-        console.log("====================================");
     }
 
     async function getNormalTransHistory() {
@@ -76,20 +72,18 @@ class DemoLogger {
             startblock: 0,
             endblock: 999999999,
             page: 1,
-            offset: 5,
+            offset: 20,
             sort: "desc",
         };
         const result = await bscApi.getNormalTransHistory(req);
         console.log("========= 获取普通交易历史信息 =========");
         console.log(result);
-        console.log("====================================");
     }
 
     async function getBep20TransHistory() {
         const req: BFChainWallet.BSC.BscTransHistoryReq = {
             address: "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48",
-            contractaddress: "string",
-            // contractaddress: "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
+            contractaddress: "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
             startblock: 0,
             endblock: 999999999,
             page: 1,
@@ -99,28 +93,24 @@ class DemoLogger {
         const result = await bscApi.getBep20TransHistory(req);
         console.log("========= 获取Bep20交易历史信息 =========");
         console.log(result);
-        console.log("====================================");
     }
 
     async function latestBlock() {
         const lastBlock = await bscApi.getLastBlock();
         console.log("========= 获取区块信息 =========");
         console.log(lastBlock);
-        console.log("====================================");
     }
 
     async function getGasPrice() {
         const gasPrice = await bscApi.getGasPrice();
         console.log("========= 获取 gasPrice =========");
         console.log(gasPrice);
-        console.log("====================================");
     }
 
     async function getBaseGas() {
         const baseGas = await bscApi.getBaseGas();
         console.log("========= 获取 baseGas =========");
         console.log(baseGas);
-        console.log("====================================");
         return baseGas;
     }
 
@@ -131,7 +121,6 @@ class DemoLogger {
         const fromWei = await bscApi.fromWei(balance);
         console.log("========= 获取账户 balance =========");
         console.log("balance : %s, fromWei : %s", balance, fromWei);
-        console.log("====================================");
     }
 
     async function getContractBalanceAndDecimal() {
@@ -139,9 +128,8 @@ class DemoLogger {
         // const address = "0x551b1ae3aa1d19e7976f5fd8d69b412d595ee9c4";
         const contracAddress = "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd";
         const erc20Balance = await bscApi.getContractBalanceAndDecimal(address, contracAddress);
-        console.log("========= 获取账户 BEP20BalanceAndDecimal =========");
+        console.log("========= 获取账户 ContractBalanceAndDecimal =========");
         console.log(erc20Balance);
-        console.log("====================================");
     }
 
     async function commonTrans() {
@@ -151,7 +139,7 @@ class DemoLogger {
         const privateKey = "7d672dd3c7e63a856e11a114464448f3f320e52d22e5268c23e485d11a25119a";
         // const privateKey = "addf83b399e8432070963bb810e2417007f0bd6ba3ec2174fdc952a4215f1b82";
 
-        const txCount = await bscApi.getTransactionCount(from);
+        const txCount = await bscApi.getTransCount(from);
         console.log("txCount : %s", txCount);
 
         const generalGas = (await getBaseGas()).generalGas;
@@ -172,7 +160,6 @@ class DemoLogger {
         const rawTransaction = await bscApi.signTransaction(signTx);
         const txHash = await bscApi.sendSignedTransaction(rawTransaction);
         console.log("txHash : %s", txHash);
-        console.log("====================================");
     }
 
     async function BEP20Trans() {
@@ -184,7 +171,7 @@ class DemoLogger {
         // const contractAddress = "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd";
         const contractAddress = "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06";
 
-        const txCount = await bscApi.getTransactionCount(from);
+        const txCount = await bscApi.getTransCount(from);
         console.log("txCount : %s", txCount);
 
         const amount = "10000000";
@@ -228,25 +215,19 @@ class DemoLogger {
             ABISupportFunctionEnum.transfer,
         );
         console.log(result);
-        console.log("====================================");
     }
 
-    async function getTransaction() {
-        // const txHash = "0xa06723e4ceb7df6c4312f4a0a064e815a039a447b56d17dfba1fcbb511145845";
+    async function getTrans() {
         const txHash = "0x47f2fef80261aedf5f009c78119acb14f535794d15f5f065f6c421beea057d7f";
-        const trans = await bscApi.getTransaction(txHash);
+        const trans = await bscApi.getTrans(txHash);
         console.log("========= 查询交易信息 =========");
         console.log(trans);
-        console.log("====================================");
     }
 
-    async function getTransactionReceipt() {
-        // const txHash = "0xa06723e4ceb7df6c4312f4a0a064e815a039a447b56d17dfba1fcbb511145845";
+    async function getTransReceipt() {
         const txHash = "0x47f2fef80261aedf5f009c78119acb14f535794d15f5f065f6c421beea057d7f";
-
-        const transReceipt = await bscApi.getTransactionReceipt(txHash);
+        const transReceipt = await bscApi.getTransReceipt(txHash);
         console.log("========= 查询交易收据 =========");
         console.log(transReceipt);
-        console.log("====================================");
     }
 })();

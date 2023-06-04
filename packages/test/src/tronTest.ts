@@ -32,15 +32,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     const contract_usdt = "TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj";
 
     // transaction();
-    // getTransactionById();
-    // getTransactionInfoById();
-    // parameterEncode();
-    // parameterDecode();
     // trc20Transaction();
-    // parameterEncode2();
-    // parameterDecode2();
-    // getTrc20Balance();
-    // getTRC20Decimal();
     // getCommonTransHistory();
     // getTrc20TransHistory();
     // getAccountBalance();
@@ -254,7 +246,6 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
                 owner_address: addressHex,
                 to_address: addressUsdtHex,
                 amount: 2000000,
-                extra_data: Buffer.from("这个是一个测试备注", "utf-8").toString("hex"),
             };
             // 创建交易
             const transactionFirst: BFChainWallet.TRON.TronTransation = await tronApi.createTransaction(txBody);
@@ -283,14 +274,6 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
         }
     }
 
-    async function getTransactionById() {
-        const value = "2169f832dabbed1148d414bcf7883582d9d65010d4e5c1f802cbf13f61ba7a0d";
-        const transactionById = await tronApi.getTransactionById(value);
-        console.log("============ 交易查询 ============");
-        console.log(JSON.stringify(transactionById));
-        console.log("====================================");
-    }
-
     async function getTransactionInfoById() {
         const value = "48d1d874f0c4a49c65bba6d9235ba277d5e94b886a28f88f5f5b33db7898dbe7";
         const transactionInfo = await tronApi.getTransactionInfoById(value);
@@ -298,28 +281,6 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
         console.log(transactionInfo);
         console.log("====================================");
     }
-
-    // async function parameterEncode() {
-    //     const input = [
-    //         { type: "address", value: "41e82af0e99c9ed76b3100a643126948c03d27ef8e" },
-    //         { type: "uint256", value: "100" },
-    //     ];
-
-    //     const parameterEncode = TronHelper.encodeParams(input);
-    //     console.log("============ 合约参数编码 ============");
-    //     console.log(parameterEncode);
-    //     console.log("====================================");
-    // }
-
-    // async function parameterDecode() {
-    //     const data =
-    //         "a9059cbb000000000000000000000000e82af0e99c9ed76b3100a643126948c03d27ef8e00000000000000000000000000000000000000000000000000000000000f4240";
-    //     const types = ["address", "uint256"];
-    //     const result = TronHelper.decodeParams(types, data, true);
-    //     console.log("============ 合约参数解码 ============");
-    //     console.log(result);
-    //     console.log("====================================");
-    // }
 
     async function trc20Transaction() {
         try {
@@ -377,55 +338,6 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
         } catch (err) {
             console.log(err);
         }
-    }
-
-    // async function parameterEncode2() {
-    //     const input = [{ type: "address", value: "41ac18e577192d1353879e31c83d1be47d4b1070be" }];
-    //     const parameterEncode = TronHelper.encodeParams(input);
-    //     console.log("============ 合约参数编码 ============");
-    //     console.log(parameterEncode);
-    //     console.log("====================================");
-    // }
-
-    // async function parameterDecode2() {
-    //     // const data = "0x0000000000000000000000000000000000000000000000000000000ba438665c";
-    //     const data = "0x0000000000000000000000000000000000000000000000000000000000000006";
-    //     const types = ["uint256"];
-    //     const result = TronHelper.decodeParams(types, data, false);
-
-    //     // 直接转换为数字
-    //     console.log(result.toString());
-    //     console.log("============ 合约参数解码 ============");
-    //     console.log(result);
-    //     console.log("====================================");
-    // }
-
-    async function getTrc20Balance() {
-        const contractReq: BFChainWallet.TRON.TriggerSmartContractReq = {
-            owner_address: "41ac18e577192d1353879e31c83d1be47d4b1070be",
-            contract_address: "41ea51342dabbb928ae1e576bd39eff8aaf070a8c6",
-            function_selector: "balanceOf(address)",
-            input: [{ type: "address", value: "41ac18e577192d1353879e31c83d1be47d4b1070be" }],
-        };
-        // 获取TRC20代币余额
-        const contractTx: BFChainWallet.TRON.TriggerSmartContractRes = await tronApi.triggerSmartContract(contractReq);
-        console.log("============ TRC20代币余额 ============");
-        console.log(JSON.stringify(contractTx));
-        console.log("====================================");
-    }
-
-    async function getTRC20Decimal() {
-        const contractReq: BFChainWallet.TRON.TriggerSmartContractReq = {
-            owner_address: "41ac18e577192d1353879e31c83d1be47d4b1070be",
-            contract_address: "41ea51342dabbb928ae1e576bd39eff8aaf070a8c6",
-            function_selector: "decimals()",
-            input: [{ type: "address", value: "41ac18e577192d1353879e31c83d1be47d4b1070be" }],
-        };
-        // 获取TRC20代币精度
-        const contractTx: BFChainWallet.TRON.TriggerSmartContractRes = await tronApi.triggerSmartContract(contractReq);
-        console.log("============ TRC20代币精度 ============");
-        console.log(JSON.stringify(contractTx));
-        console.log("====================================");
     }
 
     /**

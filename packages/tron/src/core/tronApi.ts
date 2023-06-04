@@ -622,11 +622,6 @@ export class TronApi implements BFChainWallet.TRON.API {
         return await this.httpHelper.sendPostRequest(host, transactionWithSign);
     }
 
-    async getTransactionById(value: string, visible = false): Promise<BFChainWallet.TRON.TronTransation> {
-        const host = `${await this.getPeerUrl()}/wallet/gettransactionbyid`;
-        return await this.httpHelper.sendGetRequest(host, { value, visible });
-    }
-
     async getTransactionInfoById(value: string): Promise<BFChainWallet.TRON.TronTransactionInfo> {
         const host = `${await this.getPeerUrl()}/wallet/gettransactioninfobyid`;
         return await this.httpHelper.sendGetRequest(host, { value });

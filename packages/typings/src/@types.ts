@@ -284,7 +284,7 @@ declare namespace BFChainWallet {
              * 以太坊获取指定用户地址交易数(已完成的交易)
              * @param address 用户地址
              */
-            getTransactionCount(address: string): Promise<number>;
+            getTransCount(address: string): Promise<number>;
 
             /**
              * 以太坊签名交易数据
@@ -311,13 +311,13 @@ declare namespace BFChainWallet {
              * 指定交易Hash，获取交易信息
              * @param txHash 交易Hash
              */
-            getTransaction(txHash: string): Promise<any>;
+            getTrans(txHash: string): Promise<any>;
 
             /**
              * 指定交易Hash，获取交易收据(已完成交易)
              * @param txHash 交易Hash
              */
-            getTransactionReceipt(txHash: string): Promise<any>;
+            getTransReceipt(txHash: string): Promise<any>;
 
             getNormalTransHistory(req: TransHistoryReq): Promise<NormalTransHistoryRes>;
 
@@ -483,67 +483,6 @@ declare namespace BFChainWallet {
             balance: number;
             /** 创建时间 */
             create_time: number;
-            account_resource: {
-                frozen_balance_for_energy?: { forzen_balance: number; expire_time: number };
-                lastest_consume_time_for_energy?: number;
-            };
-            owner_permission: {
-                keys: { address: string; weight: number }[];
-                threshold: number;
-                permission_name: string;
-            };
-            active_permission: {
-                operations: string;
-                keys: { addrss: string; weight: number }[];
-                threshold: number;
-                id: number;
-                type: string;
-                permission_name: string;
-            }[];
-            witness_premission?: {
-                keys: { address: string; weight: number }[];
-                threshold: number;
-                id: number;
-                type: string;
-                permission_name: string;
-            };
-            asset_optimized: boolean;
-            // frozen_supply: [{frozen_balance: number, expire_time: number}];
-            // frozen: [{frozen_balance: number, expire_time: number}];
-            // allowance: number;
-            // asset_issued_ID: string;
-            // asset_issued_name: string;
-            // free_asset_net_usageV2: [{value: number, key: string}];
-            // is_witness: boolean;
-            // assetV2: [{value: number, key: string}];
-            // latest_consume_time: number;
-            // latest_opration_time: string;
-            // latest_consume_free_time: number;
-        };
-
-        type TronAccountResource = {
-            /** 免费带宽总量 */
-            freeNetLimit?: number;
-            /** 已使用的免费带宽 */
-            freeNetUsed?: number;
-            /** 已使用的通过质押获得的带宽 */
-            NetUsed?: number;
-            /** 质押获得的带宽总量 */
-            NetLimit?: number;
-            /** 拥有的投票权 */
-            tronPowerLimit?: number;
-            /** 已使用的能量 */
-            EnergyUsed?: number;
-            /** 质押获取的总能量 */
-            EnergyLimit?: number;
-            /** 全网通过质押获取的带宽总量 */
-            TotalNetLimit?: number;
-            /** 全网用于获取带宽的质押TRX总量 */
-            TotalNetWeight?: number;
-            /** 全网通过质押获取的能量总量 */
-            TotalEnergyLimit?: number;
-            /** 全网用于获取能量的质押TRX总量 */
-            TotalEnergyWeight?: number;
         };
 
         type TronBlock = {
@@ -1069,7 +1008,7 @@ declare namespace BFChainWallet {
             /** txId */
             id: string;
             /** 手续费 */
-            fee?: number;
+            fee: number;
             /** 区块高度 */
             blockNumber: number;
             /** 区块时间: 时间戳 毫秒 */
@@ -1141,6 +1080,7 @@ declare namespace BFChainWallet {
             amount: string;
             /** 合约地址：该字段不会为空，非合约交易时为空字符串 */
             contractAddress: string;
+            /** 签名信息：已签名的交易才会有该字段，默认为空字符串 */
             signature: string;
         };
 
@@ -1279,15 +1219,15 @@ declare namespace BFChainWallet {
             /**
              * 获取交易体中的具体交易数据
              * ps: 主要是用于在不熟悉复杂交易结构的前提下能更直观的获取交易体数据，同时也会对于合约交易进行数据解析
-             * @param trans 交易数据
+             * @param {TronTransaction | Trc20Transaction} trans 交易数据
              * @returns {TronTransBody} 交易体数据
              */
             getTransBody(trans: TronTransaction | Trc20Transaction): Promise<TronTransBody>;
 
             /**
              * 获取指定地址的合约余额
-             * @param address  用户地址
-             * @param contract 合约地址
+             * @param {string} address  用户地址
+             * @param {string} contractAddress 合约地址
              * @returns {string} 合约余额
              */
             getContractBalance(address: string, contractAddress: string): Promise<string>;
@@ -1340,13 +1280,7 @@ declare namespace BFChainWallet {
             ): Promise<BroadcastTransactionRes>;
 
             /**
-             * 根据交易ID，查询交易
-             * @param value 交易ID，即交易哈希
-             * @param visible 账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址
-             */
-            getTransactionById(value: string, visible?: boolean): Promise<TronTransation>;
-
-            /**
+             * @deprecated
              * 查询交易的Info信息，包含交易的fee信息，所在区块信息
              * @param value 交易ID
              */
