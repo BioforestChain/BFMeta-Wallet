@@ -17,7 +17,8 @@
         "build": "tsc --build ./tsconfig.all.json",
         "rebuild": "yarn clear & yarn build",
         "publ": "lerna publish",
-        "publ:force": "lerna publish --force-publish"
+        "publ:force": "lerna publish --force-publish",
+        "sync": "node ./scripts/syncPackage.js"
     },
     "keywords": [],
     "author": "wzx",
