@@ -1,16 +1,20 @@
 import { Inject, Injectable } from "@bnqkl/util-node";
 import {
+    ABISupportEventEnum,
     ABISupportFunctionEnum,
+    ABISupportTypeEnum,
     EthApiScanSymbol,
     HttpHelper,
     PeerListHelper,
     TatumSymbol,
+    TRANS_INPUT_PREFIX,
 } from "@bfmeta/wallet-helpers";
 import Web3 from "web3";
-import type * as Web3_Eth from "web3-eth";
+
 import { ETH_ERC20_ABI } from "./constants";
 import * as ethereumjs from "ethereumjs-tx";
-import type { AbiItem } from "web3-utils";
+import type { AbiItem, AbiInput } from "web3-utils";
+import type { Log, Transaction, TransactionReceipt } from "web3-core";
 export const ETH_PEERS = {
     host: Symbol("host"),
     testnet: Symbol("testnet"),
@@ -138,7 +142,7 @@ export class EthApi implements BFChainWallet.ETH.API {
         return res;
     }
 
-    async getLastBlock(): Promise<Web3_Eth.BlockTransactionString> {
+    async getLastBlock(): Promise<any> {
         return await this.web3.eth.getBlock("latest");
     }
 
@@ -216,18 +220,44 @@ export class EthApi implements BFChainWallet.ETH.API {
         });
     }
 
+    async getTransCount(address: string) {
+        return await this.web3.eth.getTransactionCount(address);
+    }
+
     async getTrans(txHash: string) {
-        const transaction: Web3_Eth.Transaction = await this.web3.eth.getTransaction(txHash);
-        return transaction;
+        const trans: Transaction = await this.web3.eth.getTransaction(txHash);
+        return trans;
     }
 
     async getTransReceipt(txHash: string) {
-        const transactionReceipt: Web3_Eth.TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
-        return transactionReceipt;
+        const receipt: TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
+        const transBody = this.parseReceipt(receipt);
+        return { receipt, transBody };
     }
 
-    async getTransCount(address: string) {
-        return await this.web3.eth.getTransactionCount(address);
+    async getTransReceiptNative(txHash: string): Promise<BFChainWallet.ETH.TransReceiptNative | null> {
+        const receipt: TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
+        if (receipt) {
+            const { transactionHash, cumulativeGasUsed, effectiveGasPrice, gasUsed, status, blockHash, blockNumber } =
+                receipt;
+            const parseReceipt = this.parseReceipt(receipt);
+            const isContract: boolean = parseReceipt && parseReceipt.contractAddress;
+            const result: BFChainWallet.ETH.TransReceiptNative = {
+                txHash: transactionHash,
+                from: isContract ? parseReceipt?.from : receipt.from,
+                to: isContract ? parseReceipt?.to : receipt.to,
+                value: isContract ? parseReceipt?.value : (await this.getTrans(txHash))?.value,
+                contractAddress: isContract ? parseReceipt?.contractAddress : "",
+                cumulativeGasUsed,
+                effectiveGasPrice,
+                gasUsed,
+                status,
+                blockHash,
+                blockNumber,
+            };
+            return result;
+        }
+        return null;
     }
 
     private async getContract(address: string, contractAddress: string) {
@@ -236,6 +266,10 @@ export class EthApi implements BFChainWallet.ETH.API {
 
     private async generateContract(abi: any, contractAddress: string, from: string) {
         return new this.web3.eth.Contract(abi, contractAddress, { from: from });
+    }
+
+    private async getTatumNodeUrl() {
+        return `${this.tatumConfig.host}/ETH/${this.tatumConfig.apiKey}?${this.tatumConfig.ethTest}`;
     }
 
     private async getTatumApiUrl() {
@@ -253,11 +287,11 @@ export class EthApi implements BFChainWallet.ETH.API {
     private async getPeerUrl() {
         const p = await this.peerListHelper.getEnableRandom();
         return `http://${p.ip}:${p.port}`;
+        // return this.getTatumNodeUrl();
     }
 
-    async getTransactionFromSignature(signature: string) {
-        const chainId = await this.getChainId();
-        const tx = new ethereumjs.Transaction(signature, { chain: chainId });
+    getTransactionFromSignature(signature: string) {
+        const tx = new ethereumjs.Transaction(signature, { chain: this.testnet ? 5 : 1 });
         return tx;
     }
 
@@ -273,8 +307,92 @@ export class EthApi implements BFChainWallet.ETH.API {
 
     getMethodABI(functionName: ABISupportFunctionEnum) {
         const methodABI: AbiItem | undefined = ETH_ERC20_ABI.find((item: AbiItem) => {
-            return item.type === "function" && item.name === functionName;
+            return item.type === ABISupportTypeEnum.function && item.name === functionName;
         });
         return methodABI;
+    }
+
+    getEventABI(eventName: ABISupportEventEnum) {
+        const eventABI: AbiItem | undefined = ETH_ERC20_ABI.find((a: AbiItem) => {
+            return a.type === ABISupportTypeEnum.event && a.name === eventName;
+        });
+        return eventABI;
+    }
+
+    parseReceipt(receipt: TransactionReceipt) {
+        const logs = receipt.logs;
+        if (!logs || logs.length === 0) {
+            return null;
+        }
+        const result = this.parseEventLog(logs[0]);
+        if (result) {
+            result["contractAddress"] = receipt.to;
+        }
+        return result;
+    }
+
+    parseEventLog(eventLog: Log) {
+        const AbiItem = this.getEventABI(ABISupportEventEnum.Transfer);
+        if (!AbiItem) {
+            return null;
+        }
+        const eventSignature = this.web3.eth.abi.encodeEventSignature(AbiItem);
+        const topics = eventLog.topics;
+        // 检查事件签名是否匹配
+        if (topics[0] === eventSignature) {
+            // 解析参数值
+            const eventInputs = AbiItem.inputs ?? [];
+            // 去除事件签名主题
+            const parameterTopics = topics.slice(1);
+            const parsedParameters: { [name: string]: any } = {};
+
+            const length = topics.length - 1;
+            for (let i = 0; i < length; i++) {
+                const { name, type } = eventInputs[i];
+                const topic = parameterTopics[i];
+                // 解码参数值
+                const decodedValue = this.web3.eth.abi.decodeParameter(type, topic);
+                // 将参数名和解码后的值添加到解析结果中
+                parsedParameters[name] = decodedValue;
+            }
+
+            // 交易金额
+            const data = eventLog.data;
+            const valueInput = eventInputs.find((input: AbiInput) => {
+                return input.name === "value";
+            });
+            if (!valueInput) {
+                return null;
+            }
+            const decodedValue = this.web3.eth.abi.decodeParameter(valueInput.type, data);
+            parsedParameters[valueInput.name] = decodedValue;
+            return parsedParameters;
+        }
+        return null;
+    }
+
+    parseInput(input: string) {
+        // 判断当前是否需要解析input
+        if (!input || input === "0x") {
+            return null;
+        }
+        // 获取函数选择器
+        const funcSelector = input.slice(0, 10);
+        if (TRANS_INPUT_PREFIX !== funcSelector) {
+            return null;
+        }
+        // 获取函数参数
+        const funcArguments = input.slice(10);
+        // 解码
+        const decode = this.decodeParameters<{ _to: string; _value: string }>(
+            funcArguments,
+            ABISupportFunctionEnum.transfer,
+        );
+        if (decode) {
+            const to = decode._to;
+            const value = decode._value;
+            return { to, value };
+        }
+        return null;
     }
 }

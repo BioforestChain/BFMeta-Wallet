@@ -22,13 +22,14 @@ class DemoLogger {
     // lastBlock();
     // getGasPrice();
     // getBalance();
-    getContractBalanceAndDecimal();
+    // getContractBalanceAndDecimal();
     // commonTrans();
     // ERC20Trans();
 
     // sendTransaction();
     // getTrans();
     // getTransReceipt();
+    getTransReceiptNative();
 
     // getAccountBalance();
 
@@ -59,8 +60,7 @@ class DemoLogger {
     }
 
     async function getBalance() {
-        const address = "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48";
-        // const address = "0x551b1ae3aa1d19e7976f5fd8d69b412d595ee9c4";
+        const address = "0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311";
         const balance = await ethApi.getBalance(address);
         const fromWei = await ethApi.fromWei(balance);
         console.log("========= 获取账户 balance =========");
@@ -77,10 +77,9 @@ class DemoLogger {
 
     async function commonTrans() {
         console.log("========= ETH发起普通交易 =========");
-        const to = "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48";
-        const from = "0x551B1AE3AA1d19e7976F5Fd8D69B412D595eE9C4";
-        // const privateKey = "7d672dd3c7e63a856e11a114464448f3f320e52d22e5268c23e485d11a25119a";
-        const privateKey = "addf83b399e8432070963bb810e2417007f0bd6ba3ec2174fdc952a4215f1b82";
+        const from = "0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311";
+        const to = "0x1b3B3fc528e7c65dB1524AA3b74C5Ce1aEb95a92";
+        const privateKey = "bb98720c8f30386c12387ee14671c94c9403f666676ae450dc205b87c9e22418";
 
         const txCount = await ethApi.getTransCount(from);
         console.log("txCount : %s", txCount);
@@ -93,7 +92,7 @@ class DemoLogger {
         const txObjcet = {
             from: from,
             to: to,
-            value: "60000",
+            value: "100000000",
             gas: generalGas,
             gasPrice: gasPrice,
             nonce: txCount,
@@ -107,10 +106,6 @@ class DemoLogger {
 
     async function ERC20Trans() {
         console.log("========= ETH发起合约交易 =========");
-        // const from_1 = "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48";
-        // const to_1 = "0x551B1AE3AA1d19e7976F5Fd8D69B412D595eE9C4";
-        // const privateKey_1 = "7d672dd3c7e63a856e11a114464448f3f320e52d22e5268c23e485d11a25119a";
-        // const privateKey = "addf83b399e8432070963bb810e2417007f0bd6ba3ec2174fdc952a4215f1b82";
         const from = "0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311";
         const to = "0x1b3B3fc528e7c65dB1524AA3b74C5Ce1aEb95a92";
         const privateKey = "bb98720c8f30386c12387ee14671c94c9403f666676ae450dc205b87c9e22418";
@@ -136,7 +131,7 @@ class DemoLogger {
         const contracTxObjcet = {
             from: from,
             to: contractAddress_link,
-            value: "31",
+            value: "0",
             gas: contractGas,
             gasPrice: gasPrice,
             nonce: txCount,
@@ -147,32 +142,46 @@ class DemoLogger {
         const signTx = { trans: contracTxObjcet, privateKey: privateKey };
         const rawTransaction = await ethApi.signTransaction(signTx);
         console.log("rawTransaction : %s", rawTransaction);
-        // const txHash = await ethApi.sendSignedTransaction(rawTransaction);
-        // console.log("txHash : %s", txHash);
-        const tx = await ethApi.getTransactionFromSignature(rawTransaction);
-        console.log(tx);
-        console.log(tx.to.toString("hex"));
-        console.log(tx.value.toString("hex"));
-        console.log(tx.data.toString("hex"));
-        const txData = "0x" + tx.data.toString("hex");
-        const result = ethApi.decodeParameters<{ _to: string; _value: string }>(
-            txData.substring(10),
-            ABISupportFunctionEnum.transfer,
-        );
-        console.log(result);
+        const txHash = await ethApi.sendSignedTransaction(rawTransaction);
+        console.log("txHash : %s", txHash);
+        // const tx = ethApi.getTransactionFromSignature(rawTransaction);
+        // console.log(tx);
+        // console.log(tx.to.toString("hex"));
+        // console.log(tx.value.toString("hex"));
+        // console.log(tx.data.toString("hex"));
+        // const txData = "0x" + tx.data.toString("hex");
+        // const result = ethApi.decodeParameters<{ _to: string; _value: string }>(
+        //     txData.substring(10),
+        //     ABISupportFunctionEnum.transfer,
+        // );
+        // console.log(result);
     }
 
     async function getTrans() {
-        const txHash = "0xd588737afc4e92ab85dc35dfc34424abbf605b8941745e978d3b72e2176da719";
-        const trans = await ethApi.getTrans(txHash);
+        const txHash = "0x6abe393ffce83c210a6ef0dd7312718a651c7c5fdb32be88c29665f775acf4d7";
+        const contractHash = "0xcf02e7cfa3297b6a9f5a71464d7c8d1efa6c7f4e36adcf6f26c7186862b03517";
+        const trans = await ethApi.getTrans(contractHash);
         console.log("========= 查询交易信息 =========");
-        console.log("trans : %s", trans);
+        console.log(trans);
+
+        console.log("========= input 解析 =========");
+        const input = ethApi.parseInput(trans.input);
+        console.log(input);
     }
 
     async function getTransReceipt() {
-        const txHash = "0xd588737afc4e92ab85dc35dfc34424abbf605b8941745e978d3b72e2176da719";
-        const transReceipt = await ethApi.getTransReceipt(txHash);
+        const txHash = "0x6abe393ffce83c210a6ef0dd7312718a651c7c5fdb32be88c29665f775acf4d7";
+        const contractHash = "0xcf02e7cfa3297b6a9f5a71464d7c8d1efa6c7f4e36adcf6f26c7186862b03517";
+        const transReceipt = await ethApi.getTransReceipt(contractHash);
         console.log("========= 查询交易收据 =========");
-        console.log("transReceipt : %s", transReceipt);
+        console.log(transReceipt);
+    }
+
+    async function getTransReceiptNative() {
+        const txHash = "0x6abe393ffce83c210a6ef0dd7312718a651c7c5fdb32be88c29665f775acf4d7";
+        const contractHash = "0xcf02e7cfa3297b6a9f5a71464d7c8d1efa6c7f4e36adcf6f26c7186862b03517";
+        const transReceipt = await ethApi.getTransReceiptNative(contractHash);
+        console.log("========= 查询交易收据 =========");
+        console.log(transReceipt);
     }
 })();

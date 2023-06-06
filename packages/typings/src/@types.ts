@@ -239,6 +239,20 @@ declare namespace BFChainWallet {
 
         type AccountBalanceRes = { contractAddress: string; amount: string }[];
 
+        type TransReceiptNative = {
+            txHash: string;
+            from: string;
+            to: string;
+            value: string;
+            contractAddress: string;
+            cumulativeGasUsed: number;
+            effectiveGasPrice: number;
+            gasUsed: number;
+            status: boolean;
+            blockHash: string;
+            blockNumber: number;
+        };
+
         interface API {
             /**
              * 以太坊获取最新区块信息
@@ -318,6 +332,13 @@ declare namespace BFChainWallet {
              * @param txHash 交易Hash
              */
             getTransReceipt(txHash: string): Promise<any>;
+
+            /**
+             * 指定交易hash，获取交易收据
+             * @param {string} txHash 交易Hash
+             * @returns {TransReceiptNative | null} 交易回执信息
+             */
+            getTransReceiptNative(txHash: string): Promise<TransReceiptNative | null>;
 
             getNormalTransHistory(req: TransHistoryReq): Promise<NormalTransHistoryRes>;
 

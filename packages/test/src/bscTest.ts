@@ -31,9 +31,10 @@ class DemoLogger {
 
     // getTrans();
     // getTransReceipt();
+    getTransReceiptNative();
 
     // getNormalTransHistory();
-    getBep20TransHistory();
+    // getBep20TransHistory();
 
     // getAccountBalance();
     // getTokenInfo();
@@ -134,10 +135,14 @@ class DemoLogger {
 
     async function commonTrans() {
         console.log("========= BSC 发起普通交易 =========");
-        const from = "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48";
-        const to = "0x551B1AE3AA1d19e7976F5Fd8D69B412D595eE9C4";
-        const privateKey = "7d672dd3c7e63a856e11a114464448f3f320e52d22e5268c23e485d11a25119a";
-        // const privateKey = "addf83b399e8432070963bb810e2417007f0bd6ba3ec2174fdc952a4215f1b82";
+        // const from = "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48";
+        // const to = "0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311";
+        // const privateKey = "7d672dd3c7e63a856e11a114464448f3f320e52d22e5268c23e485d11a25119a";
+        // // const privateKey = "bb98720c8f30386c12387ee14671c94c9403f666676ae450dc205b87c9e22418";
+
+        const from = "0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311";
+        const to = "0x1b3B3fc528e7c65dB1524AA3b74C5Ce1aEb95a92";
+        const privateKey = "bb98720c8f30386c12387ee14671c94c9403f666676ae450dc205b87c9e22418";
 
         const txCount = await bscApi.getTransCount(from);
         console.log("txCount : %s", txCount);
@@ -189,7 +194,7 @@ class DemoLogger {
         const contracTxObjcet = {
             from: from,
             to: contractAddress,
-            value: "60",
+            value: "0",
             gas: contractGas,
             gasPrice: gasPrice,
             nonce: txCount,
@@ -200,33 +205,43 @@ class DemoLogger {
         const signTx = { trans: contracTxObjcet, privateKey: privateKey };
         const rawTransaction = await bscApi.signTransaction(signTx);
         console.log("rawTransaction : %s", rawTransaction);
-        // const txHash = await bscApi.sendSignedTransaction(rawTransaction);
-        // console.log("txHash : %s", txHash);
-        const tx = bscApi.getTransactionFromSignature(rawTransaction);
-        // console.log(tx);
-        console.log(contracTxObjcet.to);
-        console.log(contracTxObjcet.value);
-        console.log(tx.to.toString("hex"));
-        console.log(tx.value.toString("hex"));
-        console.log(tx.data.toString("hex"));
-        const txData = "0x" + tx.data.toString("hex");
-        const result = bscApi.decodeParameters<{ recipient: string; amount: string }>(
-            txData.substring(10),
-            ABISupportFunctionEnum.transfer,
-        );
-        console.log(result);
+        const txHash = await bscApi.sendSignedTransaction(rawTransaction);
+        console.log("txHash : %s", txHash);
+        // const tx = bscApi.getTransactionFromSignature(rawTransaction);
+        // // console.log(tx);
+        // console.log(contracTxObjcet.to);
+        // console.log(contracTxObjcet.value);
+        // console.log(tx.to.toString("hex"));
+        // console.log(tx.value.toString("hex"));
+        // console.log(tx.data.toString("hex"));
+        // const txData = "0x" + tx.data.toString("hex");
+        // const result = bscApi.decodeParameters<{ recipient: string; amount: string }>(
+        //     txData.substring(10),
+        //     ABISupportFunctionEnum.transfer,
+        // );
+        // console.log(result);
     }
 
     async function getTrans() {
-        const txHash = "0x47f2fef80261aedf5f009c78119acb14f535794d15f5f065f6c421beea057d7f";
-        const trans = await bscApi.getTrans(txHash);
+        const txHash = "0xb7c9abed35f5463a253590cdd075c516d8ba0319fd21154be75bb759d5078d74";
+        const contractHash = "0x6d78c36724a94469968e7c4634dd60ca562bb9741269fb7815e7403064569591";
+        const trans = await bscApi.getTrans(contractHash);
         console.log("========= 查询交易信息 =========");
         console.log(trans);
     }
 
     async function getTransReceipt() {
-        const txHash = "0x47f2fef80261aedf5f009c78119acb14f535794d15f5f065f6c421beea057d7f";
-        const transReceipt = await bscApi.getTransReceipt(txHash);
+        const txHash = "0xb7c9abed35f5463a253590cdd075c516d8ba0319fd21154be75bb759d5078d74";
+        const contractHash = "0x6d78c36724a94469968e7c4634dd60ca562bb9741269fb7815e7403064569591";
+        const transReceipt = await bscApi.getTransReceipt(contractHash);
+        console.log("========= 查询交易收据 =========");
+        console.log(transReceipt);
+    }
+
+    async function getTransReceiptNative() {
+        const txHash = "0xb7c9abed35f5463a253590cdd075c516d8ba0319fd21154be75bb759d5078d74";
+        const contractHash = "0x6d78c36724a94469968e7c4634dd60ca562bb9741269fb7815e7403064569591";
+        const transReceipt = await bscApi.getTransReceiptNative(contractHash);
         console.log("========= 查询交易收据 =========");
         console.log(transReceipt);
     }

@@ -5,13 +5,16 @@ import {
     BscApiScanSymbol,
     HttpHelper,
     ABISupportFunctionEnum,
+    ABISupportTypeEnum,
+    ABISupportEventEnum,
+    TRANS_INPUT_PREFIX,
 } from "@bfmeta/wallet-helpers";
 import Web3 from "web3";
-import type * as Web3_Eth from "web3-eth";
 import { BSC_BEP20_ABI } from "./constants";
 import * as ethereumjs from "ethereumjs-tx";
 import ethereumcommon from "ethereumjs-common";
-import type { AbiItem } from "web3-utils";
+import type { AbiItem, AbiInput } from "web3-utils";
+import type { Log, Transaction, TransactionReceipt } from "web3-core";
 
 export const BSC_PEERS = {
     host: Symbol("host"),
@@ -67,8 +70,8 @@ export class BscApi implements BFChainWallet.BSC.API {
     }
 
     async getAccountBalance(address: string): Promise<BFChainWallet.ETH.AccountBalanceRes> {
-        const host = `${await this.getApiUrl()}/blockchain/token/address/BSC/${address}`;
-        return await this.httpHelper.sendApiGetRequest(host, {}, await this.getApiHeaders());
+        const host = `${await this.getTatumApiUrl()}/blockchain/token/address/BSC/${address}`;
+        return await this.httpHelper.sendApiGetRequest(host, {}, await this.getTatumApiHeaders());
     }
 
     async getNormalTransHistory(
@@ -242,18 +245,44 @@ export class BscApi implements BFChainWallet.BSC.API {
         });
     }
 
+    async getTransCount(address: string) {
+        return await this.web3.eth.getTransactionCount(address);
+    }
+
     async getTrans(txHash: string) {
-        const trans: Web3_Eth.Transaction = await this.web3.eth.getTransaction(txHash);
+        const trans: Transaction = await this.web3.eth.getTransaction(txHash);
         return trans;
     }
 
     async getTransReceipt(txHash: string) {
-        const receipt: Web3_Eth.TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
+        const receipt: TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
         return receipt;
     }
 
-    async getTransCount(address: string) {
-        return await this.web3.eth.getTransactionCount(address);
+    async getTransReceiptNative(txHash: string): Promise<BFChainWallet.ETH.TransReceiptNative | null> {
+        const receipt: TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
+        if (receipt) {
+            const { transactionHash, cumulativeGasUsed, effectiveGasPrice, gasUsed, status, blockHash, blockNumber } =
+                receipt;
+            const parseReceipt = this.parseReceipt(receipt);
+            const isContract: boolean = parseReceipt && parseReceipt.contractAddress;
+
+            const result: BFChainWallet.ETH.TransReceiptNative = {
+                txHash: transactionHash,
+                from: isContract ? parseReceipt?.from : receipt.from,
+                to: isContract ? parseReceipt?.to : receipt.to,
+                value: isContract ? parseReceipt?.value : (await this.getTrans(txHash))?.value,
+                contractAddress: isContract ? parseReceipt?.contractAddress : "",
+                cumulativeGasUsed,
+                effectiveGasPrice,
+                gasUsed,
+                status,
+                blockHash,
+                blockNumber,
+            };
+            return result;
+        }
+        return null;
     }
 
     private async getContract(address: string, contractAddress: string) {
@@ -265,11 +294,15 @@ export class BscApi implements BFChainWallet.BSC.API {
         return contract;
     }
 
-    private async getApiUrl() {
+    private async getTatumNodeUrl() {
+        return `${this.tatumConfig.host}/BSC/${this.tatumConfig.apiKey}`;
+    }
+
+    private async getTatumApiUrl() {
         return this.tatumConfig.apiHost;
     }
 
-    private async getApiHeaders() {
+    private async getTatumApiHeaders() {
         return { "x-api-key": this.tatumConfig.apiKey };
     }
 
@@ -280,6 +313,7 @@ export class BscApi implements BFChainWallet.BSC.API {
     private async getPeerUrl() {
         const p = await this.peerListHelper.getEnableRandom();
         return `http://${p.ip}:${p.port}`;
+        // return this.getTatumNodeUrl();
     }
 
     getTransactionFromSignature(signature: string) {
@@ -301,8 +335,93 @@ export class BscApi implements BFChainWallet.BSC.API {
 
     getMethodABI(functionName: ABISupportFunctionEnum) {
         const methodABI: AbiItem | undefined = BSC_BEP20_ABI.find((a: AbiItem) => {
-            return a.type === "function" && a.name === functionName;
+            return a.type === ABISupportTypeEnum.function && a.name === functionName;
         });
         return methodABI;
+    }
+
+    getEventABI(eventName: ABISupportEventEnum) {
+        const eventABI: AbiItem | undefined = BSC_BEP20_ABI.find((a: AbiItem) => {
+            return a.type === ABISupportTypeEnum.event && a.name === eventName;
+        });
+        return eventABI;
+    }
+
+    parseReceipt(receipt: TransactionReceipt) {
+        const logs = receipt.logs;
+        if (!logs || logs.length === 0) {
+            return null;
+        }
+        const result = this.parseEventLog(logs[0]);
+        if (result) {
+            result["contractAddress"] = receipt.to;
+        }
+        return result;
+    }
+
+    parseEventLog(eventLog: Log) {
+        const AbiItem = this.getEventABI(ABISupportEventEnum.Transfer);
+        if (!AbiItem) {
+            return null;
+        }
+        const eventSignature = this.web3.eth.abi.encodeEventSignature(AbiItem);
+        const topics = eventLog.topics;
+        // 检查事件签名是否匹配
+        if (topics[0] === eventSignature) {
+            // 解析参数值
+            const eventInputs = AbiItem.inputs ?? [];
+            // 去除事件签名主题
+            const parameterTopics = topics.slice(1);
+            const parsedParameters: { [name: string]: any } = {};
+
+            const length = topics.length - 1;
+            for (let i = 0; i < length; i++) {
+                const { name, type } = eventInputs[i];
+                const topic = parameterTopics[i];
+                // 解码参数值
+                const decodedValue = this.web3.eth.abi.decodeParameter(type, topic);
+                // 将参数名和解码后的值添加到解析结果中
+                parsedParameters[name] = decodedValue;
+            }
+
+            // 交易金额
+            const data = eventLog.data;
+            const valueInput = eventInputs.find((input: AbiInput) => {
+                return input.name === "value";
+            });
+            if (!valueInput) {
+                return null;
+            }
+            const decodedValue = this.web3.eth.abi.decodeParameter(valueInput.type, data);
+            parsedParameters[valueInput.name] = decodedValue;
+            return parsedParameters;
+        }
+        return null;
+    }
+
+    parseInput(input: string) {
+        // 判断当前是否需要解析input
+        if (!input || input === "0x") {
+            return null;
+        }
+        // 获取函数选择器
+        const funcSelector = input.slice(0, 10);
+        if (TRANS_INPUT_PREFIX !== funcSelector) {
+            return null;
+        }
+        // 获取函数参数
+        const funcArguments = input.slice(10);
+
+        // 解码
+        const decode = this.decodeParameters<{ recipient: string; amount: string }>(
+            funcArguments,
+            ABISupportFunctionEnum.transfer,
+        );
+        if (decode) {
+            const to = decode.recipient;
+            const value = decode.amount;
+            return { to, value };
+        }
+        return null;
     }
 }
