@@ -231,8 +231,7 @@ export class EthApi implements BFChainWallet.ETH.API {
 
     async getTransReceipt(txHash: string) {
         const receipt: TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
-        const transBody = this.parseReceipt(receipt);
-        return { receipt, transBody };
+        return receipt;
     }
 
     async getTransReceiptNative(txHash: string): Promise<BFChainWallet.ETH.TransReceiptNative | null> {
