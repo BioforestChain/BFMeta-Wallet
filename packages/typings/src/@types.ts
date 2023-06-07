@@ -253,6 +253,16 @@ declare namespace BFChainWallet {
             blockNumber: number;
         };
 
+        type EthTransBody = {
+            txHash: string;
+            blockHash: string | null;
+            blockNumber: number | null;
+            from: string;
+            to: string | null;
+            value: string;
+            contractAddress: string | null;
+        };
+
         interface API {
             /**
              * 以太坊获取最新区块信息

@@ -181,7 +181,7 @@ export class BscApi implements BFChainWallet.BSC.API {
     }
 
     async getContractGas(from: string, to: string, amount: string, contractAddress: string) {
-        const contract = await this.getContract(from, contractAddress);
+        const contract = this.getContract(from, contractAddress);
         return await contract.methods.transfer(to, amount).estimateGas();
     }
 
@@ -210,7 +210,7 @@ export class BscApi implements BFChainWallet.BSC.API {
         address: string,
         contractAddress: string,
     ): Promise<BFChainWallet.ETH.Contract20Balance> {
-        const contract = await this.getContract(address, contractAddress);
+        const contract = this.getContract(address, contractAddress);
         const balance = await contract.methods.balanceOf(address).call();
         const decimal = await contract.methods.decimals().call();
         return { balance, decimal };
@@ -230,7 +230,7 @@ export class BscApi implements BFChainWallet.BSC.API {
         }
     }
     async getContractTransData(from: string, to: string, amount: string, contractAddress: string): Promise<string> {
-        const contract = await this.getContract(from, contractAddress);
+        const contract = this.getContract(from, contractAddress);
         return await contract.methods.transfer(to, amount).encodeABI();
     }
 
@@ -249,16 +249,34 @@ export class BscApi implements BFChainWallet.BSC.API {
         return await this.web3.eth.getTransactionCount(address);
     }
 
+    /**
+     * Retrieves a transaction using its hash.
+     *
+     * @param {string} txHash - the hash of the transaction to retrieve.
+     * @return {Promise<Transaction>} A promise that resolves with the retrieved transaction object.
+     */
     async getTrans(txHash: string) {
         const trans: Transaction = await this.web3.eth.getTransaction(txHash);
         return trans;
     }
 
+    /**
+     * Retrieves the transaction receipt for a given transaction hash.
+     *
+     * @param {string} txHash - The transaction hash to retrieve the receipt for.
+     * @return {Promise<TransactionReceipt>} - A promise that resolves with the transaction receipt.
+     */
     async getTransReceipt(txHash: string) {
         const receipt: TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
         return receipt;
     }
 
+    /**
+     * Retrieves the transaction receipt for a given transaction hash and returns it as a native object.
+     *
+     * @param {string} txHash - the hash of the transaction to retrieve the receipt for
+     * @return {Promise<BFChainWallet.ETH.TransReceiptNative | null>} - the transaction receipt as a native object, or null if the receipt does not exist
+     */
     async getTransReceiptNative(txHash: string): Promise<BFChainWallet.ETH.TransReceiptNative | null> {
         const receipt: TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
         if (receipt) {
@@ -285,11 +303,32 @@ export class BscApi implements BFChainWallet.BSC.API {
         return null;
     }
 
-    private async getContract(address: string, contractAddress: string) {
+    /**
+     * Return the body of a transaction in the format of BFChainWallet.ETH.EthTransBody.
+     *
+     * @param {Transaction} trans - the transaction to extract the body from
+     * @return {BFChainWallet.ETH.EthTransBody} the extracted transaction body
+     */
+    getTransBody(trans: Transaction): BFChainWallet.ETH.EthTransBody {
+        const { hash, blockHash, blockNumber, from, input, to, value } = trans;
+        const parseInput = this.parseInput(input);
+        const transBody: BFChainWallet.ETH.EthTransBody = {
+            txHash: hash,
+            blockHash,
+            blockNumber,
+            from,
+            to: parseInput ? parseInput.to : to,
+            value: parseInput ? parseInput.value : value,
+            contractAddress: parseInput ? trans.to : "",
+        };
+        return transBody;
+    }
+
+    private getContract(address: string, contractAddress: string) {
         return this.generateContract(BSC_BEP20_ABI, contractAddress, address);
     }
 
-    private async generateContract(abi: any, contractAddress: string, from: string) {
+    private generateContract(abi: any, contractAddress: string, from: string) {
         const contract = new this.web3.eth.Contract(abi, contractAddress, { from: from });
         return contract;
     }

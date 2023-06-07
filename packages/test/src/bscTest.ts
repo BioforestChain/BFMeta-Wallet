@@ -24,14 +24,15 @@ class DemoLogger {
     // latestBlock();
     // getGasPrice();
     // getBalance();
-    // getContractBalanceAndDecimal();
+    getContractBalanceAndDecimal();
 
     // commonTrans();
     // BEP20Trans();
 
     // getTrans();
     // getTransReceipt();
-    getTransReceiptNative();
+    // getTransReceiptNative();
+    // getTransBody();
 
     // getNormalTransHistory();
     // getBep20TransHistory();
@@ -243,6 +244,15 @@ class DemoLogger {
         const contractHash = "0x6d78c36724a94469968e7c4634dd60ca562bb9741269fb7815e7403064569591";
         const transReceipt = await bscApi.getTransReceiptNative(contractHash);
         console.log("========= 查询交易收据 =========");
+        console.log(transReceipt);
+    }
+
+    async function getTransBody() {
+        const txHash = "0xb7c9abed35f5463a253590cdd075c516d8ba0319fd21154be75bb759d5078d74";
+        const contractHash = "0x6d78c36724a94469968e7c4634dd60ca562bb9741269fb7815e7403064569591";
+        const trans = await bscApi.getTrans(contractHash);
+        const transReceipt = await bscApi.getTransBody(trans);
+        console.log("========= 获取交易体 =========");
         console.log(transReceipt);
     }
 })();

@@ -159,7 +159,7 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     async getContractGas(from: string, to: string, amount: string, contractAddress: string) {
-        const contract = await this.getContract(from, contractAddress);
+        const contract = this.getContract(from, contractAddress);
         return await contract.methods.transfer(to, amount).estimateGas();
     }
 
@@ -172,7 +172,7 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     async getContractBalance(address: string, contractAddress: string): Promise<string> {
-        const contract = await this.getContract(address, contractAddress);
+        const contract = this.getContract(address, contractAddress);
         return await contract.methods.balanceOf(address).call();
     }
 
@@ -180,7 +180,7 @@ export class EthApi implements BFChainWallet.ETH.API {
         address: string,
         contractAddress: string,
     ): Promise<BFChainWallet.ETH.Contract20Balance> {
-        const contract = await this.getContract(address, contractAddress);
+        const contract = this.getContract(address, contractAddress);
         const balance = await contract.methods.balanceOf(address).call();
         const decimal = await contract.methods.decimals().call();
         return { balance, decimal };
@@ -191,7 +191,7 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     async getContractTransData(from: string, to: string, amount: string, contractAddress: string): Promise<string> {
-        const contract = await this.getContract(from, contractAddress);
+        const contract = this.getContract(from, contractAddress);
         return await contract.methods.transfer(to, amount).encodeABI();
     }
 
@@ -234,6 +234,12 @@ export class EthApi implements BFChainWallet.ETH.API {
         return receipt;
     }
 
+    /**
+     * Retrieves the transaction receipt for a given transaction hash and returns it as a TransReceiptNative object.
+     *
+     * @param {string} txHash - the hash of the transaction to retrieve the receipt for.
+     * @return {Promise<BFChainWallet.ETH.TransReceiptNative | null>} - a promise that resolves to the transaction receipt as a TransReceiptNative object if it exists, or null if it does not.
+     */
     async getTransReceiptNative(txHash: string): Promise<BFChainWallet.ETH.TransReceiptNative | null> {
         const receipt: TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
         if (receipt) {
@@ -259,11 +265,32 @@ export class EthApi implements BFChainWallet.ETH.API {
         return null;
     }
 
-    private async getContract(address: string, contractAddress: string) {
+    /**
+     * Returns the transaction body of a given transaction object.
+     *
+     * @param {Transaction} trans - the transaction object to get the body from.
+     * @return {BFChainWallet.ETH.EthTransBody} the transaction body object.
+     */
+    getTransBody(trans: Transaction): BFChainWallet.ETH.EthTransBody {
+        const { hash, blockHash, blockNumber, from, input, to, value } = trans;
+        const parseInput = this.parseInput(input);
+        const transBody: BFChainWallet.ETH.EthTransBody = {
+            txHash: hash,
+            blockHash,
+            blockNumber,
+            from,
+            to: parseInput ? parseInput.to : to,
+            value: parseInput ? parseInput.value : value,
+            contractAddress: parseInput ? trans.to : "",
+        };
+        return transBody;
+    }
+
+    private getContract(address: string, contractAddress: string) {
         return this.generateContract(ETH_ERC20_ABI, contractAddress, address);
     }
 
-    private async generateContract(abi: any, contractAddress: string, from: string) {
+    private generateContract(abi: any, contractAddress: string, from: string) {
         return new this.web3.eth.Contract(abi, contractAddress, { from: from });
     }
 

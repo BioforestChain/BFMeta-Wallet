@@ -22,14 +22,15 @@ class DemoLogger {
     // lastBlock();
     // getGasPrice();
     // getBalance();
-    // getContractBalanceAndDecimal();
+    getContractBalanceAndDecimal();
     // commonTrans();
     // ERC20Trans();
 
     // sendTransaction();
     // getTrans();
     // getTransReceipt();
-    getTransReceiptNative();
+    // getTransReceiptNative();
+    // getTransBody();
 
     // getAccountBalance();
 
@@ -182,6 +183,15 @@ class DemoLogger {
         const contractHash = "0xcf02e7cfa3297b6a9f5a71464d7c8d1efa6c7f4e36adcf6f26c7186862b03517";
         const transReceipt = await ethApi.getTransReceiptNative(contractHash);
         console.log("========= 查询交易收据 =========");
+        console.log(transReceipt);
+    }
+
+    async function getTransBody() {
+        const txHash = "0x6abe393ffce83c210a6ef0dd7312718a651c7c5fdb32be88c29665f775acf4d7";
+        const contractHash = "0xcf02e7cfa3297b6a9f5a71464d7c8d1efa6c7f4e36adcf6f26c7186862b03517";
+        const trans = await ethApi.getTrans(contractHash);
+        const transReceipt = ethApi.getTransBody(trans);
+        console.log("========= 获取交易体 =========");
         console.log(transReceipt);
     }
 })();
