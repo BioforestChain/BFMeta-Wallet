@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-tron",
-    "version": "1.0.46",
+    "version": "1.0.47",
     "description": " wallet tron",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -16,7 +16,7 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet-typings": "1.0.46",
+        "@bfmeta/wallet-typings": "1.0.47",
         "ethers": "^5.7.1",
         "tronweb": "^5.2.0"
     },
