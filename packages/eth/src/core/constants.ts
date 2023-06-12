@@ -1,5 +1,15 @@
 import type { AbiItem } from "web3-utils";
+/** Goerli测试网络 USDT合约地址 */
 export const ETH_TEST_USDT_ADDRESS = "0x5AB6F31B29Fc2021436B3Be57dE83Ead3286fdc7";
+/** Goerli测试网络 USDC合约地址 */
+export const ETH_TEST_USDC_ADDRESS = "0x466595626333c55fa7d7Ad6265D46bA5fDbBDd99";
+/** Goerli测试网络 LINK合约地址 */
+export const ETH_TEST_LINK_ADDRESS = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB";
+/** 正式网络 USDT合约地址 */
+export const ETH_USDT_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+/** 正式网络 USDC合约地址 */
+export const ETH_USDC_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+
 export const ETH_TEST_USDT_ABI: AbiItem[] = [
     {
         constant: true,
@@ -59,8 +69,6 @@ export const ETH_TEST_USDT_ABI: AbiItem[] = [
         type: "function",
     },
 ];
-
-export const ETH_USDT_ADDRESS = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
 
 export const ETH_USDT_ABI: AbiItem[] = [
     {
