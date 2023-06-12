@@ -507,15 +507,6 @@ declare namespace BFChainWallet {
     }
     /** 波场 */
     namespace TRON {
-        type TronAccountRes = {
-            /** 账户地址，Base58check 或 HEX格式 */
-            address: string;
-            /** 账户余额, 比例 1000000:1 */
-            balance: number;
-            /** 创建时间 */
-            create_time: number;
-        };
-
         type TronBlock = {
             blockID: string;
             block_header: {
@@ -530,71 +521,6 @@ declare namespace BFChainWallet {
                 witness_signature: string;
             };
         };
-
-        // type TransactionRawData = {
-        //     contract: {
-        //         parameter: {
-        //             value: { amount: number; owner_address: string; to_address: string };
-        //             type_url: string;
-        //         };
-        //         type: string;
-        //     }[];
-        //     ref_block_bytes: string;
-        //     ref_block_hash: string;
-        //     expiration: number;
-        //     timestamp: number;
-        //     /** 交易备注，必须为hex格式 */
-        //     data?: string;
-        // };
-
-        // type TRC20TransactionRawData = {
-        //     contract: {
-        //         parameter: {
-        //             value: {
-        //                 data: string;
-        //                 owner_address: string;
-        //                 contract_address: string;
-        //             };
-        //             type_url: string;
-        //         };
-        //         type: string;
-        //     }[];
-        //     ref_block_bytes: string;
-        //     ref_block_hash: string;
-        //     expiration: number;
-        //     timestamp: number;
-        //     fee_limit: number;
-        //     /** 交易备注，必须为hex格式 */
-        //     data?: string;
-        // };
-
-        // type TronTransation = {
-        //     /** 账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址 */
-        //     visible?: boolean;
-        //     /** 交易签名，签名后获得 */
-        //     signature?: string[];
-        //     /** 交易ID */
-        //     txID: string;
-        //     /** 交易json */
-        //     raw_data: TransactionRawData;
-        //     /** 交易 raw_data 通过 protobuf 序列化后的二进制，Hex格式 */
-        //     raw_data_hex: string;
-        //     ret?: { contractRet: string }[];
-        // };
-
-        // type TRC20Transation = {
-        //     /** 账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址 */
-        //     visible?: boolean;
-        //     /** 交易签名，签名后获得 */
-        //     signature?: string[];
-        //     /** 交易ID */
-        //     txID: string;
-        //     /** 交易json */
-        //     raw_data: TRC20TransactionRawData;
-        //     /** 交易 raw_data 通过 protobuf 序列化后的二进制，Hex格式 */
-        //     raw_data_hex: string;
-        //     ret?: { contractRet: string }[];
-        // };
 
         type CreateTransactionReq = {
             /** 转账转出地址，Base58check格式 或 Hex格式 */
