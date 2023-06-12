@@ -1,8 +1,8 @@
 import type { AbiItem } from "web3-utils";
 /** Goerli测试网络 USDT合约地址 */
-export const ETH_TEST_USDT_ADDRESS = "0x5AB6F31B29Fc2021436B3Be57dE83Ead3286fdc7";
+export const ETH_TEST_USDT_ADDRESS = "0x2E8D98fd126a32362F2Bd8aA427E59a1ec63F780";
 /** Goerli测试网络 USDC合约地址 */
-export const ETH_TEST_USDC_ADDRESS = "0x466595626333c55fa7d7Ad6265D46bA5fDbBDd99";
+export const ETH_TEST_USDC_ADDRESS = "0x65aFADD39029741B3b8f0756952C74678c9cEC93";
 /** Goerli测试网络 LINK合约地址 */
 export const ETH_TEST_LINK_ADDRESS = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB";
 /** 正式网络 USDT合约地址 */
