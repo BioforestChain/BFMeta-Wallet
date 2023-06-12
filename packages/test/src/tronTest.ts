@@ -248,7 +248,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
                 amount: 2000000,
             };
             // 创建交易
-            const transactionFirst: BFChainWallet.TRON.TronTransation = await tronApi.createTransaction(txBody);
+            const transactionFirst: BFChainWallet.TRON.TronTransaction = await tronApi.createTransaction(txBody);
             console.log("============ 创建交易 ============");
             console.log(JSON.stringify(transactionFirst));
             console.log("====================================");
@@ -257,7 +257,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
                 transaction: transactionFirst,
                 privateKey: privateKey.substr(2),
             };
-            const transactionWithSign: BFChainWallet.TRON.TronTransation | BFChainWallet.TRON.TRC20Transation =
+            const transactionWithSign: BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction =
                 await tronweb.trx.sign(signBody.transaction, signBody.privateKey);
             console.log("============ 交易签名 ============");
             console.log(JSON.stringify(transactionWithSign));
@@ -323,7 +323,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
                 privateKey: privateKey.substr(2),
             };
 
-            const transactionWithSign: BFChainWallet.TRON.TRC20Transation | BFChainWallet.TRON.TronTransation =
+            const transactionWithSign: BFChainWallet.TRON.Trc20Transaction | BFChainWallet.TRON.TronTransaction =
                 await tronweb.trx.sign(signBody.transaction, signBody.privateKey);
             console.log("============ 交易签名 ============");
             console.log(JSON.stringify(transactionWithSign));

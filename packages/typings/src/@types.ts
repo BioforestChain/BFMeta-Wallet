@@ -531,70 +531,70 @@ declare namespace BFChainWallet {
             };
         };
 
-        type TransactionRawData = {
-            contract: {
-                parameter: {
-                    value: { amount: number; owner_address: string; to_address: string };
-                    type_url: string;
-                };
-                type: string;
-            }[];
-            ref_block_bytes: string;
-            ref_block_hash: string;
-            expiration: number;
-            timestamp: number;
-            /** 交易备注，必须为hex格式 */
-            data?: string;
-        };
+        // type TransactionRawData = {
+        //     contract: {
+        //         parameter: {
+        //             value: { amount: number; owner_address: string; to_address: string };
+        //             type_url: string;
+        //         };
+        //         type: string;
+        //     }[];
+        //     ref_block_bytes: string;
+        //     ref_block_hash: string;
+        //     expiration: number;
+        //     timestamp: number;
+        //     /** 交易备注，必须为hex格式 */
+        //     data?: string;
+        // };
 
-        type TRC20TransactionRawData = {
-            contract: {
-                parameter: {
-                    value: {
-                        data: string;
-                        owner_address: string;
-                        contract_address: string;
-                    };
-                    type_url: string;
-                };
-                type: string;
-            }[];
-            ref_block_bytes: string;
-            ref_block_hash: string;
-            expiration: number;
-            timestamp: number;
-            fee_limit: number;
-            /** 交易备注，必须为hex格式 */
-            data?: string;
-        };
+        // type TRC20TransactionRawData = {
+        //     contract: {
+        //         parameter: {
+        //             value: {
+        //                 data: string;
+        //                 owner_address: string;
+        //                 contract_address: string;
+        //             };
+        //             type_url: string;
+        //         };
+        //         type: string;
+        //     }[];
+        //     ref_block_bytes: string;
+        //     ref_block_hash: string;
+        //     expiration: number;
+        //     timestamp: number;
+        //     fee_limit: number;
+        //     /** 交易备注，必须为hex格式 */
+        //     data?: string;
+        // };
 
-        type TronTransation = {
-            /** 账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址 */
-            visible?: boolean;
-            /** 交易签名，签名后获得 */
-            signature?: string[];
-            /** 交易ID */
-            txID: string;
-            /** 交易json */
-            raw_data: TransactionRawData;
-            /** 交易 raw_data 通过 protobuf 序列化后的二进制，Hex格式 */
-            raw_data_hex: string;
-            ret?: { contractRet: string }[];
-        };
+        // type TronTransation = {
+        //     /** 账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址 */
+        //     visible?: boolean;
+        //     /** 交易签名，签名后获得 */
+        //     signature?: string[];
+        //     /** 交易ID */
+        //     txID: string;
+        //     /** 交易json */
+        //     raw_data: TransactionRawData;
+        //     /** 交易 raw_data 通过 protobuf 序列化后的二进制，Hex格式 */
+        //     raw_data_hex: string;
+        //     ret?: { contractRet: string }[];
+        // };
 
-        type TRC20Transation = {
-            /** 账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址 */
-            visible?: boolean;
-            /** 交易签名，签名后获得 */
-            signature?: string[];
-            /** 交易ID */
-            txID: string;
-            /** 交易json */
-            raw_data: TRC20TransactionRawData;
-            /** 交易 raw_data 通过 protobuf 序列化后的二进制，Hex格式 */
-            raw_data_hex: string;
-            ret?: { contractRet: string }[];
-        };
+        // type TRC20Transation = {
+        //     /** 账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址 */
+        //     visible?: boolean;
+        //     /** 交易签名，签名后获得 */
+        //     signature?: string[];
+        //     /** 交易ID */
+        //     txID: string;
+        //     /** 交易json */
+        //     raw_data: TRC20TransactionRawData;
+        //     /** 交易 raw_data 通过 protobuf 序列化后的二进制，Hex格式 */
+        //     raw_data_hex: string;
+        //     ret?: { contractRet: string }[];
+        // };
 
         type CreateTransactionReq = {
             /** 转账转出地址，Base58check格式 或 Hex格式 */
@@ -611,7 +611,7 @@ declare namespace BFChainWallet {
 
         type GetTransactionSignReq = {
             /** 未签名前的交易信息 */
-            transaction: TronTransation | TRC20Transation;
+            transaction: TronTransaction | Trc20Transaction;
             /** 用户私钥 */
             privateKey: string;
         };
@@ -681,7 +681,7 @@ declare namespace BFChainWallet {
             energy_used?: number;
             constant_result?: string[];
             constant_result_decode?: string;
-            transaction: TRC20Transation;
+            transaction: Trc20Transaction;
         };
 
         type TronContractParameter = {
@@ -1296,18 +1296,18 @@ declare namespace BFChainWallet {
              * 注意：从创建交易到交易广播时有时效性的，时间为60秒
              * @param req req#CreateTransactionReq
              */
-            createTransaction(req: CreateTransactionReq): Promise<TronTransation>;
+            createTransaction(req: CreateTransactionReq): Promise<TronTransaction>;
             /**
              * 使用私钥签名交易(POST)，返回签名后的Transaction
              * @param req req#GetTransactionSignReq
              */
-            getTransactionSign(req: GetTransactionSignReq): Promise<TronTransation | TRC20Transation>;
+            getTransactionSign(req: GetTransactionSignReq): Promise<TronTransaction | Trc20Transaction>;
             /**
              * 交易广播(POST)
              * @param transactionWithSign 签名后的交易信息
              */
             broadcastTransaction(
-                transactionWithSign: TronTransation | TRC20Transation,
+                transactionWithSign: TronTransaction | Trc20Transaction,
             ): Promise<BroadcastTransactionRes>;
 
             /**

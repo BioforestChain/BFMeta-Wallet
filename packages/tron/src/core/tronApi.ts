@@ -603,20 +603,20 @@ export class TronApi implements BFChainWallet.TRON.API {
         return result;
     }
 
-    async createTransaction(req: BFChainWallet.TRON.CreateTransactionReq): Promise<BFChainWallet.TRON.TronTransation> {
+    async createTransaction(req: BFChainWallet.TRON.CreateTransactionReq): Promise<BFChainWallet.TRON.TronTransaction> {
         const host = `${await this.getPeerUrl()}/wallet/createtransaction`;
         return await this.httpHelper.sendPostRequest(host, req);
     }
 
     async getTransactionSign(
         req: BFChainWallet.TRON.GetTransactionSignReq,
-    ): Promise<BFChainWallet.TRON.TronTransation | BFChainWallet.TRON.TRC20Transation> {
+    ): Promise<BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction> {
         const host = `${await this.getPeerUrl()}/wallet/gettransactionsign`;
         return await this.httpHelper.sendPostRequest(host, req);
     }
 
     async broadcastTransaction(
-        transactionWithSign: BFChainWallet.TRON.TronTransation | BFChainWallet.TRON.TRC20Transation,
+        transactionWithSign: BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction,
     ): Promise<BFChainWallet.TRON.BroadcastTransactionRes> {
         const host = `${await this.getPeerUrl()}/wallet/broadcasttransaction`;
         return await this.httpHelper.sendPostRequest(host, transactionWithSign);
