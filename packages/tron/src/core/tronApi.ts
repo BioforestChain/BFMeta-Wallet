@@ -4,8 +4,9 @@ import { TronHelper } from "./tronHelper";
 import { TronFuncionEnum } from "./constants";
 const TronWeb = require("tronweb");
 
-export const PEERS = {
+export const TRON_PEERS = {
     host: Symbol("host"),
+    headers: Symbol("headers"),
 };
 
 @Injectable()
@@ -21,17 +22,18 @@ export class TronApi implements BFChainWallet.TRON.API {
     }
 
     private async newTronWeb() {
-        // this.__tronWeb = new TronWeb({ fullHost: "https://api.trongrid.io/" });
+        this.__tronWeb = new TronWeb({ fullHost: "https://api.trongrid.io/", headers: this.headers });
         // this.__tronWeb = new TronWeb({ fullHost: "https://nile.trongrid.io" });
         /** @TODO 暂时先这样处理 */
-        const fullNodeUrl = await this.fullNodeUrl();
-        const solidityNodeUrl = await this.solidityNodeUrl();
-        const eventServerUrl = await this.eventServerUrl();
-        this.__tronWeb = new TronWeb(fullNodeUrl, solidityNodeUrl, eventServerUrl);
+        // const fullNodeUrl = await this.fullNodeUrl();
+        // const solidityNodeUrl = await this.solidityNodeUrl();
+        // const eventServerUrl = await this.eventServerUrl();
+        // this.__tronWeb = new TronWeb(fullNodeUrl, solidityNodeUrl, eventServerUrl);
     }
 
     constructor(
-        @Inject(PEERS.host) public host: BFChainWallet.HostType[],
+        @Inject(TRON_PEERS.host) public host: BFChainWallet.HostType[],
+        @Inject(TRON_PEERS.headers) public headers: BFChainWallet.HeadersType,
         public httpHelper: HttpHelper,
         public peerListHelper: PeerListHelper,
         @Inject(TatumSymbol) public tatumConfig: BFChainWallet.Config["tatum"],

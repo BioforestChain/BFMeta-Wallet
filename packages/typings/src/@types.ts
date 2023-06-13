@@ -3,7 +3,7 @@ declare namespace BFChainWallet {
         ip: string;
         port: number;
     };
-
+    type HeadersType = { [key: string]: string };
     type Config = {
         bfchain?: {
             enable: boolean;
@@ -28,16 +28,19 @@ declare namespace BFChainWallet {
         tron?: {
             enable: boolean;
             host: HostType[];
+            headers: HeadersType;
         };
         eth?: {
             enable: boolean;
             host: HostType[];
             testnet: boolean;
+            headers: HeadersType;
         };
         bsc?: {
             enable: boolean;
             host: HostType[];
             testnet: boolean;
+            headers: HeadersType;
         };
         tatum: {
             /** 这里配置成true, 将不直连节点，通过tatum连接节点。若配置为false，节点由上述三条链决定 */
