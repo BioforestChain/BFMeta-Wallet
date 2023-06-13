@@ -19,10 +19,10 @@ class DemoLogger {
     const ethApi = walletFactory.EthApi;
 
     await sleep(0);
-    // lastBlock();
+    lastBlock();
     // getGasPrice();
     // getBalance();
-    getContractBalanceAndDecimal();
+    // getContractBalanceAndDecimal();
     // commonTrans();
     // ERC20Trans();
 

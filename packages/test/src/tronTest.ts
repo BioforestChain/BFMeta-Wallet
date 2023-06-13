@@ -39,12 +39,12 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
 
     // createAccount();
     // recoverAccount();
-    addressConvert();
+    // addressConvert();
     // isAddress();
     // getAccount();
     // getAccountResources();
     // signAndVerify();
-    // getCurrentBlock();
+    getCurrentBlock();
     // getTrxBalance();
     // trxTrans();
     // trc20Trans();
@@ -73,12 +73,15 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     }
 
     async function addressConvert() {
-        const base58 = "TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh";
-        const hex = await tronApi.addressToHex(base58);
-        console.log(hex);
-        const _hex = "41edecb44919df66095ff647ec3754db2c1aa11eba";
-        const _base58 = await tronApi.addressToBase58(_hex);
-        console.log(_base58);
+        const mnemonic = "express slam merit craft victory dumb priority dog illness rail eyebrow apology";
+        const account = await tronApi.recoverAccount(mnemonic);
+        console.log(account);
+        // const base58 = "TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh";
+        // const hex = await tronApi.addressToHex(base58);
+        // console.log(hex);
+        // const _hex = "41edecb44919df66095ff647ec3754db2c1aa11eba";
+        // const _base58 = await tronApi.addressToBase58(_hex);
+        // console.log(_base58);
     }
 
     async function isAddress() {

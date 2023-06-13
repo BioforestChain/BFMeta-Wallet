@@ -10,6 +10,7 @@ import {
     TRANS_INPUT_PREFIX,
 } from "@bfmeta/wallet-helpers";
 import Web3 from "web3";
+import Web3HttpProvider from "web3-providers-http";
 import { BSC_BEP20_ABI } from "./constants";
 import * as ethereumjs from "ethereumjs-tx";
 import ethereumcommon from "ethereumjs-common";
@@ -19,6 +20,7 @@ import type { Log, Transaction, TransactionReceipt } from "web3-core";
 export const BSC_PEERS = {
     host: Symbol("host"),
     testnet: Symbol("testnet"),
+    headers: Symbol("headers"),
 };
 @Injectable()
 export class BscApi implements BFChainWallet.BSC.API {
@@ -31,7 +33,14 @@ export class BscApi implements BFChainWallet.BSC.API {
         }
     }
     private async newWeb3() {
-        this.__web3 = new Web3(await this.getPeerUrl());
+        const headers: { name: string; value: string }[] = [];
+        for (const name in this.headers) {
+            headers.push({ name, value: this.headers[name] });
+        }
+        const provider = new Web3HttpProvider(await this.getPeerUrl(), {
+            headers,
+        });
+        this.__web3 = new Web3(headers.length > 0 ? provider : await this.getPeerUrl());
     }
 
     private __bscMainnetCommon = ethereumcommon.forCustomChain(
@@ -55,6 +64,7 @@ export class BscApi implements BFChainWallet.BSC.API {
     constructor(
         @Inject(BSC_PEERS.host) public host: BFChainWallet.HostType[],
         @Inject(BSC_PEERS.testnet) public testnet: boolean,
+        @Inject(BSC_PEERS.headers) public headers: BFChainWallet.HeadersType,
         public httpHelper: HttpHelper,
         public peerListHelper: PeerListHelper,
         @Inject(TatumSymbol) public tatumConfig: BFChainWallet.Config["tatum"],

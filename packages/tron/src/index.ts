@@ -1,17 +1,15 @@
 import "@bfmeta/wallet-typings";
 import "./@types";
 import { PeerListHelperParmas, TatumSymbol } from "@bfmeta/wallet-helpers";
-import { TronApi, PEERS } from "./core/tronApi";
+import { TronApi, TRON_PEERS } from "./core/tronApi";
 import { Resolve, ModuleStroge } from "@bnqkl/util-node";
 import { CustomerPeerCheckHelper } from "./core";
-export const TronWalletFactory = (
-    config: BFChainWallet.Config["tron"],
-    parentMap?: ModuleStroge,
-) => {
+export const TronWalletFactory = (config: BFChainWallet.Config["tron"], parentMap?: ModuleStroge) => {
     if (config && config.enable) {
         const moduleMap = new ModuleStroge(
             [
-                [PEERS.host, config.host],
+                [TRON_PEERS.host, config.host],
+                [TRON_PEERS.headers, config.headers],
                 [PeerListHelperParmas.checkInterval, 30 * 1000 /**config */],
             ],
             parentMap,
