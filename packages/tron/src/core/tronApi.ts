@@ -22,8 +22,15 @@ export class TronApi implements BFChainWallet.TRON.API {
     }
 
     private async newTronWeb() {
-        this.__tronWeb = new TronWeb({ fullHost: "https://api.trongrid.io/", headers: this.headers });
+        const headers: { name: string; value: string }[] = [];
+        for (const name in this.headers) {
+            headers.push({ name, value: this.headers[name] });
+        }
+        const url = await this.getPeerUrl();
+        this.__tronWeb = new TronWeb({ fullHost: url, headers: this.headers });
+        // this.__tronWeb = new TronWeb({ fullHost: "https://api.trongrid.io/", headers: this.headers });
         // this.__tronWeb = new TronWeb({ fullHost: "https://nile.trongrid.io" });
+
         /** @TODO 暂时先这样处理 */
         // const fullNodeUrl = await this.fullNodeUrl();
         // const solidityNodeUrl = await this.solidityNodeUrl();
@@ -114,11 +121,8 @@ export class TronApi implements BFChainWallet.TRON.API {
      * account or null if it does not exist.
      */
     async getAccount(address: string): Promise<BFChainWallet.TRON.TronAccount | null> {
-        const account: BFChainWallet.TRON.TronWebAccount = await this.tronWeb.trx
-            .getAccount(address)
-            .catch((err: any) => {
-                throw new Error(err);
-            });
+        const account: BFChainWallet.TRON.TronWebAccount = await this.tronWeb.trx.getAccount(address);
+
         if (account && account.address) {
             const tronAccount: BFChainWallet.TRON.TronAccount = {
                 address: {
@@ -672,17 +676,9 @@ export class TronApi implements BFChainWallet.TRON.API {
     }
 
     private async getPeerUrl() {
-        if (this.tatumConfig.enable) {
-            return `${this.tatumConfig.host}/TRON/${this.tatumConfig.apiKey}`;
-        } else {
-            const p = await this.peerListHelper.getEnableRandom();
-            let url = `http://${p.ip}`;
-            if (p.port) {
-                url += `:${p.port}`;
-            }
-
-            return url;
-        }
+        const p = await this.peerListHelper.getEnableRandom();
+        return `http://${p.ip}:${p.port}`;
+        // return this.getTatumNodeUrl();
     }
 
     private async fullNodeUrl() {

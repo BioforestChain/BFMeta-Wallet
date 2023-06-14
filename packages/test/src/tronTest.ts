@@ -17,6 +17,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     moduleMap.set(LoggerSymbol, DemoLogger);
     const walletFactory = new WalletFactory(config, moduleMap);
     const tronApi = walletFactory.TronApi;
+    await sleep(0);
     const address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh = "THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh";
     const privateKey_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh =
         "F714D4A373FAC3CCB331A466EA4022FBEF1F5357536E0A219DC32427F3B1B0C5";
@@ -41,18 +42,18 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     // recoverAccount();
     // addressConvert();
     // isAddress();
-    // getAccount();
+    getAccount();
     // getAccountResources();
     // signAndVerify();
-    getCurrentBlock();
-    // getTrxBalance();
+    // getCurrentBlock();
+    getTrxBalance();
     // trxTrans();
     // trc20Trans();
     // getContractBalance();
     // getContractDecimal();
     // getTrans();
-    // getTransInfo();
-    // getTransReceipt();
+    getTransInfo();
+    getTransReceipt();
 
     async function createAccount() {
         const needMnemonic = true;
@@ -176,7 +177,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     async function getTrans() {
         const contractTxId = "e473be87320b182c4da27497b6a8baff8c5de721bef1c9ba413a3726466cef7d";
         const txId = "f6fc748c8a2d2fd39a25aae99ddcdc49d02a346557d6901ce3264123bdf80283";
-        const result = await tronApi.getTrans("30ffc85b70b47d759c784b412d17977e77af386572ff9ccd9bc797802c80de0a");
+        const result = await tronApi.getTrans(contractTxId);
         console.log("====== 根据txid查询交易体 ======");
         console.log(result);
         console.log("====== 交易Json获取交易Body ======");
