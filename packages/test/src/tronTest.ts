@@ -42,17 +42,17 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     // recoverAccount();
     // addressConvert();
     // isAddress();
-    getAccount();
+    // getAccount();
     // getAccountResources();
     // signAndVerify();
     // getCurrentBlock();
-    getTrxBalance();
+    // getTrxBalance();
     // trxTrans();
     // trc20Trans();
     // getContractBalance();
     // getContractDecimal();
     // getTrans();
-    getTransInfo();
+    // getTransInfo();
     getTransReceipt();
 
     async function createAccount() {
@@ -196,7 +196,8 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     async function getTransReceipt() {
         const contractTxId = "e473be87320b182c4da27497b6a8baff8c5de721bef1c9ba413a3726466cef7d";
         const txId = "f6fc748c8a2d2fd39a25aae99ddcdc49d02a346557d6901ce3264123bdf80283";
-        const result = await tronApi.getTransReceipt(contractTxId);
+        const faileTxId = "70bf4e63a9dffe5daa6d0e1617a349c0279ce1513528f9ad06e253fb75b86157";
+        const result = await tronApi.getTransReceipt(txId);
         console.log("====== 根据txid查询交易 ======");
         console.log(result);
     }

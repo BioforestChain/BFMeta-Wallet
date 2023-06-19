@@ -403,11 +403,14 @@ export class TronApi implements BFChainWallet.TRON.API {
                 this.getTransBody(confirmTrans),
                 this.getTransInfo(txId),
             ]);
+            // 判断交易是否成功
+            const status = confirmTrans.ret?.[0]?.contractRet === "SUCCESS" || false;
             if (transInfoRes) {
                 const { from, to, amount } = transBody;
                 const { txId, blockNumber, blockTimeStamp, contractAddress, fee, netUsage, netFee, energyFee } =
                     transInfoRes;
                 const receipt: BFChainWallet.TRON.TronTransReceipt = {
+                    status,
                     txId,
                     blockNumber,
                     blockTimeStamp,

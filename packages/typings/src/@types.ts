@@ -1007,6 +1007,8 @@ declare namespace BFChainWallet {
         };
 
         type TronTransReceipt = {
+            /** 状态：true 成功，false 失败 */
+            status: boolean;
             /** 交易ID */
             txId: string;
             /** 区块高度 */
