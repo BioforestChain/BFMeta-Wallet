@@ -35,7 +35,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     // transaction();
     // trc20Transaction();
     // getCommonTransHistory();
-    // getTrc20TransHistory();
+    getTrc20TransHistory();
     // getAccountBalance();
 
     // createAccount();
@@ -53,7 +53,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     // getContractDecimal();
     // getTrans();
     // getTransInfo();
-    getTransReceipt();
+    // getTransReceipt();
 
     async function createAccount() {
         const needMnemonic = true;

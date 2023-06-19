@@ -548,6 +548,11 @@ export class TronApi implements BFChainWallet.TRON.API {
 
     async getTrc20TransHistory(req: BFChainWallet.TRON.TronTransHistoryReq): Promise<any> {
         const [host, headers] = await Promise.all([this.getApiScanUrl(), this.getApiHeaders()]);
+        if (req.contract_address) {
+            // 这里的合约地址必须转换为 base58格式
+            const base58 = await this.addressToBase58(req.contract_address);
+            req.contract_address = base58;
+        }
         const result: BFChainWallet.TRON.Trc20TransHistoryResult = await this.httpHelper.sendApiGetRequest(
             `${host}/v1/accounts/${req.address}/transactions/trc20`,
             req,
