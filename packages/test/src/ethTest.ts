@@ -100,8 +100,10 @@ class DemoLogger {
         };
 
         const signTx = { trans: txObjcet, privateKey: privateKey };
-        const rawTransaction = await ethApi.signTransaction(signTx);
-        const txHash = await ethApi.sendSignedTransaction(rawTransaction);
+        const signTrans = await ethApi.signTransaction(signTx);
+        console.log(`signTrans : ${JSON.stringify(signTrans, null, 2)}`);
+
+        const txHash = await ethApi.sendSignedTransaction(signTrans.rawTrans);
         console.log("txHash : %s", txHash);
     }
 
@@ -141,9 +143,9 @@ class DemoLogger {
         };
 
         const signTx = { trans: contracTxObjcet, privateKey: privateKey };
-        const rawTransaction = await ethApi.signTransaction(signTx);
-        console.log("rawTransaction : %s", rawTransaction);
-        const txHash = await ethApi.sendSignedTransaction(rawTransaction);
+        const signTrans = await ethApi.signTransaction(signTx);
+        console.log(`signTrans : ${JSON.stringify(signTrans, null, 2)}`);
+        const txHash = await ethApi.sendSignedTransaction(signTrans.rawTrans);
         console.log("txHash : %s", txHash);
         // const tx = ethApi.getTransactionFromSignature(rawTransaction);
         // console.log(tx);

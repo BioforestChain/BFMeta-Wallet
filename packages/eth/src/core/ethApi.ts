@@ -14,7 +14,7 @@ import Web3HttpProvider from "web3-providers-http";
 import { ETH_ERC20_ABI } from "./constants";
 import * as ethereumjs from "ethereumjs-tx";
 import type { AbiItem, AbiInput } from "web3-utils";
-import type { Log, Transaction, TransactionReceipt } from "web3-core";
+import type { Log, Transaction, TransactionReceipt, SignedTransaction } from "web3-core";
 export const ETH_PEERS = {
     host: Symbol("host"),
     testnet: Symbol("testnet"),
@@ -204,17 +204,25 @@ export class EthApi implements BFChainWallet.ETH.API {
         return await contract.methods.transfer(to, amount).encodeABI();
     }
 
-    async signTransaction(req: BFChainWallet.ETH.SignTransactionReq): Promise<string> {
-        const signedTransaction = await this.web3.eth.accounts.signTransaction(req.trans, req.privateKey, (err) => {
-            if (err) {
-                // 抛出错误信息
-                throw new Error(err.message);
-            }
-        });
-        if (signedTransaction && signedTransaction.rawTransaction) {
-            return signedTransaction.rawTransaction;
+    async signTransaction(req: BFChainWallet.ETH.SignTransactionReq): Promise<BFChainWallet.ETH.SignTransactionRes> {
+        const signedTrans: SignedTransaction = await this.web3.eth.accounts.signTransaction(
+            req.trans,
+            req.privateKey,
+            (err, signedTransaction) => {
+                if (err) {
+                    // 抛出错误信息
+                    throw new Error(err.message);
+                }
+            },
+        );
+        if (signedTrans && signedTrans.rawTransaction && signedTrans.transactionHash) {
+            const res: BFChainWallet.ETH.SignTransactionRes = {
+                rawTrans: signedTrans.rawTransaction,
+                txHash: signedTrans.transactionHash,
+            };
+            return res;
         } else {
-            throw new Error(`signTransaction failed: ${signedTransaction}`);
+            throw new Error(`signedTrans failed: ${signedTrans}`);
         }
     }
 

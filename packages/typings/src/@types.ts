@@ -88,6 +88,11 @@ declare namespace BFChainWallet {
             privateKey: string;
         };
 
+        type SignTransactionRes = {
+            rawTrans: string;
+            txHash: string;
+        };
+
         type BaseGas = {
             generalGas: number;
             contractGas: number;
@@ -315,9 +320,10 @@ declare namespace BFChainWallet {
 
             /**
              * 以太坊签名交易数据
-             * @param req 待签名的交易数据
+             * @param {SignTransactionReq} req 待签名的交易数据
+             * @return {SignTransactionRes} res 签名数据
              */
-            signTransaction(req: SignTransactionReq): Promise<string>;
+            signTransaction(req: SignTransactionReq): Promise<SignTransactionRes>;
 
             /**
              * 以太坊获取合约交易中的 data 数据信息

@@ -163,8 +163,10 @@ class DemoLogger {
         };
 
         const signTx = { trans: txObjcet, privateKey: privateKey };
-        const rawTransaction = await bscApi.signTransaction(signTx);
-        const txHash = await bscApi.sendSignedTransaction(rawTransaction);
+        const signTrans = await bscApi.signTransaction(signTx);
+        console.log(`signTrans : ${JSON.stringify(signTrans, null, 2)}`);
+
+        const txHash = await bscApi.sendSignedTransaction(signTrans.rawTrans);
         console.log("txHash : %s", txHash);
     }
 
@@ -204,9 +206,9 @@ class DemoLogger {
         };
 
         const signTx = { trans: contracTxObjcet, privateKey: privateKey };
-        const rawTransaction = await bscApi.signTransaction(signTx);
-        console.log("rawTransaction : %s", rawTransaction);
-        const txHash = await bscApi.sendSignedTransaction(rawTransaction);
+        const signTrans = await bscApi.signTransaction(signTx);
+        console.log(`signTrans : ${JSON.stringify(signTrans, null, 2)}`);
+        const txHash = await bscApi.sendSignedTransaction(signTrans.rawTrans);
         console.log("txHash : %s", txHash);
         // const tx = bscApi.getTransactionFromSignature(rawTransaction);
         // // console.log(tx);
