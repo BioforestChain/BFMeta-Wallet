@@ -231,12 +231,12 @@ export class TronApi implements BFChainWallet.TRON.API {
             { type: "address", value: to },
             { type: "uint256", value: amount },
         ];
-        // const options = {
-        //     feeLimit: 100000000,
-        //     callValue: 0,
-        //     // tokenValue: 10,
-        //     // tokenId: 1000001,
-        // };
+        const options = {
+            feeLimit: 100000000,
+            callValue: 0,
+            // tokenValue: 10,
+            // tokenId: 1000001,
+        };
         const result: BFChainWallet.TRON.SendTrc20Result = await this.tronWeb.transactionBuilder.triggerSmartContract(
             contractAddress,
             TronFuncionEnum.TRANSFER,
