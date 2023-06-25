@@ -18,41 +18,36 @@ export abstract class _BaseApi {
         magic: string,
         assetType: string,
     ): Promise<BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAddressBalanceResp>> {
-        const result = await this.httpHelper.sendGetRequest<any>(
-            `${this.getBrowserUrl()}/public/accountBalance`,
-            { address, magic, assetType },
-        );
+        const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/public/accountBalance`, {
+            address,
+            magic,
+            assetType,
+        });
         if (result.success) {
             return { success: true, result: { amount: result.data } };
         } else {
-            throw new Error(
-                result.error?.message
-                    ? result.error.message
-                    : `${this.browser} getAddressBalance error`,
-            );
+            throw new Error(result.error?.message ? result.error.message : `${this.browser} getAddressBalance error`);
         }
     }
 
     async getAccountInfo(
         address: string,
-    ): Promise<
-        BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAccountInfoResp | null>
-    > {
-        const result = await this.httpHelper.sendGetRequest<any>(
-            `${this.getBrowserUrl()}/public/accountsInfo`,
-            { address },
-        );
+    ): Promise<BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAccountInfoResp | null>> {
+        const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/public/accountsInfo`, {
+            address,
+        });
         if (result.success) {
             if (result.data) {
+                const { address, publicKey, secondPublicKey, isDelegate, isAcceptVote, accountStatus } = result.data;
                 return {
                     success: true,
                     result: {
-                        address: result.data.address,
-                        publicKey: result.data.publicKey,
-                        secondPublicKey: result.data.secondPublicKey,
-                        isDelegate: result.data.isDelegate,
-                        isAcceptVote: result.data.isAcceptVote,
-                        accountStatus: result.data.accountStatus,
+                        address,
+                        publicKey,
+                        secondPublicKey,
+                        isDelegate,
+                        isAcceptVote,
+                        accountStatus,
                     },
                 };
             } else {
@@ -62,29 +57,18 @@ export abstract class _BaseApi {
                 };
             }
         } else {
-            throw new Error(
-                result.error?.message
-                    ? result.error.message
-                    : `${this.browser} getAccountInfo error`,
-            );
+            throw new Error(result.error?.message ?? `${this.browser} getAccountInfo error`);
         }
     }
 
     async getBlockAverageFee(): Promise<
         BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetBlockAverageFeeResp>
     > {
-        const result = await this.httpHelper.sendGetRequest<any>(
-            `${this.getBrowserUrl()}/public/blockAverageFee`,
-            {},
-        );
+        const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/public/blockAverageFee`, {});
         if (result.success) {
             return { success: true, result: { blockAveFee: result.data } };
         } else {
-            throw new Error(
-                result.error?.message
-                    ? result.error.message
-                    : `${this.browser} getBlockAverageFee error`,
-            );
+            throw new Error(result.error?.message ? result.error.message : `${this.browser} getBlockAverageFee error`);
         }
     }
 
@@ -99,9 +83,7 @@ export abstract class _BaseApi {
             return { success: true, result: result.data };
         } else {
             throw new Error(
-                result.error?.message
-                    ? result.error.message
-                    : `${this.browser} addressAccountsAssets error`,
+                result.error?.message ? result.error.message : `${this.browser} addressAccountsAssets error`,
             );
         }
     }
@@ -111,34 +93,28 @@ export abstract class _BaseApi {
         pageSize: number,
         assetType?: string,
     ): Promise<BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAssetsResp>> {
-        const result = await this.httpHelper.sendGetRequest<any>(
-            `${this.getBrowserUrl()}/assets/queryAssets`,
-            { page, pageSize, assetType },
-        );
+        const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/assets/queryAssets`, {
+            page,
+            pageSize,
+            assetType,
+        });
         if (result.success) {
             return { success: true, result: result.data };
         } else {
-            throw new Error(
-                result.error?.message ? result.error.message : `${this.browser} getAssets error`,
-            );
+            throw new Error(result.error?.message ? result.error.message : `${this.browser} getAssets error`);
         }
     }
 
     async getAssetDetails(
         assetType: string,
     ): Promise<BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAssetDetailsResp>> {
-        const result = await this.httpHelper.sendGetRequest<any>(
-            `${this.getBrowserUrl()}/assets/queryAssetDetails`,
-            { assetType },
-        );
+        const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/assets/queryAssetDetails`, {
+            assetType,
+        });
         if (result.success) {
             return { success: true, result: result.data };
         } else {
-            throw new Error(
-                result.error?.message
-                    ? result.error.message
-                    : `${this.browser} getAssetDetails error`,
-            );
+            throw new Error(result.error?.message ? result.error.message : `${this.browser} getAssetDetails error`);
         }
     }
 

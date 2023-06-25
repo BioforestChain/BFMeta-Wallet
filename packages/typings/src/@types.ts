@@ -1354,6 +1354,7 @@ declare namespace BFChainWallet {
             sourceChainMagic: string;
             applyAddress: string;
             sourceChainName: string;
+            iconUrl: string;
         };
 
         type GetAssetDetailsResp = {
@@ -1375,6 +1376,8 @@ declare namespace BFChainWallet {
             dateCreated: number;
             // 跨链字段
             sourceChainMagic: string;
+            // 图标url
+            iconUrl: string;
         };
 
         interface BASEAPI {
