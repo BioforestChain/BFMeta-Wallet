@@ -271,6 +271,13 @@ declare namespace BFChainWallet {
             contractAddress: string | null;
         };
 
+        type EthTransBodyFromSign = {
+            from: string;
+            to: string;
+            value: string;
+            contractAddress: string | null;
+        };
+
         interface API {
             /**
              * 以太坊获取最新区块信息

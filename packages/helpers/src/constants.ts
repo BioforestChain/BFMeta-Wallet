@@ -4,6 +4,8 @@ export const BscApiScanSymbol = Symbol("BscApiScanSymbol");
 export const EthApiScanSymbol = Symbol("EthApiScanSymbol");
 export const TronApiScanSymbol = Symbol("TronApiScanSymbol");
 
+/** Hex 前缀 */
+export const HEX_PREFIX: string = "0x";
 /** 交易 input 前缀 */
 export const TRANS_INPUT_PREFIX: string = "0xa9059cbb";
 

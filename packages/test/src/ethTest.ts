@@ -19,7 +19,7 @@ class DemoLogger {
     const ethApi = walletFactory.EthApi;
 
     await sleep(0);
-    lastBlock();
+    // lastBlock();
     // getGasPrice();
     // getBalance();
     // getContractBalanceAndDecimal();
@@ -31,6 +31,7 @@ class DemoLogger {
     // getTransReceipt();
     // getTransReceiptNative();
     // getTransBody();
+    getTransBodyFromSign();
 
     // getAccountBalance();
 
@@ -103,6 +104,9 @@ class DemoLogger {
         const signTrans = await ethApi.signTransaction(signTx);
         console.log(`signTrans : ${JSON.stringify(signTrans, null, 2)}`);
 
+        const tx = ethApi.getTransBodyFromSignature(signTrans.rawTrans);
+        console.log(tx);
+
         const txHash = await ethApi.sendSignedTransaction(signTrans.rawTrans);
         console.log("txHash : %s", txHash);
     }
@@ -145,6 +149,10 @@ class DemoLogger {
         const signTx = { trans: contracTxObjcet, privateKey: privateKey };
         const signTrans = await ethApi.signTransaction(signTx);
         console.log(`signTrans : ${JSON.stringify(signTrans, null, 2)}`);
+
+        const tx = ethApi.getTransBodyFromSignature(signTrans.rawTrans);
+        console.log(tx);
+
         const txHash = await ethApi.sendSignedTransaction(signTrans.rawTrans);
         console.log("txHash : %s", txHash);
         // const tx = ethApi.getTransactionFromSignature(rawTransaction);
@@ -195,5 +203,14 @@ class DemoLogger {
         const transReceipt = ethApi.getTransBody(trans);
         console.log("========= 获取交易体 =========");
         console.log(transReceipt);
+    }
+    async function getTransBodyFromSign() {
+        const commonSign =
+            "0xf8671084641f524e825208941b3b3fc528e7c65db1524aa3b74c5ce1aeb95a928405f5e100802ea0758ca8f368ac4acc8e44fef4e85b30f6b0ec7f4754e259b7c004c594161b4456a00a0e24ad304b288e560515ccc2ced4098ed5d4a34602e05851ef7ba6d05f29b6";
+        const contractSign =
+            "0xf8a80e846abacc3782877a94326c977e6efc84e512bb9c30f76e30c160ed06fb80b844a9059cbb0000000000000000000000001b3b3fc528e7c65db1524aa3b74c5ce1aeb95a9200000000000000000000000000000000000000000000000000000002540be4002da07a9f777b89f1534657a8ab8c36c8e2de0014a447e2df2b1e8e4f598ad03072d9a02405e50a66b876d74e869a6f9f87cb64992ea6d107635b64d33d59d412f32063";
+        const body = ethApi.getTransBodyFromSignature(commonSign);
+        console.log("========= 获取交易体 =========");
+        console.log(body);
     }
 })();

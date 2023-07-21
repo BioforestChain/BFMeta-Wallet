@@ -4,6 +4,7 @@ import {
     ABISupportFunctionEnum,
     ABISupportTypeEnum,
     EthApiScanSymbol,
+    HEX_PREFIX,
     HttpHelper,
     PeerListHelper,
     TatumSymbol,
@@ -338,6 +339,28 @@ export class EthApi implements BFChainWallet.ETH.API {
         return tx;
     }
 
+    getTransBodyFromSignature(signature: string): BFChainWallet.ETH.EthTransBodyFromSign | null {
+        const tx = new ethereumjs.Transaction(signature, { chain: this.testnet ? 5 : 1 });
+        if (tx) {
+            const txData = HEX_PREFIX + tx.data.toString("hex");
+            const from = HEX_PREFIX + tx.getSenderAddress().toString("hex");
+            let to = HEX_PREFIX + tx.to.toString("hex");
+            let value = this.web3.utils.hexToNumberString(HEX_PREFIX + tx.value.toString("hex"));
+            const parseInput = this.parseInput(txData);
+            const body: BFChainWallet.ETH.EthTransBodyFromSign = {
+                from,
+                to: parseInput ? parseInput.to : to,
+                value: parseInput ? parseInput.value : value,
+                contractAddress: parseInput ? to : "",
+            };
+            if (value === "0" && parseInput?.value === "0") {
+                throw new Error(`getTransBodyFromSignature error, trans value not allow '0', signature: ${signature}`);
+            }
+            return body;
+        }
+        return null;
+    }
+
     /**
      * 参数解码
      * @param {string} hex  将原生data，进行 toSring("hex") 的转换, 注意是 0x开头
@@ -421,7 +444,7 @@ export class EthApi implements BFChainWallet.ETH.API {
         }
         // 获取函数选择器
         const funcSelector = input.slice(0, 10);
-        if (TRANS_INPUT_PREFIX !== funcSelector) {
+        if (TRANS_INPUT_PREFIX !== funcSelector.toLocaleLowerCase()) {
             return null;
         }
         // 获取函数参数

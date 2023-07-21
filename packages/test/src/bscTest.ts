@@ -21,7 +21,7 @@ class DemoLogger {
     const bscApi = walletFactory.BscApi;
     await sleep(0);
 
-    latestBlock();
+    // latestBlock();
     // getGasPrice();
     // getBalance();
     // getContractBalanceAndDecimal();
@@ -32,7 +32,8 @@ class DemoLogger {
     // getTrans();
     // getTransReceipt();
     // getTransReceiptNative();
-    // getTransBody();
+    // getTransBodyFromTrans();
+    getTransBodyFromSign();
 
     // getNormalTransHistory();
     // getBep20TransHistory();
@@ -156,7 +157,7 @@ class DemoLogger {
         const txObjcet = {
             from: from,
             to: to,
-            value: "100000000",
+            value: "50000000",
             gas: generalGas,
             gasPrice: gasPrice,
             nonce: txCount,
@@ -164,7 +165,6 @@ class DemoLogger {
 
         const signTx = { trans: txObjcet, privateKey: privateKey };
         const signTrans = await bscApi.signTransaction(signTx);
-        console.log(`signTrans : ${JSON.stringify(signTrans, null, 2)}`);
 
         const txHash = await bscApi.sendSignedTransaction(signTrans.rawTrans);
         console.log("txHash : %s", txHash);
@@ -208,6 +208,10 @@ class DemoLogger {
         const signTx = { trans: contracTxObjcet, privateKey: privateKey };
         const signTrans = await bscApi.signTransaction(signTx);
         console.log(`signTrans : ${JSON.stringify(signTrans, null, 2)}`);
+
+        const tx = bscApi.getTransBodyFromSignature(signTrans.rawTrans);
+        console.log(tx);
+
         const txHash = await bscApi.sendSignedTransaction(signTrans.rawTrans);
         console.log("txHash : %s", txHash);
         // const tx = bscApi.getTransactionFromSignature(rawTransaction);
@@ -249,12 +253,23 @@ class DemoLogger {
         console.log(transReceipt);
     }
 
-    async function getTransBody() {
+    async function getTransBodyFromTrans() {
         const txHash = "0xb7c9abed35f5463a253590cdd075c516d8ba0319fd21154be75bb759d5078d74";
         const contractHash = "0x6d78c36724a94469968e7c4634dd60ca562bb9741269fb7815e7403064569591";
-        const trans = await bscApi.getTrans(contractHash);
-        const transReceipt = await bscApi.getTransBody(trans);
+        const trans = await bscApi.getTrans(txHash);
+        const transReceipt = bscApi.getTransBody(trans);
         console.log("========= 获取交易体 =========");
         console.log(transReceipt);
+    }
+
+    async function getTransBodyFromSign() {
+        const commonSign =
+            "0xf86a81ab850430e23400825208941b3b3fc528e7c65db1524aa3b74c5ce1aeb95a928402faf0808081e6a0538e9d821cd353cc1c2162a334e79f080483eecb8818e365510ed23a05a06a16a0370d70a6f95fa67e07da215b72cd348bdf2ac5a069262e604c523c43b04fc51d";
+        const contractSign =
+            "0xf8ab81f5850430e234008287629484b9b910527ad5c03a9ca831909e21e236ea7b0680b844a9059cbb000000000000000000000000aed4ef39a1005ba89bfc2a9a408f4af79625b61f000000000000000000000000000000000000000000000000000000000098968081e5a0e4034ada9a8b1f86ea67433e62528fb36365c47a7812f056df1f241e4d4202aca033ee503a2ab5bd7293c649a24a1881e584f6904552c73ab713608ce3758372fc";
+
+        const body = bscApi.getTransBodyFromSignature(contractSign);
+        console.log("========= 获取交易体 =========");
+        console.log(body);
     }
 })();

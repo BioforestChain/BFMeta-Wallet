@@ -8,6 +8,7 @@ import {
     ABISupportTypeEnum,
     ABISupportEventEnum,
     TRANS_INPUT_PREFIX,
+    HEX_PREFIX,
 } from "@bfmeta/wallet-helpers";
 import Web3 from "web3";
 import Web3HttpProvider from "web3-providers-http";
@@ -373,6 +374,30 @@ export class BscApi implements BFChainWallet.BSC.API {
         // return this.getTatumNodeUrl();
     }
 
+    getTransBodyFromSignature(signature: string): BFChainWallet.ETH.EthTransBodyFromSign | null {
+        const tx = new ethereumjs.Transaction(signature, {
+            common: this.testnet ? this.__bscTestnetCommon : this.__bscMainnetCommon,
+        });
+        if (tx) {
+            const txData = HEX_PREFIX + tx.data.toString("hex");
+            const from = HEX_PREFIX + tx.getSenderAddress().toString("hex");
+            let to = HEX_PREFIX + tx.to.toString("hex");
+            let value = this.web3.utils.hexToNumberString(HEX_PREFIX + tx.value.toString("hex"));
+            const parseInput = this.parseInput(txData);
+            const body: BFChainWallet.ETH.EthTransBodyFromSign = {
+                from,
+                to: parseInput ? parseInput.to : to,
+                value: parseInput ? parseInput.value : value,
+                contractAddress: parseInput ? to : "",
+            };
+            if (value === "0" && parseInput?.value === "0") {
+                throw new Error(`getTransBodyFromSignature error, trans value not allow '0', signature: ${signature}`);
+            }
+            return body;
+        }
+        return null;
+    }
+
     getTransactionFromSignature(signature: string) {
         const tx = new ethereumjs.Transaction(signature, {
             common: this.testnet ? this.__bscTestnetCommon : this.__bscMainnetCommon,
@@ -463,7 +488,7 @@ export class BscApi implements BFChainWallet.BSC.API {
         }
         // 获取函数选择器
         const funcSelector = input.slice(0, 10);
-        if (TRANS_INPUT_PREFIX !== funcSelector) {
+        if (TRANS_INPUT_PREFIX !== funcSelector.toLocaleLowerCase()) {
             return null;
         }
         // 获取函数参数
