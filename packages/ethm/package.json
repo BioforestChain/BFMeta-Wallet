@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-ethm",
-    "version": "1.0.53",
+    "version": "1.0.54",
     "description": " wallet ethm",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -16,8 +16,8 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet-helpers": "1.0.53",
-        "@bfmeta/wallet-typings": "1.0.53"
+        "@bfmeta/wallet-helpers": "1.0.54",
+        "@bfmeta/wallet-typings": "1.0.54"
     },
     "files": [
         "build"
