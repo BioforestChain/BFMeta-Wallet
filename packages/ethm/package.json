@@ -1,10 +1,11 @@
 {
-    "name": "@bfmeta/wallet",
+    "name": "@bfmeta/wallet-ethm",
     "version": "1.0.53",
-    "description": " wallet",
+    "description": " wallet ethm",
     "main": "build/cjs/index.js",
     "keywords": [
-        "wallet"
+        "wallet",
+        "ethm"
     ],
     "publishConfig": {
         "access": "public",
@@ -15,17 +16,8 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet-bfchain": "1.0.53",
-        "@bfmeta/wallet-bfm": "1.0.53",
-        "@bfmeta/wallet-bsc": "1.0.53",
-        "@bfmeta/wallet-ccchain": "1.0.53",
-        "@bfmeta/wallet-eth": "1.0.53",
-        "@bfmeta/wallet-ethm": "1.0.53",
         "@bfmeta/wallet-helpers": "1.0.53",
-        "@bfmeta/wallet-pmchain": "1.0.53",
-        "@bfmeta/wallet-tron": "1.0.53",
-        "@bfmeta/wallet-typings": "1.0.53",
-        "@bnqkl/util-node": "^1.1.3"
+        "@bfmeta/wallet-typings": "1.0.53"
     },
     "files": [
         "build"

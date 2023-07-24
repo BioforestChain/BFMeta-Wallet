@@ -25,6 +25,11 @@ declare namespace BFChainWallet {
             host: HostType[];
             browserPath?: string;
         };
+        ethm?: {
+            enable: boolean;
+            host: HostType[];
+            browserPath?: string;
+        };
         tron?: {
             enable: boolean;
             host: HostType[];

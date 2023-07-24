@@ -8,16 +8,12 @@ import { BFChainApi, BFChainWalletFactory } from "@bfmeta/wallet-bfchain";
 import { CCChainApi, CCChainWalletFactory } from "@bfmeta/wallet-ccchain";
 import { BfmApi, BFMWalletFactory } from "@bfmeta/wallet-bfm";
 import { PMChainApi, PMChainWalletFactory } from "@bfmeta/wallet-pmchain";
+import { ETHMApi, ETHMWalletFactory } from "@bfmeta/wallet-ethm";
 import { TronApi, TronWalletFactory } from "@bfmeta/wallet-tron";
 import type { ModuleStroge } from "@bnqkl/util-node";
 import { EthApi, EthWalletFactory } from "@bfmeta/wallet-eth";
 import { BscApi, BscWalletFactory } from "@bfmeta/wallet-bsc";
-import {
-    BscApiScanSymbol,
-    EthApiScanSymbol,
-    TatumSymbol,
-    TronApiScanSymbol,
-} from "@bfmeta/wallet-helpers";
+import { BscApiScanSymbol, EthApiScanSymbol, TatumSymbol, TronApiScanSymbol } from "@bfmeta/wallet-helpers";
 // export * from "@bfmeta/wallet-test";
 
 export class WalletFactory {
@@ -25,6 +21,7 @@ export class WalletFactory {
     private __CCChainApi: CCChainApi | undefined;
     private __BFMApi: BfmApi | undefined;
     private __PMChainApi: PMChainApi | undefined;
+    private __ETHMChainApi: ETHMApi | undefined;
     private __TronApi: TronApi | undefined;
     private __EthApi: EthApi | undefined;
     private __BscApi: BscApi | undefined;
@@ -59,6 +56,14 @@ export class WalletFactory {
         }
     }
 
+    get ETHMChainApi() {
+        if (this.__ETHMChainApi) {
+            return this.__ETHMChainApi;
+        } else {
+            throw new Error(`PMChainApi is not init`);
+        }
+    }
+
     get TronApi() {
         if (this.__TronApi) {
             return this.__TronApi;
@@ -84,7 +89,7 @@ export class WalletFactory {
     }
 
     constructor(config: BFChainWallet.Config, moduleMap?: ModuleStroge) {
-        const { bfchain, ccchain, bfm, pmchain, tron, eth, bsc } = config;
+        const { bfchain, ccchain, bfm, pmchain, ethm, tron, eth, bsc } = config;
         if (moduleMap) {
             moduleMap.set(TatumSymbol, config.tatum);
             moduleMap.set(BscApiScanSymbol, config.bscApiScan);
@@ -102,6 +107,9 @@ export class WalletFactory {
         }
         if (pmchain && pmchain.enable) {
             this.__PMChainApi = PMChainWalletFactory(pmchain, moduleMap);
+        }
+        if (ethm && ethm.enable) {
+            this.__ETHMChainApi = ETHMWalletFactory(ethm, moduleMap);
         }
         if (tron && tron.enable) {
             this.__TronApi = TronWalletFactory(tron, moduleMap);

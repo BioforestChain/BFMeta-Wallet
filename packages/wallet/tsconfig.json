@@ -21,6 +21,9 @@
             "path": "../eth/tsconfig.json"
         },
         {
+            "path": "../ethm/tsconfig.json"
+        },
+        {
             "path": "../helpers/tsconfig.json"
         },
         {
