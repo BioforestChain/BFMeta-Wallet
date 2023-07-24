@@ -12,5 +12,5 @@
             "path": "../typings/tsconfig.json"
         }
     ],
-    "files": ["src/core/ethmApi.ts", "src/core/index.ts", "src/index.ts"]
+    "files": ["src/@types.ts", "src/core/ethmApi.ts", "src/core/index.ts", "src/index.ts"]
 }
