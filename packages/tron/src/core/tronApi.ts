@@ -1,3 +1,4 @@
+import type {} from "@bfmeta/wallet-helpers";
 import { Inject, Injectable } from "@bnqkl/util-node";
 import { HttpHelper, PeerListHelper, TatumSymbol, TronApiScanSymbol } from "@bfmeta/wallet-helpers";
 import { TronHelper } from "./tronHelper";

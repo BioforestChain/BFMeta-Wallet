@@ -10,7 +10,6 @@
         }
     ],
     "files": [
-        "src/@types.ts",
         "src/core/bscApi.ts",
         "src/core/bscHealthCheckHelper.ts",
         "src/core/constants.ts",

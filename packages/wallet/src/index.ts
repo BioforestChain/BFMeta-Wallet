@@ -1,14 +1,6 @@
-import "@bfmeta/wallet-typings";
-
-import "./@types";
-
+import type {} from "@bfmeta/wallet-typings";
 export * from "@bfmeta/wallet-helpers";
-
-import { BFChainApi, BFChainWalletFactory } from "@bfmeta/wallet-bfchain";
-import { CCChainApi, CCChainWalletFactory } from "@bfmeta/wallet-ccchain";
-import { BfmApi, BFMWalletFactory } from "@bfmeta/wallet-bfm";
-import { PMChainApi, PMChainWalletFactory } from "@bfmeta/wallet-pmchain";
-import { ETHMApi, ETHMWalletFactory } from "@bfmeta/wallet-ethm";
+import { BCFWalletFactory } from "@bfmeta/wallet-bcf";
 import { TronApi, TronWalletFactory } from "@bfmeta/wallet-tron";
 import type { ModuleStroge } from "@bnqkl/util-node";
 import { EthApi, EthWalletFactory } from "@bfmeta/wallet-eth";
@@ -17,52 +9,9 @@ import { BscApiScanSymbol, EthApiScanSymbol, TatumSymbol, TronApiScanSymbol } fr
 // export * from "@bfmeta/wallet-test";
 
 export class WalletFactory {
-    private __BFChainApi: BFChainApi | undefined;
-    private __CCChainApi: CCChainApi | undefined;
-    private __BFMApi: BfmApi | undefined;
-    private __PMChainApi: PMChainApi | undefined;
-    private __ETHMChainApi: ETHMApi | undefined;
     private __TronApi: TronApi | undefined;
     private __EthApi: EthApi | undefined;
     private __BscApi: BscApi | undefined;
-    get BFChainApi() {
-        if (this.__BFChainApi) {
-            return this.__BFChainApi;
-        } else {
-            throw new Error(`BFChainApi is not init`);
-        }
-    }
-    get CCChainApi() {
-        if (this.__CCChainApi) {
-            return this.__CCChainApi;
-        } else {
-            throw new Error(`CCChainApi is not init`);
-        }
-    }
-
-    get BFMApi() {
-        if (this.__BFMApi) {
-            return this.__BFMApi;
-        } else {
-            throw new Error(`BFMApi is not init`);
-        }
-    }
-
-    get PMChainApi() {
-        if (this.__PMChainApi) {
-            return this.__PMChainApi;
-        } else {
-            throw new Error(`PMChainApi is not init`);
-        }
-    }
-
-    get ETHMChainApi() {
-        if (this.__ETHMChainApi) {
-            return this.__ETHMChainApi;
-        } else {
-            throw new Error(`PMChainApi is not init`);
-        }
-    }
 
     get TronApi() {
         if (this.__TronApi) {
@@ -88,29 +37,15 @@ export class WalletFactory {
         }
     }
 
-    constructor(config: BFChainWallet.Config, moduleMap?: ModuleStroge) {
-        const { bfchain, ccchain, bfm, pmchain, ethm, tron, eth, bsc } = config;
+    constructor(public config: BFChainWallet.Config, public moduleMap?: ModuleStroge) {
+        const { tron, eth, bsc } = config;
         if (moduleMap) {
             moduleMap.set(TatumSymbol, config.tatum);
             moduleMap.set(BscApiScanSymbol, config.bscApiScan);
             moduleMap.set(EthApiScanSymbol, config.ethApiScan);
             moduleMap.set(TronApiScanSymbol, config.tronApiScan);
         }
-        if (bfchain && bfchain.enable) {
-            this.__BFChainApi = BFChainWalletFactory(bfchain, moduleMap);
-        }
-        if (ccchain && ccchain.enable) {
-            this.__CCChainApi = CCChainWalletFactory(ccchain, moduleMap);
-        }
-        if (bfm && bfm.enable) {
-            this.__BFMApi = BFMWalletFactory(bfm, moduleMap);
-        }
-        if (pmchain && pmchain.enable) {
-            this.__PMChainApi = PMChainWalletFactory(pmchain, moduleMap);
-        }
-        if (ethm && ethm.enable) {
-            this.__ETHMChainApi = ETHMWalletFactory(ethm, moduleMap);
-        }
+
         if (tron && tron.enable) {
             this.__TronApi = TronWalletFactory(tron, moduleMap);
         }
@@ -120,5 +55,9 @@ export class WalletFactory {
         if (bsc && bsc.enable) {
             this.__BscApi = BscWalletFactory(bsc, moduleMap);
         }
+    }
+
+    generateBCFApi(node: BFChainWallet.WalletNode) {
+        return BCFWalletFactory(node);
     }
 }

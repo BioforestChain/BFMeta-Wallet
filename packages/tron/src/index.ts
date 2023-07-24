@@ -1,5 +1,5 @@
-import "@bfmeta/wallet-typings";
-import "./@types";
+import type {} from "@bfmeta/wallet-typings";
+import type {} from "@bfmeta/wallet-helpers";
 import { PeerListHelperParmas, TatumSymbol } from "@bfmeta/wallet-helpers";
 import { TronApi, TRON_PEERS } from "./core/tronApi";
 import { Resolve, ModuleStroge } from "@bnqkl/util-node";

@@ -1,11 +1,11 @@
 {
-    "name": "@bfmeta/wallet-pmchain",
-    "version": "1.0.57",
-    "description": " wallet pmchain",
+    "name": "@bfmeta/wallet-bcf",
+    "version": "1.0.56",
+    "description": " wallet bcf",
     "main": "build/cjs/index.js",
     "keywords": [
         "wallet",
-        "pmchain"
+        "bcf"
     ],
     "publishConfig": {
         "access": "public",
@@ -23,5 +23,5 @@
         "build"
     ],
     "module": "build/esm/index.js",
-    "gitHead": "e077e21a5a1dfdb5038e69bba5849829fdefad6e"
+    "gitHead": "56ceedbe02494edcdfdf9e1bf72841c43d630ceb"
 }

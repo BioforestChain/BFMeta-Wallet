@@ -1,3 +1,4 @@
+import type {} from "@bfmeta/wallet-typings";
 import { ABISupportFunctionEnum, WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
 import { ETH_TEST_USDT_ABI } from "@bfmeta/wallet-eth";
