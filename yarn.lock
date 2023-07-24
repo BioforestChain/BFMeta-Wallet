@@ -50,46 +50,6 @@
   dependencies:
     tslib "^2.4.1"
 
-"@bfmeta/wallet-bfchain@1.0.57":
-  version "1.0.57"
-  resolved "https://registry.yarnpkg.com/@bfmeta/wallet-bfchain/-/wallet-bfchain-1.0.57.tgz#932698628d03e41221c233880d3ba6041df30717"
-  integrity sha512-8qCjPrgoIuF8aVq1X4S5/sbGxep3N51ygs1j6kISTV/sk+v9zixf4H87NZUgV9tlKe4zyNB2ZpgnSkXfeYRCzg==
-  dependencies:
-    "@bfmeta/wallet-helpers" "1.0.57"
-    "@bfmeta/wallet-typings" "1.0.57"
-
-"@bfmeta/wallet-bfm@1.0.57":
-  version "1.0.57"
-  resolved "https://registry.yarnpkg.com/@bfmeta/wallet-bfm/-/wallet-bfm-1.0.57.tgz#c301111fabd992af127a7873c8a53875ffdf4b87"
-  integrity sha512-l3uBgw9n7+DOoHeG1gcNLWX7h2nJIs4Fsl8AdUNM4SrUjD82pH0ceSn/mM9WQCTwI6CvQtyf12s2WP2uFDYqgQ==
-  dependencies:
-    "@bfmeta/wallet-helpers" "1.0.57"
-    "@bfmeta/wallet-typings" "1.0.57"
-
-"@bfmeta/wallet-ccchain@1.0.57":
-  version "1.0.57"
-  resolved "https://registry.yarnpkg.com/@bfmeta/wallet-ccchain/-/wallet-ccchain-1.0.57.tgz#8180bb816f72b0bca36ef7cab884c307c9c4ca70"
-  integrity sha512-Fak51MU8E77YwpN5q6RPvSXvtqev+InMU6kgb+2ZO1TQokFtXV3Wyp3xqSQ3+2aSxjmEPKAq0MyeQTzLS65I/A==
-  dependencies:
-    "@bfmeta/wallet-helpers" "1.0.57"
-    "@bfmeta/wallet-typings" "1.0.57"
-
-"@bfmeta/wallet-ethm@1.0.57":
-  version "1.0.57"
-  resolved "https://registry.yarnpkg.com/@bfmeta/wallet-ethm/-/wallet-ethm-1.0.57.tgz#3018f022acaec5353d90eab1d93bbe894f27f5ca"
-  integrity sha512-jrDwWbuW4uTdzOf0wgs9fZzQfVlSaAIAy+Pk/yFgxglyJ0Ktw6bh3AE6kNOwgYBuZTvnNjwvhU5Pcm7BtY75MA==
-  dependencies:
-    "@bfmeta/wallet-helpers" "1.0.57"
-    "@bfmeta/wallet-typings" "1.0.57"
-
-"@bfmeta/wallet-pmchain@1.0.57":
-  version "1.0.57"
-  resolved "https://registry.yarnpkg.com/@bfmeta/wallet-pmchain/-/wallet-pmchain-1.0.57.tgz#712f0fe656e550cd09aab174f44dc283cb9c4f51"
-  integrity sha512-T7Zwhk3Gb5O4o1QAGwh23eTPBvPw14XXu5I1aZqOyDlSJozcOa6MPuY1BtNeOqLbGviIbwFjvLJKiONTdI2Z1A==
-  dependencies:
-    "@bfmeta/wallet-helpers" "1.0.57"
-    "@bfmeta/wallet-typings" "1.0.57"
-
 "@bnqkl/util-node@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@bnqkl/util-node/-/util-node-1.1.3.tgz#2ea90d94d030f75551e6954b83293644752b45c5"
