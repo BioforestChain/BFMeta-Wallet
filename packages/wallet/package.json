@@ -15,7 +15,7 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet-bcf": "1.0.57",
+        "@bfmeta/wallet-bcf": "1.1.1",
         "@bfmeta/wallet-bsc": "1.1.1",
         "@bfmeta/wallet-eth": "1.1.1",
         "@bfmeta/wallet-helpers": "1.1.1",
