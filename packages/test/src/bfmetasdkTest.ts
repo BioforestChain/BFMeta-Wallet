@@ -1,4 +1,5 @@
 import { WalletFactory, LoggerSymbol } from "@bfmeta/wallet";
+import type { BCFApi } from "@bfmeta/wallet-bcf";
 import { ModuleStroge, Injectable, sleep } from "@bnqkl/util-node";
 const config: BFChainWallet.Config = require(`../../assets/config.json`);
 
@@ -18,52 +19,67 @@ export class BfmetasdkTest {
         this.walletFactory = new WalletFactory(config, moduleMap);
     }
 
+    private __BFChainApi!: BCFApi;
+    private __CCChainApi!: BCFApi;
+    private __BFMApi!: BCFApi;
+    get BFChainApi() {
+        if (this.__BFChainApi) {
+            return this.__BFChainApi;
+        } else {
+            this.__BFChainApi = this.walletFactory.generateBCFApi(config.bfchain!);
+            return this.__BFChainApi;
+        }
+    }
+    get CCChainApi() {
+        if (this.__CCChainApi) {
+            return this.__CCChainApi;
+        } else {
+            this.__CCChainApi = this.walletFactory.generateBCFApi(config.ccchain!);
+            return this.__CCChainApi;
+        }
+    }
+    get BFMApi() {
+        if (this.__BFMApi) {
+            return this.__BFMApi;
+        } else {
+            this.__BFMApi = this.walletFactory.generateBCFApi(config.bfm!);
+            return this.__BFMApi;
+        }
+    }
     async getLastBlock() {
         console.log(`getLastBlock`);
-        const r1 = await this.walletFactory.BFChainApi.sdk.api.basic.getLastBlock();
+        const r1 = await this.BFChainApi.sdk.api.basic.getLastBlock();
         console.log(r1, "bfchain");
-        const r2 = await this.walletFactory.CCChainApi.sdk.api.basic.getLastBlock();
+        const r2 = await this.CCChainApi.sdk.api.basic.getLastBlock();
         console.log(r2, "ccchain");
-        const r3 = await this.walletFactory.BFMApi.sdk.api.basic.getLastBlock();
+        const r3 = await this.BFMApi.sdk.api.basic.getLastBlock();
         console.log(r3, "bfm");
     }
     async getAccountInfo() {
         console.log(`getAccountInfo`);
-        const r1 = await this.walletFactory.BFChainApi.getAccountInfo(
-            "cEAXDkaEJgWKMM61KYz2dYU1RfuxbB8Ma",
-        );
+        const r1 = await this.BFChainApi.getAccountInfo("cEAXDkaEJgWKMM61KYz2dYU1RfuxbB8Ma");
         console.log(r1, "bfchain");
-        const r2 = await this.walletFactory.CCChainApi.getAccountInfo(
-            "cEAXDkaEJgWKMM61KYz2dYU1RfuxbB8Ma",
-        );
+        const r2 = await this.CCChainApi.getAccountInfo("cEAXDkaEJgWKMM61KYz2dYU1RfuxbB8Ma");
         console.log(r2, "ccchain");
-        const r3 = await this.walletFactory.BFMApi.getAccountInfo(
-            "cEAXDkaEJgWKMM61KYz2dYU1RfuxbB8Ma",
-        );
+        const r3 = await this.BFMApi.getAccountInfo("cEAXDkaEJgWKMM61KYz2dYU1RfuxbB8Ma");
         console.log(r3, "bfm");
     }
     async getBlockAverageFee() {
         console.log(`getBlockAverageFee`);
-        const r1 = await this.walletFactory.BFChainApi.getBlockAverageFee();
+        const r1 = await this.BFChainApi.getBlockAverageFee();
         console.log(r1, "bfchain");
-        const r2 = await this.walletFactory.CCChainApi.getBlockAverageFee();
+        const r2 = await this.CCChainApi.getBlockAverageFee();
         console.log(r2, "ccchain");
-        const r3 = await this.walletFactory.BFMApi.getBlockAverageFee();
+        const r3 = await this.BFMApi.getBlockAverageFee();
         console.log(r3, "bfm");
     }
     async getAccountAsset() {
         console.log(`getAccountAsset`);
-        const r1 = await this.walletFactory.BFChainApi.getAccountAsset(
-            "cMB9PUAyKrV1j3KM9ch1BfZbFD7aticm96",
-        );
+        const r1 = await this.BFChainApi.getAccountAsset("cMB9PUAyKrV1j3KM9ch1BfZbFD7aticm96");
         console.log(r1.result, "bfchain");
-        const r2 = await this.walletFactory.CCChainApi.getAccountAsset(
-            "cLrUCNAWPyPH96bqqC3JQXZ3CtsvvXmNj1",
-        );
+        const r2 = await this.CCChainApi.getAccountAsset("cLrUCNAWPyPH96bqqC3JQXZ3CtsvvXmNj1");
         console.log(r2.result, "ccchain");
-        const r3 = await this.walletFactory.BFMApi.getAccountAsset(
-            "cEAXDkaEJgWKMM61KYz2dYU1RfuxbB8Ma",
-        );
+        const r3 = await this.BFMApi.getAccountAsset("cEAXDkaEJgWKMM61KYz2dYU1RfuxbB8Ma");
         console.log(r3.result, "bfm");
     }
 }

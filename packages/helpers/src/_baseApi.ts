@@ -13,11 +13,25 @@ export abstract class _BaseApi {
     browser!: string;
     constructor(public httpHelper: HttpHelper) {}
 
+    async getTransactionsByBrowser(
+        params: BFMetaNodeSDK.Basic.GetTransactionsParams,
+    ): Promise<BFChainWallet.BCF.COMMON_RESPONSE<BFChainWallet.BCF.GetTransactionsByBrowserResp>> {
+        const result = await this.httpHelper.sendPostRequest<any>(
+            `${this.getBrowserUrl()}/public/queryTransaction`,
+            params,
+        );
+        if (result.success) {
+            return { success: true, result: result.data };
+        } else {
+            throw new Error(result.error?.message ? result.error.message : `queryTransaction error`);
+        }
+    }
+
     async getAddressBalance(
         address: string,
         magic: string,
         assetType: string,
-    ): Promise<BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAddressBalanceResp>> {
+    ): Promise<BFChainWallet.BCF.COMMON_RESPONSE<BFChainWallet.BCF.GetAddressBalanceResp>> {
         const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/public/accountBalance`, {
             address,
             magic,
@@ -32,7 +46,7 @@ export abstract class _BaseApi {
 
     async getAccountInfo(
         address: string,
-    ): Promise<BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAccountInfoResp | null>> {
+    ): Promise<BFChainWallet.BCF.COMMON_RESPONSE<BFChainWallet.BCF.GetAccountInfoResp | null>> {
         const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/public/accountsInfo`, {
             address,
         });
@@ -61,9 +75,7 @@ export abstract class _BaseApi {
         }
     }
 
-    async getBlockAverageFee(): Promise<
-        BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetBlockAverageFeeResp>
-    > {
+    async getBlockAverageFee(): Promise<BFChainWallet.BCF.COMMON_RESPONSE<BFChainWallet.BCF.GetBlockAverageFeeResp>> {
         const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/public/blockAverageFee`, {});
         if (result.success) {
             return { success: true, result: { blockAveFee: result.data } };
@@ -74,7 +86,7 @@ export abstract class _BaseApi {
 
     async getAccountAsset(
         address: string,
-    ): Promise<BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAccountAssetResp>> {
+    ): Promise<BFChainWallet.BCF.COMMON_RESPONSE<BFChainWallet.BCF.GetAccountAssetResp>> {
         const result = await this.httpHelper.sendGetRequest<any>(
             `${this.getBrowserUrl()}/public/addressAccountsAssets`,
             { address },
@@ -92,7 +104,7 @@ export abstract class _BaseApi {
         page: number,
         pageSize: number,
         assetType?: string,
-    ): Promise<BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAssetsResp>> {
+    ): Promise<BFChainWallet.BCF.COMMON_RESPONSE<BFChainWallet.BCF.GetAssetsResp>> {
         const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/assets/queryAssets`, {
             page,
             pageSize,
@@ -107,7 +119,7 @@ export abstract class _BaseApi {
 
     async getAssetDetails(
         assetType: string,
-    ): Promise<BFChainWallet.BFCHAIN.COMMON_RESPONSE<BFChainWallet.BFCHAIN.GetAssetDetailsResp>> {
+    ): Promise<BFChainWallet.BCF.COMMON_RESPONSE<BFChainWallet.BCF.GetAssetDetailsResp>> {
         const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/assets/queryAssetDetails`, {
             assetType,
         });

@@ -1,19 +1,19 @@
 import { Inject, Injectable } from "@bnqkl/util-node";
 import { HttpHelper, _BaseApi } from "@bfmeta/wallet-helpers";
 import { BFMetaSDK } from "@bfmeta/node-sdk";
-export const PMCHAIN_PEERS = {
+export const BCF_PEERS = {
     host: Symbol("host"),
     browser: Symbol("browser"),
 };
 
 @Injectable()
-export class PMChainApi extends _BaseApi implements BFChainWallet.PMCHAIN.API {
+export class BCFApi extends _BaseApi implements BFChainWallet.BCF.API {
     private __sdk: BFMetaSDK;
 
     constructor(
-        @Inject(PMCHAIN_PEERS.host) public host: BFChainWallet.HostType[],
+        @Inject(BCF_PEERS.host) public host: BFChainWallet.HostType[],
         public httpHelper: HttpHelper,
-        @Inject(PMCHAIN_PEERS.browser, { optional: true }) public browser: string,
+        @Inject(BCF_PEERS.browser, { optional: true }) public browser: string,
     ) {
         super(httpHelper);
         this.__sdk = new BFMetaSDK({

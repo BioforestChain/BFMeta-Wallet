@@ -10,7 +10,6 @@
         }
     ],
     "files": [
-        "src/@types.ts",
         "src/core/constants.ts",
         "src/core/ethApi.ts",
         "src/core/healthCheckHelper.ts",

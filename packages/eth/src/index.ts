@@ -1,5 +1,5 @@
-import "@bfmeta/wallet-typings";
-import "./@types";
+import type {} from "@bfmeta/wallet-typings";
+import type {} from "@bfmeta/wallet-helpers";
 import { Resolve, ModuleStroge } from "@bnqkl/util-node";
 import { EthApi, EthHealthCheckHelper, ETH_PEERS } from "./core";
 import { PeerListHelperParmas } from "@bfmeta/wallet-helpers";
