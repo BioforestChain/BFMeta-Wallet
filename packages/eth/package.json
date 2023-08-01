@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-eth",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": " wallet eth",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -16,7 +16,7 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet-typings": "1.2.0",
+        "@bfmeta/wallet-typings": "1.2.1",
         "@ethereumjs/tx": "^4.2.0",
         "ethereumjs-tx": "^2.1.2",
         "web3": "^1.8.0"
@@ -25,5 +25,5 @@
         "build"
     ],
     "module": "build/esm/index.js",
-    "gitHead": "e077e21a5a1dfdb5038e69bba5849829fdefad6e"
+    "gitHead": "cf41432d23c226b3423c58a5c5caff81e2cfc56a"
 }
