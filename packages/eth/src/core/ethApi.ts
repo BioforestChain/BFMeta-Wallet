@@ -13,6 +13,8 @@ import {
 import Web3 from "web3";
 import Web3HttpProvider from "web3-providers-http";
 import { ETH_ERC20_ABI } from "./constants";
+import * as ethereumjs2 from "@ethereumjs/tx";
+import { toBuffer } from "@ethereumjs/util";
 import * as ethereumjs from "ethereumjs-tx";
 import type { AbiItem, AbiInput } from "web3-utils";
 import type { Log, Transaction, TransactionReceipt, SignedTransaction } from "web3-core";
@@ -339,6 +341,10 @@ export class EthApi implements BFChainWallet.ETH.API {
         return tx;
     }
 
+    getEIP1559TransactionFromSignature(signature: string) {
+        const tx = ethereumjs2.FeeMarketEIP1559Transaction.fromSerializedTx(toBuffer(signature));
+        return tx;
+    }
     getTransBodyFromSignature(signature: string): BFChainWallet.ETH.EthTransBodyFromSign | null {
         const tx = new ethereumjs.Transaction(signature, { chain: this.testnet ? 5 : 1 });
         if (tx) {

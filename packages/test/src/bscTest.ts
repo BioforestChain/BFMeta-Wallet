@@ -33,7 +33,12 @@ class DemoLogger {
     // getTransReceipt();
     // getTransReceiptNative();
     // getTransBodyFromTrans();
-    getTransBodyFromSign();
+    // getTransBodyFromSign();
+    const sign =
+        "0x02f8af0582019f827c7684596927ec8286f2942e8d98fd126a32362f2bd8aa427e59a1ec63f78080b844a9059cbb000000000000000000000000785f8ee0c83ab7cf398008d0428233fc177355210000000000000000000000000000000000000000000000000000000000b8a1a0c080a021feee594dffa2c6450c01d35ad2bff36d4576d822e6148e46b08ce57b5c6b9ba0122d751de4e346d848ce16d2a8c3a64e13840d8a27820a353ca2e57e848ba496";
+    console.log(sign);
+    const z = bscApi.getTransactionFromSignature(sign);
+    console.log(z);
 
     // getNormalTransHistory();
     // getBep20TransHistory();

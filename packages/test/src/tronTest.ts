@@ -35,11 +35,11 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     // transaction();
     // trc20Transaction();
     // getCommonTransHistory();
-    getTrc20TransHistory();
+    // getTrc20TransHistory();
     // getAccountBalance();
 
     // createAccount();
-    // recoverAccount();
+    recoverAccount();
     // addressConvert();
     // isAddress();
     // getAccount();
@@ -68,9 +68,12 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
         }
     }
     async function recoverAccount() {
-        const mnemonic = "drill repair donate near knee science cloud unique until web dynamic weird";
-        const account = await tronApi.recoverAccount(mnemonic);
-        console.log(account);
+        const add = "TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8";
+        const z = await tronApi.addressToHex(add);
+        console.log(add, z);
+        // const mnemonic = "drill repair donate near knee science cloud unique until web dynamic weird";
+        // const account = await tronApi.recoverAccount(mnemonic);
+        // console.log(account);
     }
 
     async function addressConvert() {
