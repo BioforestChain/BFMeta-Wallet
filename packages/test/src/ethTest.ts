@@ -38,8 +38,14 @@ class DemoLogger {
     const sign =
         "0x02f8af0582019f827c7684596927ec8286f2942e8d98fd126a32362f2bd8aa427e59a1ec63f78080b844a9059cbb000000000000000000000000785f8ee0c83ab7cf398008d0428233fc177355210000000000000000000000000000000000000000000000000000000000b8a1a0c080a021feee594dffa2c6450c01d35ad2bff36d4576d822e6148e46b08ce57b5c6b9ba0122d751de4e346d848ce16d2a8c3a64e13840d8a27820a353ca2e57e848ba496";
     console.log(sign);
-    const z = ethApi.getEIP1559TransactionFromSignature(sign);
-    console.log(z);
+    const z1 = ethApi.getTransactionFromSignature(sign2);
+    console.log(z1);
+    const z2 = ethApi.getTransBodyFromSignature(sign2);
+    console.log(z2);
+    const z3 = ethApi.getEIP1559TransactionFromSignature(sign);
+    console.log(z3);
+    const z4 = ethApi.getEIP1559TransBodyFromSignature(sign);
+    console.log(z4);
     // getAccountBalance();
 
     async function getAccountBalance() {

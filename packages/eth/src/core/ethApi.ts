@@ -345,8 +345,9 @@ export class EthApi implements BFChainWallet.ETH.API {
         const tx = ethereumjs2.FeeMarketEIP1559Transaction.fromSerializedTx(toBuffer(signature));
         return tx;
     }
+
     getTransBodyFromSignature(signature: string): BFChainWallet.ETH.EthTransBodyFromSign | null {
-        const tx = new ethereumjs.Transaction(signature, { chain: this.testnet ? 5 : 1 });
+        const tx = this.getTransactionFromSignature(signature);
         if (tx) {
             const txData = HEX_PREFIX + tx.data.toString("hex");
             const from = HEX_PREFIX + tx.getSenderAddress().toString("hex");
@@ -361,6 +362,30 @@ export class EthApi implements BFChainWallet.ETH.API {
             };
             if (value === "0" && parseInput?.value === "0") {
                 throw new Error(`getTransBodyFromSignature error, trans value not allow '0', signature: ${signature}`);
+            }
+            return body;
+        }
+        return null;
+    }
+
+    getEIP1559TransBodyFromSignature(signature: string): BFChainWallet.ETH.EthTransBodyFromSign | null {
+        const tx = this.getEIP1559TransactionFromSignature(signature);
+        if (tx) {
+            const txData = HEX_PREFIX + tx.data.toString("hex");
+            const from = tx.getSenderAddress().toString();
+            let to = tx.to!.toString();
+            let value = this.web3.utils.hexToNumberString(HEX_PREFIX + tx.value);
+            const parseInput = this.parseInput(txData);
+            const body: BFChainWallet.ETH.EthTransBodyFromSign = {
+                from,
+                to: parseInput ? parseInput.to : to,
+                value: parseInput ? parseInput.value : value,
+                contractAddress: parseInput ? to : "",
+            };
+            if (value === "0" && parseInput?.value === "0") {
+                throw new Error(
+                    `getEIP1559TransBodyFromSignature error, trans value not allow '0', signature: ${signature}`,
+                );
             }
             return body;
         }
