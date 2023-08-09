@@ -273,6 +273,7 @@ declare global {
             };
 
             export type EthTransBodyFromSign = {
+                hash: string;
                 from: string;
                 to: string;
                 value: string;

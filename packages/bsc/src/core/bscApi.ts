@@ -379,12 +379,14 @@ export class BscApi implements BFChainWallet.BSC.API {
             common: this.testnet ? this.__bscTestnetCommon : this.__bscMainnetCommon,
         });
         if (tx) {
+            const hash = HEX_PREFIX + tx.hash().toString("hex");
             const txData = HEX_PREFIX + tx.data.toString("hex");
             const from = HEX_PREFIX + tx.getSenderAddress().toString("hex");
             let to = HEX_PREFIX + tx.to.toString("hex");
             let value = this.web3.utils.hexToNumberString(HEX_PREFIX + tx.value.toString("hex"));
             const parseInput = this.parseInput(txData);
             const body: BFChainWallet.ETH.EthTransBodyFromSign = {
+                hash,
                 from,
                 to: parseInput ? parseInput.to : to,
                 value: parseInput ? parseInput.value : value,
