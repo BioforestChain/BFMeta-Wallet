@@ -349,12 +349,14 @@ export class EthApi implements BFChainWallet.ETH.API {
     getTransBodyFromSignature(signature: string): BFChainWallet.ETH.EthTransBodyFromSign | null {
         const tx = this.getTransactionFromSignature(signature);
         if (tx) {
+            const hash = HEX_PREFIX + tx.hash().toString("hex");
             const txData = HEX_PREFIX + tx.data.toString("hex");
             const from = HEX_PREFIX + tx.getSenderAddress().toString("hex");
             let to = HEX_PREFIX + tx.to.toString("hex");
             let value = this.web3.utils.hexToNumberString(HEX_PREFIX + tx.value.toString("hex"));
             const parseInput = this.parseInput(txData);
             const body: BFChainWallet.ETH.EthTransBodyFromSign = {
+                hash,
                 from,
                 to: parseInput ? parseInput.to : to,
                 value: parseInput ? parseInput.value : value,
@@ -371,12 +373,14 @@ export class EthApi implements BFChainWallet.ETH.API {
     getEIP1559TransBodyFromSignature(signature: string): BFChainWallet.ETH.EthTransBodyFromSign | null {
         const tx = this.getEIP1559TransactionFromSignature(signature);
         if (tx) {
+            const hash = HEX_PREFIX + tx.hash().toString("hex");
             const txData = HEX_PREFIX + tx.data.toString("hex");
             const from = tx.getSenderAddress().toString();
             let to = tx.to!.toString();
             let value = this.web3.utils.hexToNumberString(HEX_PREFIX + tx.value);
             const parseInput = this.parseInput(txData);
             const body: BFChainWallet.ETH.EthTransBodyFromSign = {
+                hash,
                 from,
                 to: parseInput ? parseInput.to : to,
                 value: parseInput ? parseInput.value : value,
