@@ -1313,7 +1313,7 @@ declare global {
 
             export type GetAccountAssetResp = {
                 address: string;
-                asset: {
+                assets: {
                     [magic: string]: {
                         [assetType: string]: {
                             sourceChainMagic: string;
