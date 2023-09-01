@@ -271,9 +271,8 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
             console.log(JSON.stringify(transactionWithSign));
             console.log("====================================");
             // 交易广播
-            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes = await tronApi.broadcastTransaction(
-                transactionWithSign,
-            );
+            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes =
+                await tronApi.broadcastTransaction(transactionWithSign);
             console.log("============ 交易广播 ============");
             console.log(JSON.stringify(broadcastResult));
             console.log("====================================");
@@ -314,9 +313,8 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
                 call_value: 0,
             };
             // 创建交易
-            const contractTx: BFChainWallet.TRON.TriggerSmartContractRes = await tronApi.triggerSmartContract(
-                contractReq,
-            );
+            const contractTx: BFChainWallet.TRON.TriggerSmartContractRes =
+                await tronApi.triggerSmartContract(contractReq);
             console.log("============ 创建交易 ============");
             console.log(JSON.stringify(contractTx));
             console.log("====================================");
@@ -337,9 +335,8 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
             console.log(JSON.stringify(transactionWithSign));
             console.log("====================================");
             // 交易广播
-            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes = await tronApi.broadcastTransaction(
-                transactionWithSign,
-            );
+            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes =
+                await tronApi.broadcastTransaction(transactionWithSign);
             console.log("============ 交易广播 ============");
             console.log(JSON.stringify(broadcastResult));
             console.log("====================================");

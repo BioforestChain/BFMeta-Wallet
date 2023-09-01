@@ -30,18 +30,21 @@ declare global {
                 enable: boolean;
                 host: HostType[];
                 headers: HeadersType;
+                official?: string;
             };
             eth?: {
                 enable: boolean;
                 host: HostType[];
                 testnet: boolean;
                 headers: HeadersType;
+                official?: string;
             };
             bsc?: {
                 enable: boolean;
                 host: HostType[];
                 testnet: boolean;
                 headers: HeadersType;
+                official?: string;
             };
             tatum: {
                 /** 这里配置成true, 将不直连节点，通过tatum连接节点。若配置为false，节点由上述三条链决定 */
@@ -573,7 +576,7 @@ declare global {
                 /** 交易失败时出现，显示为交易失败原因的code */
                 code?: string;
                 /** 信息 */
-                message?: string;
+                message: string;
             };
 
             export type TronTransactionInfo = {
@@ -979,9 +982,10 @@ declare global {
                 /** 广播结果 */
                 result: boolean;
                 /** 交易ID */
-                txId: string;
+                txid: string;
                 /** 返回消息 */
                 message: string;
+                code?: string;
             };
 
             export type TronTransInfo = {
@@ -1257,9 +1261,7 @@ declare global {
                  * 交易广播(POST)
                  * @param transactionWithSign 签名后的交易信息
                  */
-                broadcastTransaction(
-                    transactionWithSign: TronTransaction | Trc20Transaction,
-                ): Promise<BroadcastTransactionRes>;
+                broadcastTransaction(transactionWithSign: TronTransaction | Trc20Transaction): Promise<BroadcastRes>;
 
                 /**
                  * @deprecated

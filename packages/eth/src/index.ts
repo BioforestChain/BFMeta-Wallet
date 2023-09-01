@@ -11,6 +11,7 @@ export const EthWalletFactory = (config: BFChainWallet.Config["eth"], parentMap?
                 [ETH_PEERS.host, config.host],
                 [ETH_PEERS.testnet, config.testnet],
                 [ETH_PEERS.headers, config.headers],
+                [ETH_PEERS.official, config.official],
                 [PeerListHelperParmas.checkInterval, 30 * 1000 /**config */],
             ],
             parentMap,

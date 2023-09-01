@@ -14,11 +14,17 @@ export class HttpHelper {
             return http;
         }
     }
+
     sendPostRequest<T>(url: string, argv: { [key: string]: any }) {
         return new Promise<T>((resolve, reject) => {
             const req = this.checkHttp(url).request(
                 url,
-                { method: "POST", headers: { "content-type": "application/json" } },
+                {
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                },
                 async (res) => {
                     parsePostRequestParameter(res, resolve, reject);
                 },
@@ -55,11 +61,7 @@ export class HttpHelper {
         });
     }
 
-    sendApiGetRequest<T>(
-        url: string,
-        argv?: { [key: string]: any },
-        headers?: { [key: string]: any },
-    ) {
+    sendApiGetRequest<T>(url: string, argv?: { [key: string]: any }, headers?: { [key: string]: any }) {
         const completeUrl = url + (argv ? `?${parseGetRequestParamter(argv)}` : "");
         return new Promise<T>((resolve, reject) => {
             const req = this.checkHttp(url).get(completeUrl, { headers }, async (res) => {
