@@ -22,6 +22,7 @@ export const ETH_PEERS = {
     host: Symbol("host"),
     testnet: Symbol("testnet"),
     headers: Symbol("headers"),
+    official: Symbol("official"),
 };
 
 @Injectable()
@@ -52,6 +53,7 @@ export class EthApi implements BFChainWallet.ETH.API {
         public peerListHelper: PeerListHelper,
         @Inject(TatumSymbol) public tatumConfig: BFChainWallet.Config["tatum"],
         @Inject(EthApiScanSymbol) public ethApiScanConfig: BFChainWallet.Config["ethApiScan"],
+        @Inject(ETH_PEERS.official, { optional: true }) public official?: string,
     ) {
         const peersConfig: BFChainWallet.Helpers.PeerConfigModel[] = [];
         host.map((v) => {
@@ -314,10 +316,6 @@ export class EthApi implements BFChainWallet.ETH.API {
         return new this.web3.eth.Contract(abi, contractAddress, { from: from });
     }
 
-    private async getTatumNodeUrl() {
-        return `${this.tatumConfig.host}/ETH/${this.tatumConfig.apiKey}?${this.tatumConfig.ethTest}`;
-    }
-
     private async getTatumApiUrl() {
         return this.tatumConfig.apiHost;
     }
@@ -331,6 +329,9 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     private async getPeerUrl() {
+        if (this.official) {
+            return this.official;
+        }
         const p = await this.peerListHelper.getEnableRandom();
         return `http://${p.ip}:${p.port}`;
         // return this.getTatumNodeUrl();

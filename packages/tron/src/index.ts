@@ -10,6 +10,7 @@ export const TronWalletFactory = (config: BFChainWallet.Config["tron"], parentMa
             [
                 [TRON_PEERS.host, config.host],
                 [TRON_PEERS.headers, config.headers],
+                [TRON_PEERS.official, config.official],
                 [PeerListHelperParmas.checkInterval, 30 * 1000 /**config */],
             ],
             parentMap,

@@ -8,13 +8,17 @@ const TronWeb = require("tronweb");
 export const TRON_PEERS = {
     host: Symbol("host"),
     headers: Symbol("headers"),
+    official: Symbol("official"),
 };
 
 @Injectable()
 export class TronApi implements BFChainWallet.TRON.API {
     private __tronWeb!: any;
-
+    private __tronWebOfficial!: any;
     get tronWeb() {
+        if (this.__tronWebOfficial) {
+            return this.__tronWebOfficial;
+        }
         if (this.__tronWeb) {
             return this.__tronWeb;
         } else {
@@ -29,6 +33,9 @@ export class TronApi implements BFChainWallet.TRON.API {
         }
         const url = await this.getPeerUrl();
         this.__tronWeb = new TronWeb({ fullHost: url, headers: this.headers });
+        if (this.official) {
+            this.__tronWebOfficial = new TronWeb({ fullHost: this.official });
+        }
         // this.__tronWeb = new TronWeb({ fullHost: "https://api.trongrid.io/", headers: this.headers });
         // this.__tronWeb = new TronWeb({ fullHost: "https://nile.trongrid.io" });
 
@@ -46,6 +53,7 @@ export class TronApi implements BFChainWallet.TRON.API {
         public peerListHelper: PeerListHelper,
         @Inject(TatumSymbol) public tatumConfig: BFChainWallet.Config["tatum"],
         @Inject(TronApiScanSymbol) public tronApiScanConfig: BFChainWallet.Config["tronApiScan"],
+        @Inject(TRON_PEERS.official, { optional: true }) public official?: string,
     ) {
         const peersConfig: BFChainWallet.Helpers.PeerConfigModel[] = [];
         host.map((v) => {
@@ -278,7 +286,7 @@ export class TronApi implements BFChainWallet.TRON.API {
         const result: BFChainWallet.TRON.SendTransResult = await this.tronWeb.trx.sendRawTransaction(signTrans);
         const res: BFChainWallet.TRON.BroadcastRes = {
             result: result.result ? true : false,
-            txId: result.txid,
+            txid: result.txid,
             message: result.code && result.code.length > 0 ? result.code : "SUCCESS",
         };
         return res;
@@ -295,7 +303,7 @@ export class TronApi implements BFChainWallet.TRON.API {
         const result: BFChainWallet.TRON.SendTransResult = await this.tronWeb.trx.sendHexTransaction(signTransHex);
         const res: BFChainWallet.TRON.BroadcastRes = {
             result: result.result ? true : false,
-            txId: result.txid,
+            txid: result.txid,
             message: result.code && result.code.length > 0 ? result.code : "SUCCESS",
         };
         return res;
@@ -633,8 +641,18 @@ export class TronApi implements BFChainWallet.TRON.API {
     async broadcastTransaction(
         transactionWithSign: BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction,
     ): Promise<BFChainWallet.TRON.BroadcastTransactionRes> {
-        const host = `${await this.getPeerUrl()}/wallet/broadcasttransaction`;
-        return await this.httpHelper.sendPostRequest(host, transactionWithSign);
+        if (this.__tronWebOfficial) {
+            const result: BFChainWallet.TRON.SendTransResult =
+                await this.tronWeb.trx.sendRawTransaction(transactionWithSign);
+            return {
+                result: result.result ? true : false,
+                txid: result.txid,
+                message: result.code && result.code.length > 0 ? result.code : "SUCCESS",
+            };
+        } else {
+            const host = `${await this.getPeerUrl()}/wallet/broadcasttransaction`;
+            return await this.httpHelper.sendPostRequest(host, transactionWithSign);
+        }
     }
 
     async getTransactionInfoById(value: string): Promise<BFChainWallet.TRON.TronTransactionInfo> {

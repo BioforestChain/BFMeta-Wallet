@@ -22,6 +22,7 @@ export const BSC_PEERS = {
     host: Symbol("host"),
     testnet: Symbol("testnet"),
     headers: Symbol("headers"),
+    official: Symbol("official"),
 };
 @Injectable()
 export class BscApi implements BFChainWallet.BSC.API {
@@ -42,7 +43,13 @@ export class BscApi implements BFChainWallet.BSC.API {
             headers,
         });
         this.__web3 = new Web3(headers.length > 0 ? provider : await this.getPeerUrl());
+
+        if (this.official) {
+            this.__officialweb3 = new Web3(this.official);
+        }
     }
+
+    private __officialweb3?: Web3;
 
     private __bscMainnetCommon = ethereumcommon.forCustomChain(
         "mainnet",
@@ -70,6 +77,7 @@ export class BscApi implements BFChainWallet.BSC.API {
         public peerListHelper: PeerListHelper,
         @Inject(TatumSymbol) public tatumConfig: BFChainWallet.Config["tatum"],
         @Inject(BscApiScanSymbol) public bscApiScanConfig: BFChainWallet.Config["bscApiScan"],
+        @Inject(BSC_PEERS.official, { optional: true }) public official?: string,
     ) {
         const peersConfig: BFChainWallet.Helpers.PeerConfigModel[] = [];
         host.map((v) => {
@@ -109,7 +117,7 @@ export class BscApi implements BFChainWallet.BSC.API {
                                   gas,
                                   gasPrice,
                                   gasUsed,
-                              } as BFChainWallet.BSC.NormalTransRes),
+                              }) as BFChainWallet.BSC.NormalTransRes,
                       )
                 : [];
         const res: BFChainWallet.BSC.NormalTransHistoryRes = {
@@ -255,7 +263,8 @@ export class BscApi implements BFChainWallet.BSC.API {
 
     async sendSignedTransaction(raw: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            this.web3.eth.sendSignedTransaction(raw, (err, txHash) => {
+            const web3 = this.__officialweb3 ? this.__officialweb3 : this.web3;
+            web3.eth.sendSignedTransaction(raw, (err, txHash) => {
                 if (err) {
                     reject(err);
                 }
@@ -350,10 +359,6 @@ export class BscApi implements BFChainWallet.BSC.API {
     private generateContract(abi: any, contractAddress: string, from: string) {
         const contract = new this.web3.eth.Contract(abi, contractAddress, { from: from });
         return contract;
-    }
-
-    private async getTatumNodeUrl() {
-        return `${this.tatumConfig.host}/BSC/${this.tatumConfig.apiKey}`;
     }
 
     private async getTatumApiUrl() {

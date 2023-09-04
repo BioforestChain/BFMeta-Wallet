@@ -9,6 +9,7 @@ export const BscWalletFactory = (config: BFChainWallet.Config["bsc"], parentMap?
                 [BSC_PEERS.host, config.host],
                 [BSC_PEERS.testnet, config.testnet],
                 [BSC_PEERS.headers, config.headers],
+                [BSC_PEERS.official, config.official],
                 [PeerListHelperParmas.checkInterval, 30 * 1000 /**config */],
             ],
             parentMap,
