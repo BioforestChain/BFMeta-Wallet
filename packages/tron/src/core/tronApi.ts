@@ -16,9 +16,6 @@ export class TronApi implements BFChainWallet.TRON.API {
     private __tronWeb!: any;
     private __tronWebOfficial!: any;
     get tronWeb() {
-        if (this.__tronWebOfficial) {
-            return this.__tronWebOfficial;
-        }
         if (this.__tronWeb) {
             return this.__tronWeb;
         } else {
@@ -642,8 +639,9 @@ export class TronApi implements BFChainWallet.TRON.API {
         transactionWithSign: BFChainWallet.TRON.TronTransaction | BFChainWallet.TRON.Trc20Transaction,
     ): Promise<BFChainWallet.TRON.BroadcastTransactionRes> {
         if (this.__tronWebOfficial) {
-            const result: BFChainWallet.TRON.SendTransResult =
-                await this.tronWeb.trx.sendRawTransaction(transactionWithSign);
+            const result: BFChainWallet.TRON.SendTransResult = await this.__tronWebOfficial.trx.sendRawTransaction(
+                transactionWithSign,
+            );
             return {
                 result: result.result ? true : false,
                 txid: result.txid,
