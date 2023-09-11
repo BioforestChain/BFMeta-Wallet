@@ -31,7 +31,15 @@ export class TronApi implements BFChainWallet.TRON.API {
         const url = await this.getPeerUrl();
         this.__tronWeb = new TronWeb({ fullHost: url, headers: this.headers });
         if (this.official) {
-            this.__tronWebOfficial = new TronWeb({ fullHost: this.official });
+            const __headers: { TRON_PRO_API_KEY?: string } = {};
+            const apiKey = this.tronApiScanConfig?.apiKey;
+            if (apiKey) {
+                __headers["TRON_PRO_API_KEY"] = apiKey;
+            }
+            this.__tronWebOfficial = new TronWeb({
+                fullHost: this.official,
+                headers: __headers,
+            });
         }
         // this.__tronWeb = new TronWeb({ fullHost: "https://api.trongrid.io/", headers: this.headers });
         // this.__tronWeb = new TronWeb({ fullHost: "https://nile.trongrid.io" });
