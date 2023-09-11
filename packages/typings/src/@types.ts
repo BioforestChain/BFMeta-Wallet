@@ -26,6 +26,9 @@ declare global {
             ethm?: {
                 enable: boolean;
             } & WalletNode;
+            bfchainv2?: {
+                enable: boolean;
+            } & WalletNode;
             tron?: {
                 enable: boolean;
                 host: HostType[];
