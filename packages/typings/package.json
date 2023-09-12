@@ -19,7 +19,7 @@
         "build"
     ],
     "dependencies": {
-        "@bfmeta/node-sdk": "3.0.27"
+        "@bfmeta/node-sdk": "^3.0.37"
     },
     "module": "build/esm/index.js",
     "gitHead": "a07de2c9bbceecdc73c95423fee67103e5f72323"
