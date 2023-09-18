@@ -12,5 +12,12 @@
             "path": "../wallet/tsconfig.json"
         }
     ],
-    "files": ["src/bfmetabrowserTest.ts", "src/bfmetasdkTest.ts", "src/bscTest.ts", "src/ethTest.ts", "src/tronTest.ts"]
+    "files": [
+        "src/bfmetabrowserTest.ts",
+        "src/bfmetademo.ts",
+        "src/bfmetasdkTest.ts",
+        "src/bscTest.ts",
+        "src/ethTest.ts",
+        "src/tronTest.ts"
+    ]
 }
