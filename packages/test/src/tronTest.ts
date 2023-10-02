@@ -68,8 +68,8 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
         }
     }
     async function recoverAccount() {
-        const add = "TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8";
-        const z = await tronApi.addressToHex(add);
+        const add = "41c3595d8b590c084b34b180d30bfb335024a98bf4";
+        const z = await tronApi.addressToBase58(add);
         console.log(add, z);
         // const mnemonic = "drill repair donate near knee science cloud unique until web dynamic weird";
         // const account = await tronApi.recoverAccount(mnemonic);
@@ -271,8 +271,9 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
             console.log(JSON.stringify(transactionWithSign));
             console.log("====================================");
             // 交易广播
-            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes =
-                await tronApi.broadcastTransaction(transactionWithSign);
+            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes = await tronApi.broadcastTransaction(
+                transactionWithSign,
+            );
             console.log("============ 交易广播 ============");
             console.log(JSON.stringify(broadcastResult));
             console.log("====================================");
@@ -313,8 +314,9 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
                 call_value: 0,
             };
             // 创建交易
-            const contractTx: BFChainWallet.TRON.TriggerSmartContractRes =
-                await tronApi.triggerSmartContract(contractReq);
+            const contractTx: BFChainWallet.TRON.TriggerSmartContractRes = await tronApi.triggerSmartContract(
+                contractReq,
+            );
             console.log("============ 创建交易 ============");
             console.log(JSON.stringify(contractTx));
             console.log("====================================");
@@ -335,8 +337,9 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
             console.log(JSON.stringify(transactionWithSign));
             console.log("====================================");
             // 交易广播
-            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes =
-                await tronApi.broadcastTransaction(transactionWithSign);
+            const broadcastResult: BFChainWallet.TRON.BroadcastTransactionRes = await tronApi.broadcastTransaction(
+                transactionWithSign,
+            );
             console.log("============ 交易广播 ============");
             console.log(JSON.stringify(broadcastResult));
             console.log("====================================");

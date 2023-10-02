@@ -24,7 +24,7 @@ export class BfmetabrowserTest {
         if (this.__BFChainApi) {
             return this.__BFChainApi;
         } else {
-            this.__BFChainApi = this.walletFactory.generateBCFApi(config.bfchain!);
+            this.__BFChainApi = this.walletFactory.generateBCFApi(config.bcf["bfchain"]);
             return this.__BFChainApi;
         }
     }
@@ -32,7 +32,7 @@ export class BfmetabrowserTest {
         if (this.__CCChainApi) {
             return this.__CCChainApi;
         } else {
-            this.__CCChainApi = this.walletFactory.generateBCFApi(config.ccchain!);
+            this.__CCChainApi = this.walletFactory.generateBCFApi(config.bcf["ccchain"]!);
             return this.__CCChainApi;
         }
     }
@@ -40,7 +40,7 @@ export class BfmetabrowserTest {
         if (this.__BFMApi) {
             return this.__BFMApi;
         } else {
-            this.__BFMApi = this.walletFactory.generateBCFApi(config.bfm!);
+            this.__BFMApi = this.walletFactory.generateBCFApi(config.bcf["bfm"]!);
             return this.__BFMApi;
         }
     }

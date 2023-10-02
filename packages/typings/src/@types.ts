@@ -10,25 +10,12 @@ declare global {
             browserPath?: string;
         };
         export type HeadersType = { [key: string]: string };
-        export type Config = {
-            bfchain?: {
-                enable: boolean;
-            } & WalletNode;
-            ccchain?: {
-                enable: boolean;
-            } & WalletNode;
-            bfm?: {
-                enable: boolean;
-            } & WalletNode;
-            pmchain?: {
-                enable: boolean;
-            } & WalletNode;
-            ethm?: {
-                enable: boolean;
-            } & WalletNode;
-            bfchainv2?: {
-                enable: boolean;
-            } & WalletNode;
+        export interface Config {
+            bcf: {
+                [chainName: string]: {
+                    enable: boolean;
+                } & WalletNode;
+            };
             tron?: {
                 enable: boolean;
                 host: HostType[];
@@ -75,7 +62,7 @@ declare global {
                 apiHost: string;
                 apiKey: string;
             };
-        };
+        }
 
         /**以太坊 */
         export namespace ETH {
