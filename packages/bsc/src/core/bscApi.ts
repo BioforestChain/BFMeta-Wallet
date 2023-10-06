@@ -1,7 +1,6 @@
 import { Inject, Injectable } from "@bnqkl/util-node";
 import {
     PeerListHelper,
-    TatumSymbol,
     BscApiScanSymbol,
     HttpHelper,
     ABISupportFunctionEnum,
@@ -75,7 +74,6 @@ export class BscApi implements BFChainWallet.BSC.API {
         @Inject(BSC_PEERS.headers) public headers: BFChainWallet.HeadersType,
         public httpHelper: HttpHelper,
         public peerListHelper: PeerListHelper,
-        @Inject(TatumSymbol) public tatumConfig: BFChainWallet.Config["tatum"],
         @Inject(BscApiScanSymbol) public bscApiScanConfig: BFChainWallet.Config["bscApiScan"],
         @Inject(BSC_PEERS.official, { optional: true }) public official?: string,
     ) {
@@ -86,11 +84,6 @@ export class BscApi implements BFChainWallet.BSC.API {
         this.peerListHelper.peersConfig = peersConfig;
         this.peerListHelper.init();
         this.newWeb3();
-    }
-
-    async getAccountBalance(address: string): Promise<BFChainWallet.ETH.AccountBalanceRes> {
-        const host = `${await this.getTatumApiUrl()}/blockchain/token/address/BSC/${address}`;
-        return await this.httpHelper.sendApiGetRequest(host, {}, await this.getTatumApiHeaders());
     }
 
     async getNormalTransHistory(
@@ -117,7 +110,7 @@ export class BscApi implements BFChainWallet.BSC.API {
                                   gas,
                                   gasPrice,
                                   gasUsed,
-                              }) as BFChainWallet.BSC.NormalTransRes,
+                              } as BFChainWallet.BSC.NormalTransRes),
                       )
                 : [];
         const res: BFChainWallet.BSC.NormalTransHistoryRes = {
@@ -361,14 +354,6 @@ export class BscApi implements BFChainWallet.BSC.API {
         return contract;
     }
 
-    private async getTatumApiUrl() {
-        return this.tatumConfig.apiHost;
-    }
-
-    private async getTatumApiHeaders() {
-        return { "x-api-key": this.tatumConfig.apiKey };
-    }
-
     private async getApiScanUrl() {
         return `${this.bscApiScanConfig?.apiHost}/api?apikey=${this.bscApiScanConfig?.apiKey}`;
     }
@@ -376,7 +361,6 @@ export class BscApi implements BFChainWallet.BSC.API {
     private async getPeerUrl() {
         const p = await this.peerListHelper.getEnableRandom();
         return `http://${p.ip}:${p.port}`;
-        // return this.getTatumNodeUrl();
     }
 
     getTransBodyFromSignature(signature: string): BFChainWallet.ETH.EthTransBodyFromSign | null {

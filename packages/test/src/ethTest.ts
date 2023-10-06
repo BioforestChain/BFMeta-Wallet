@@ -46,14 +46,6 @@ class DemoLogger {
     console.log(z3);
     const z4 = ethApi.getEIP1559TransBodyFromSignature(sign);
     console.log(z4);
-    // getAccountBalance();
-
-    async function getAccountBalance() {
-        const address = "0x5718D9C95D15a766E9DdE6579D7B93Eaa88a26b8";
-        const result = await ethApi.getAccountBalance(address);
-        console.log("========= 获取账户余额信息 =========");
-        console.log(result);
-    }
 
     async function lastBlock() {
         const lastBlock = await ethApi.getLastBlock();

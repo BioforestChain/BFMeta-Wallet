@@ -36,10 +36,9 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     // trc20Transaction();
     // getCommonTransHistory();
     // getTrc20TransHistory();
-    // getAccountBalance();
 
     // createAccount();
-    recoverAccount();
+    // recoverAccount();
     // addressConvert();
     // isAddress();
     // getAccount();
@@ -68,7 +67,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
         }
     }
     async function recoverAccount() {
-        const add = "41c3595d8b590c084b34b180d30bfb335024a98bf4";
+        const add = "41b4ae499b718307c237a43d97f997143a58d7e271";
         const z = await tronApi.addressToBase58(add);
         console.log(add, z);
         // const mnemonic = "drill repair donate near knee science cloud unique until web dynamic weird";
@@ -203,14 +202,6 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
         const result = await tronApi.getTransReceipt(txId);
         console.log("====== 根据txid查询交易 ======");
         console.log(result);
-    }
-    async function getAccountBalance() {
-        const address = "TZGGgtFmQjMzaeVdWfVHbRuNRSR2rHiCKT";
-        // const address = "TRfB3t8q8KPXRvsvzvWomzpLvf8kVxBhgq";
-        const result = await tronApi.getAccountBalance(address);
-        console.log("======== 获取账户余额信息 ========");
-        console.log(result);
-        console.log("====================================");
     }
 
     async function getCommonTransHistory() {

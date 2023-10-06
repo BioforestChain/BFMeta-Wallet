@@ -5,7 +5,7 @@ import { TronApi, TronWalletFactory } from "@bfmeta/wallet-tron";
 import type { ModuleStroge } from "@bnqkl/util-node";
 import { EthApi, EthWalletFactory } from "@bfmeta/wallet-eth";
 import { BscApi, BscWalletFactory } from "@bfmeta/wallet-bsc";
-import { BscApiScanSymbol, EthApiScanSymbol, TatumSymbol, TronApiScanSymbol } from "@bfmeta/wallet-helpers";
+import { BscApiScanSymbol, EthApiScanSymbol, TronApiScanSymbol } from "@bfmeta/wallet-helpers";
 // export * from "@bfmeta/wallet-test";
 
 export class WalletFactory {
@@ -40,7 +40,6 @@ export class WalletFactory {
     constructor(public config: BFChainWallet.Config, public moduleMap?: ModuleStroge) {
         const { tron, eth, bsc } = config;
         if (moduleMap) {
-            moduleMap.set(TatumSymbol, config.tatum);
             moduleMap.set(BscApiScanSymbol, config.bscApiScan);
             moduleMap.set(EthApiScanSymbol, config.ethApiScan);
             moduleMap.set(TronApiScanSymbol, config.tronApiScan);

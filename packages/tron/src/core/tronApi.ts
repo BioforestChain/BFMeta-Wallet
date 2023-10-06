@@ -1,6 +1,6 @@
 import type {} from "@bfmeta/wallet-helpers";
 import { Inject, Injectable } from "@bnqkl/util-node";
-import { HttpHelper, PeerListHelper, TatumSymbol, TronApiScanSymbol } from "@bfmeta/wallet-helpers";
+import { HttpHelper, PeerListHelper, TronApiScanSymbol } from "@bfmeta/wallet-helpers";
 import { TronHelper } from "./tronHelper";
 import { TronFuncionEnum } from "./constants";
 const TronWeb = require("tronweb");
@@ -56,7 +56,6 @@ export class TronApi implements BFChainWallet.TRON.API {
         @Inject(TRON_PEERS.headers) public headers: BFChainWallet.HeadersType,
         public httpHelper: HttpHelper,
         public peerListHelper: PeerListHelper,
-        @Inject(TatumSymbol) public tatumConfig: BFChainWallet.Config["tatum"],
         @Inject(TronApiScanSymbol) public tronApiScanConfig: BFChainWallet.Config["tronApiScan"],
         @Inject(TRON_PEERS.official, { optional: true }) public official?: string,
     ) {
@@ -613,24 +612,6 @@ export class TronApi implements BFChainWallet.TRON.API {
         return res;
     }
 
-    async getAccountBalance(address: string): Promise<BFChainWallet.TRON.TronAccountBalanceRes> {
-        const host = `${await this.getTatumApiUrl()}/tron/account/${address}`;
-        const result: BFChainWallet.TRON.TronAccountBalanceRes = await this.httpHelper.sendApiGetRequest(
-            host,
-            {},
-            await this.getTatumApiHeaders(),
-        );
-        if (result) {
-            let trc20List: { contractAddress: string; amount: string }[] = [];
-            result.trc20?.forEach((item) => {
-                Object.keys(item).forEach((k) => {
-                    trc20List.push({ contractAddress: k, amount: item[k] });
-                });
-            });
-        }
-        return result;
-    }
-
     async createTransaction(req: BFChainWallet.TRON.CreateTransactionReq): Promise<BFChainWallet.TRON.TronTransaction> {
         const host = `${await this.getPeerUrl()}/wallet/createtransaction`;
         return await this.httpHelper.sendPostRequest(host, req);
@@ -700,18 +681,9 @@ export class TronApi implements BFChainWallet.TRON.API {
         return { TRON_PRO_API_KEY: this.tronApiScanConfig?.apiKey };
     }
 
-    private async getTatumApiUrl() {
-        return this.tatumConfig.apiHost;
-    }
-
-    private async getTatumApiHeaders() {
-        return { "x-api-key": this.tatumConfig.apiKey };
-    }
-
     private async getPeerUrl() {
         const p = await this.peerListHelper.getEnableRandom();
         return `http://${p.ip}:${p.port}`;
-        // return this.getTatumNodeUrl();
     }
 
     private async fullNodeUrl() {

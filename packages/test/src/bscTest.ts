@@ -22,7 +22,7 @@ class DemoLogger {
     await sleep(0);
 
     // latestBlock();
-    getGasPrice();
+    // getGasPrice();
     // getBalance();
     // getContractBalanceAndDecimal();
 
@@ -43,7 +43,6 @@ class DemoLogger {
     // getNormalTransHistory();
     // getBep20TransHistory();
 
-    // getAccountBalance();
     // getTokenInfo();
     // signFunction();
 
@@ -56,13 +55,6 @@ class DemoLogger {
             const result = bscApi.web3.eth.abi.encodeFunctionSignature(methodABI);
             console.log(result);
         }
-    }
-
-    async function getAccountBalance() {
-        const address = "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48";
-        const result = await bscApi.getAccountBalance(address);
-        console.log("========= 获取账户余额信息 =========");
-        console.log(result);
     }
 
     async function getTokenInfo() {

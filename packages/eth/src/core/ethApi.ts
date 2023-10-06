@@ -7,7 +7,6 @@ import {
     HEX_PREFIX,
     HttpHelper,
     PeerListHelper,
-    TatumSymbol,
     TRANS_INPUT_PREFIX,
 } from "@bfmeta/wallet-helpers";
 import Web3 from "web3";
@@ -51,7 +50,6 @@ export class EthApi implements BFChainWallet.ETH.API {
         @Inject(ETH_PEERS.headers) public headers: BFChainWallet.HeadersType,
         public httpHelper: HttpHelper,
         public peerListHelper: PeerListHelper,
-        @Inject(TatumSymbol) public tatumConfig: BFChainWallet.Config["tatum"],
         @Inject(EthApiScanSymbol) public ethApiScanConfig: BFChainWallet.Config["ethApiScan"],
         @Inject(ETH_PEERS.official, { optional: true }) public official?: string,
     ) {
@@ -62,11 +60,6 @@ export class EthApi implements BFChainWallet.ETH.API {
         this.peerListHelper.peersConfig = peersConfig;
         this.peerListHelper.init();
         this.newWeb3();
-    }
-
-    async getAccountBalance(address: string): Promise<BFChainWallet.ETH.AccountBalanceRes> {
-        const host = `${await this.getTatumApiUrl()}/blockchain/token/address/ETH/${address}`;
-        return await this.httpHelper.sendApiGetRequest(host, {}, await this.getTatumApiHeaders());
     }
 
     async getNormalTransHistory(
@@ -316,14 +309,6 @@ export class EthApi implements BFChainWallet.ETH.API {
         return new this.web3.eth.Contract(abi, contractAddress, { from: from });
     }
 
-    private async getTatumApiUrl() {
-        return this.tatumConfig.apiHost;
-    }
-
-    private async getTatumApiHeaders() {
-        return { "x-api-key": this.tatumConfig.apiKey };
-    }
-
     private async getApiScanUrl() {
         return `${this.ethApiScanConfig?.apiHost}/api?apikey=${this.ethApiScanConfig?.apiKey}`;
     }
@@ -334,7 +319,6 @@ export class EthApi implements BFChainWallet.ETH.API {
         }
         const p = await this.peerListHelper.getEnableRandom();
         return `http://${p.ip}:${p.port}`;
-        // return this.getTatumNodeUrl();
     }
 
     getTransactionFromSignature(signature: string) {

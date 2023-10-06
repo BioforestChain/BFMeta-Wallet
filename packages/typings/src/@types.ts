@@ -36,14 +36,6 @@ declare global {
                 headers: HeadersType;
                 official?: string;
             };
-            tatum: {
-                /** 这里配置成true, 将不直连节点，通过tatum连接节点。若配置为false，节点由上述三条链决定 */
-                enable: boolean;
-                apiKey: string;
-                host: string;
-                apiHost: string;
-                ethTest?: string;
-            };
 
             bscApiScan?: {
                 enable: boolean;
@@ -239,8 +231,6 @@ declare global {
                 confirmations: string;
             };
 
-            export type AccountBalanceRes = { contractAddress: string; amount: string }[];
-
             export type TransReceiptNative = {
                 txHash: string;
                 from: string;
@@ -369,8 +359,6 @@ declare global {
                 getNormalTransHistory(req: TransHistoryReq): Promise<NormalTransHistoryRes>;
 
                 getErc20TransHistory(req: TransHistoryReq): Promise<Erc20TransHistoryRes>;
-
-                getAccountBalance(address: string): Promise<AccountBalanceRes>;
             }
         }
 
@@ -1277,12 +1265,6 @@ declare global {
                  * @param req
                  */
                 getTrc20TransHistory(req: TronTransHistoryReq): Promise<Trc20TransHistoryRes>;
-
-                /**
-                 * 查询指定地址余额信息
-                 * @param address address必须是TRON地址，以 T 开头
-                 */
-                getAccountBalance(address: string): Promise<TronAccountBalanceRes>;
             }
         }
 
