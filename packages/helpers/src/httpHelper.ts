@@ -5,7 +5,7 @@ import { Injectable } from "@bnqkl/util-node";
 
 @Injectable()
 export class HttpHelper {
-    constructor(host: string) {}
+    constructor() {}
 
     checkHttp(url: string) {
         if (url.toLocaleLowerCase().startsWith("https")) {
