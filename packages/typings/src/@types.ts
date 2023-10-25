@@ -1304,6 +1304,10 @@ declare global {
                 };
             };
 
+            export type GetAllAccountAssetReq = {
+                [assetType: string]: string;
+            };
+
             export type GetAllAccountAssetResp = {
                 [address: string]: {
                     [assetType: string]: string;
