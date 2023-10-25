@@ -1305,7 +1305,9 @@ declare global {
             };
 
             export type GetAllAccountAssetReq = {
-                [assetType: string]: string;
+                filter: {
+                    [assetType: string]: string;
+                };
             };
 
             export type GetAllAccountAssetResp = {
