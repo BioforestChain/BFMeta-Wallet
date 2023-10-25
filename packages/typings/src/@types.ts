@@ -1299,6 +1299,12 @@ declare global {
                 };
             };
 
+            export type GetAllAccountAssetResp = {
+                [address: string]: {
+                    [assetType: string]: string;
+                };
+            }[];
+
             export type GetTransactionsByBrowserResp = {
                 page: number;
                 pageSize: number;
