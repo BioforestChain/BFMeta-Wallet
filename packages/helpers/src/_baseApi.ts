@@ -52,7 +52,8 @@ export abstract class _BaseApi {
         });
         if (result.success) {
             if (result.data) {
-                const { address, publicKey, secondPublicKey, isDelegate, isAcceptVote, accountStatus } = result.data;
+                const { address, publicKey, secondPublicKey, isDelegate, isAcceptVote, accountStatus, equityInfo } =
+                    result.data;
                 return {
                     success: true,
                     result: {
@@ -62,6 +63,7 @@ export abstract class _BaseApi {
                         isDelegate,
                         isAcceptVote,
                         accountStatus,
+                        equityInfo,
                     },
                 };
             } else {

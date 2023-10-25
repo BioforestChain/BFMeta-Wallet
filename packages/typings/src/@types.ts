@@ -1282,6 +1282,11 @@ declare global {
                 isDelegate: boolean;
                 isAcceptVote: boolean;
                 accountStatus: number;
+                equityInfo: {
+                    round: number;
+                    equity: string;
+                    fixedEquity: string;
+                };
             };
             export type GetBlockAverageFeeResp = { blockAveFee: string };
 
