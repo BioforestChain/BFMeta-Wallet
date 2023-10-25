@@ -135,7 +135,7 @@ export abstract class _BaseApi {
     async getAllAccountAsset(
         opt: BFChainWallet.BCF.GetAllAccountAssetReq,
     ): Promise<BFChainWallet.BCF.COMMON_RESPONSE<BFChainWallet.BCF.GetAllAccountAssetResp>> {
-        const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/asset/allAccounts`, opt);
+        const result = await this.httpHelper.sendPostRequest<any>(`${this.getBrowserUrl()}/asset/allAccounts`, opt);
         if (result.success) {
             return { success: true, result: result.data };
         } else {
