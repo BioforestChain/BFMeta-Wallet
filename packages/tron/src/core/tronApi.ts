@@ -683,7 +683,16 @@ export class TronApi implements BFChainWallet.TRON.API {
 
     private async getPeerUrl() {
         const p = await this.peerListHelper.getEnableRandom();
-        return `http://${p.ip}:${p.port}`;
+        let url = "";
+        if (p.ip.startsWith("http")) {
+            url += p.ip;
+        } else {
+            url += `http://` + p.ip;
+        }
+        if (p.port) {
+            url += `:${p.port}`;
+        }
+        return url;
     }
 
     private async fullNodeUrl() {

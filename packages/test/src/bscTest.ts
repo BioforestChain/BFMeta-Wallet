@@ -21,7 +21,7 @@ class DemoLogger {
     const bscApi = walletFactory.BscApi;
     await sleep(0);
 
-    // latestBlock();
+    latestBlock();
     // getGasPrice();
     // getBalance();
     // getContractBalanceAndDecimal();
