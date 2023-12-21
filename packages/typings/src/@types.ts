@@ -1302,6 +1302,8 @@ declare global {
                         };
                     };
                 };
+                forgingRewards: string;
+                votingRewards: string;
             };
 
             export type GetAllAccountAssetReq = {
