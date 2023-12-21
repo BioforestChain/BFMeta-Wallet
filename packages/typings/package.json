@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-typings",
-    "version": "1.4.12",
+    "version": "1.4.13",
     "description": " wallet typings",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -22,5 +22,5 @@
         "@bfmeta/node-sdk": "^3.0.37"
     },
     "module": "build/esm/index.js",
-    "gitHead": "644d387679989e66338d9a4d482c6afd20449593"
+    "gitHead": "3e7e6795a6894796ecae7bd2742fe7b66983137c"
 }
