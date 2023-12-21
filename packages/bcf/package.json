@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-bcf",
-    "version": "1.4.10",
+    "version": "1.4.11",
     "description": " wallet bcf",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -16,12 +16,12 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet-helpers": "1.4.10",
-        "@bfmeta/wallet-typings": "1.4.10"
+        "@bfmeta/wallet-helpers": "1.4.11",
+        "@bfmeta/wallet-typings": "1.4.11"
     },
     "files": [
         "build"
     ],
     "module": "build/esm/index.js",
-    "gitHead": "2fbda25c5a02fb4476973a273323efbeafab0b70"
+    "gitHead": "9ca54f042cad6db131d548a37537530de4eac03b"
 }
