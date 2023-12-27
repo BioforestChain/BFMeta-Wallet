@@ -333,7 +333,7 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     getEIP1559TransactionFromSignature(signature: string) {
-        const tx = ethereumjs2.FeeMarketEIP1559Transaction.fromSerializedTx(toBuffer(signature));
+        const tx = ethereumjs2.TransactionFactory.fromSerializedData(Buffer.from(signature.slice(2), "hex"));
         return tx;
     }
 
@@ -353,9 +353,9 @@ export class EthApi implements BFChainWallet.ETH.API {
                 value: parseInput ? parseInput.value : value,
                 contractAddress: parseInput ? to : "",
             };
-            if (value === "0" && parseInput?.value === "0") {
-                throw new Error(`getTransBodyFromSignature error, trans value not allow '0', signature: ${signature}`);
-            }
+            // if (value === "0" && parseInput?.value === "0") {
+            //     throw new Error(`getTransBodyFromSignature error, trans value not allow '0', signature: ${signature}`);
+            // }
             return body;
         }
         return null;
@@ -377,11 +377,11 @@ export class EthApi implements BFChainWallet.ETH.API {
                 value: parseInput ? parseInput.value : value,
                 contractAddress: parseInput ? to : "",
             };
-            if (value === "0" && parseInput?.value === "0") {
-                throw new Error(
-                    `getEIP1559TransBodyFromSignature error, trans value not allow '0', signature: ${signature}`,
-                );
-            }
+            // if (value === "0" && parseInput?.value === "0") {
+            //     throw new Error(
+            //         `getEIP1559TransBodyFromSignature error, trans value not allow '0', signature: ${signature}`,
+            //     );
+            // }
             return body;
         }
         return null;

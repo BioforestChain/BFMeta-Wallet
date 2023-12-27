@@ -390,9 +390,9 @@ export class BscApi implements BFChainWallet.BSC.API {
                 value: parseInput ? parseInput.value : value,
                 contractAddress: parseInput ? to : "",
             };
-            if (value === "0" && parseInput?.value === "0") {
-                throw new Error(`getTransBodyFromSignature error, trans value not allow '0', signature: ${signature}`);
-            }
+            // if (value === "0" && parseInput?.value === "0") {
+            //     throw new Error(`getTransBodyFromSignature error, trans value not allow '0', signature: ${signature}`);
+            // }
             return body;
         }
         return null;
