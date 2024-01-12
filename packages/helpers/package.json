@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-helpers",
-    "version": "1.4.15",
+    "version": "1.4.16",
     "description": " wallet helpers",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -16,7 +16,7 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet-typings": "1.4.15"
+        "@bfmeta/wallet-typings": "1.4.16"
     },
     "files": [
         "build"
