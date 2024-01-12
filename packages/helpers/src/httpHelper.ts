@@ -17,6 +17,9 @@ export class HttpHelper {
 
     sendPostRequest<T>(url: string, argv: { [key: string]: any }) {
         return new Promise<T>((resolve, reject) => {
+            let timeoutId = setTimeout(() => {
+                reject(new Error(`request timeout ${url}`));
+            }, 10 * 1000);
             const req = this.checkHttp(url).request(
                 url,
                 {
@@ -26,13 +29,12 @@ export class HttpHelper {
                     },
                 },
                 async (res) => {
+                    clearTimeout(timeoutId);
                     parsePostRequestParameter(res, resolve, reject);
                 },
             );
-            req.setTimeout(10 * 1000, () => {
-                return reject("timeout");
-            });
             req.on("error", (e) => {
+                clearTimeout(timeoutId);
                 return reject(e);
             });
             req.write(JSON.stringify(argv));
@@ -49,13 +51,15 @@ export class HttpHelper {
                     : `?${parseGetRequestParamter(argv)}`
                 : "");
         return new Promise<T>((resolve, reject) => {
+            let timeoutId = setTimeout(() => {
+                reject(new Error(`request timeout ${url}`));
+            }, 10 * 1000);
             const req = this.checkHttp(url).get(completeUrl, async (res) => {
+                clearTimeout(timeoutId);
                 parsePostRequestParameter(res, resolve, reject);
             });
-            req.setTimeout(10 * 1000, () => {
-                return reject("timeout");
-            });
             req.on("error", (e) => {
+                clearTimeout(timeoutId);
                 return reject(e);
             });
         });
@@ -64,13 +68,15 @@ export class HttpHelper {
     sendApiGetRequest<T>(url: string, argv?: { [key: string]: any }, headers?: { [key: string]: any }) {
         const completeUrl = url + (argv ? `?${parseGetRequestParamter(argv)}` : "");
         return new Promise<T>((resolve, reject) => {
+            let timeoutId = setTimeout(() => {
+                reject(new Error(`request timeout ${url}`));
+            }, 10 * 1000);
             const req = this.checkHttp(url).get(completeUrl, { headers }, async (res) => {
                 parsePostRequestParameter<T>(res, resolve, reject);
             });
-            req.setTimeout(10 * 1000, () => {
-                return reject("timeout");
-            });
+
             req.on("error", (e) => {
+                clearTimeout(timeoutId);
                 return reject(e);
             });
         });
