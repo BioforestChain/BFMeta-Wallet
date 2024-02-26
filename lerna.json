@@ -1,6 +1,6 @@
 {
     "packages": ["packages/*", "packages/@types/*"],
-    "version": "1.4.16",
+    "version": "1.4.17",
     "useWorkspaces": true,
     "npmClient": "yarn",
     "publishConifg": {
