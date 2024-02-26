@@ -1,8 +1,8 @@
 import type {} from "@bfmeta/wallet-typings";
-import { ABISupportFunctionEnum, WalletFactory } from "@bfmeta/wallet";
+import { WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
-import { ETH_TEST_USDT_ABI } from "@bfmeta/wallet-eth";
 import { ModuleStroge, Injectable, sleep } from "@bnqkl/util-node";
+import { ETH_SEPOLIA_TEST_LINK_ADDRESS } from "@bfmeta/wallet-eth";
 const config: BFChainWallet.Config = require(`../../assets/config.json`);
 
 @Injectable(LoggerSymbol)
@@ -18,34 +18,38 @@ class DemoLogger {
     moduleMap.set(LoggerSymbol, DemoLogger);
     const walletFactory = new WalletFactory(config, moduleMap);
     const ethApi = walletFactory.EthApi;
-
     await sleep(0);
+
+    const address_0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311 = "0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311";
+    const privateKey_0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311 =
+        "bb98720c8f30386c12387ee14671c94c9403f666676ae450dc205b87c9e22418";
+    const address_0x1b3B3fc528e7c65dB1524AA3b74C5Ce1aEb95a92 = "0x1b3B3fc528e7c65dB1524AA3b74C5Ce1aEb95a92";
+    const privateKey_0x1b3B3fc528e7c65dB1524AA3b74C5Ce1aEb95a92 =
+        "f47a8c2dd9b5b43b990e9f8c92a71ddd9e124e4041bf17f20b9eae3088f9a769";
+    // getChainId();
     // lastBlock();
     // getGasPrice();
     // getBalance();
     // getContractBalanceAndDecimal();
+
     // commonTrans();
     // ERC20Trans();
 
-    // sendTransaction();
     // getTrans();
     // getTransReceipt();
     // getTransReceiptNative();
     // getTransBody();
-    // getTransBodyFromSign();
-    const sign2 =
-        "0xf8a882019f8270ed8287a1945b78a789a2c3b557c45279aebcb56fb381dfb41480b844a9059cbb000000000000000000000000f563cea8c4777e2e32629a9fbba7b1e91c182e5600000000000000000000000000000000000000000000000000000000020e6da02ea0857766d33f60ae8b0ea7dcb237fa5e7e6c883213b78b5ce0a611bf6fab59e200a07b9482ec158aa0534ffeb9012076a3e8650502709a7405db2f31b6e735ded416";
-    const sign =
-        "0x02f8af0582019f827c7684596927ec8286f2942e8d98fd126a32362f2bd8aa427e59a1ec63f78080b844a9059cbb000000000000000000000000785f8ee0c83ab7cf398008d0428233fc177355210000000000000000000000000000000000000000000000000000000000b8a1a0c080a021feee594dffa2c6450c01d35ad2bff36d4576d822e6148e46b08ce57b5c6b9ba0122d751de4e346d848ce16d2a8c3a64e13840d8a27820a353ca2e57e848ba496";
-    // console.log(sign);
-    // const z1 = ethApi.getTransactionFromSignature(sign2);
-    // console.log(z1);
-    // const z2 = ethApi.getTransBodyFromSignature(sign2);
-    // console.log(z2);
-    const z3 = ethApi.getEIP1559TransactionFromSignature(sign);
-    console.log(z3);
-    const z4 = ethApi.getEIP1559TransBodyFromSignature(sign);
-    console.log(z4);
+
+    getTransBodyFromSign();
+    // getEIP1559TransBodyFromSign();
+
+    async function getChainId() {
+        const chainId = await ethApi.getChainId();
+        console.log("========= 获取链ID =========");
+        //sepolia 11155111
+        console.log(chainId);
+        return chainId;
+    }
 
     async function lastBlock() {
         const lastBlock = await ethApi.getLastBlock();
@@ -67,26 +71,26 @@ class DemoLogger {
     }
 
     async function getBalance() {
-        const address = "0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311";
-        const balance = await ethApi.getBalance(address);
-        const fromWei = await ethApi.fromWei(balance);
+        const balance = await ethApi.getBalance(address_0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311);
+        const fromWei = await ethApi.web3.utils.fromWei(balance, "ether");
         console.log("========= 获取账户 balance =========");
         console.log("balance : %s, fromWei : %s", balance, fromWei);
     }
 
     async function getContractBalanceAndDecimal() {
-        const address = "0xce8C1E1b11e06FaE762f6E2b5264961C0C7A6a48";
-        const contractAddress = "0x466595626333c55fa7d7Ad6265D46bA5fDbBDd99";
-        const erc20Balance = await ethApi.getContractBalanceAndDecimal(address, contractAddress);
+        const erc20Balance = await ethApi.getContractBalanceAndDecimal(
+            address_0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311,
+            ETH_SEPOLIA_TEST_LINK_ADDRESS,
+        );
         console.log("========= 获取账户 ERC20BalanceAndDecimal =========");
         console.log(erc20Balance);
     }
 
     async function commonTrans() {
         console.log("========= ETH发起普通交易 =========");
-        const from = "0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311";
-        const to = "0x1b3B3fc528e7c65dB1524AA3b74C5Ce1aEb95a92";
-        const privateKey = "bb98720c8f30386c12387ee14671c94c9403f666676ae450dc205b87c9e22418";
+        const from = address_0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311;
+        const to = address_0x1b3B3fc528e7c65dB1524AA3b74C5Ce1aEb95a92;
+        const privateKey = privateKey_0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311;
 
         const txCount = await ethApi.getTransCount(from);
         console.log("txCount : %s", txCount);
@@ -99,17 +103,18 @@ class DemoLogger {
         const txObjcet = {
             from: from,
             to: to,
-            value: "100000000",
+            value: "123456789",
             gas: generalGas,
             gasPrice: gasPrice,
             nonce: txCount,
+            chainId: await getChainId(),
         };
 
         const signTx = { trans: txObjcet, privateKey: privateKey };
         const signTrans = await ethApi.signTransaction(signTx);
         console.log(`signTrans : ${JSON.stringify(signTrans, null, 2)}`);
 
-        const tx = ethApi.getTransBodyFromSignature(signTrans.rawTrans);
+        const tx = ethApi.getEIP1559TransBodyFromSignature(signTrans.rawTrans);
         console.log(tx);
 
         const txHash = await ethApi.sendSignedTransaction(signTrans.rawTrans);
@@ -118,13 +123,10 @@ class DemoLogger {
 
     async function ERC20Trans() {
         console.log("========= ETH发起合约交易 =========");
-        const from = "0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311";
-        const to = "0x1b3B3fc528e7c65dB1524AA3b74C5Ce1aEb95a92";
-        const privateKey = "bb98720c8f30386c12387ee14671c94c9403f666676ae450dc205b87c9e22418";
-
-        // const contractAddress_usdt = "0x5AB6F31B29Fc2021436B3Be57dE83Ead3286fdc7";
-        const contractAddress_link = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB";
-        // const contractAddress_usdc = "0x466595626333c55fa7d7Ad6265D46bA5fDbBDd99";
+        const from = address_0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311;
+        const to = address_0x1b3B3fc528e7c65dB1524AA3b74C5Ce1aEb95a92;
+        const privateKey = privateKey_0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311;
+        const contractAddress = ETH_SEPOLIA_TEST_LINK_ADDRESS;
 
         const txCount = await ethApi.getTransCount(from);
         console.log("txCount : %s", txCount);
@@ -132,51 +134,39 @@ class DemoLogger {
         const gasPrice = await ethApi.getGasPrice();
         console.log("gasPrice : %s", gasPrice);
 
-        const amount = "10000000000";
-        const data = await ethApi.getContractTransData(from, to, amount, contractAddress_link);
+        const amount = "1234567890";
+        const data = await ethApi.getContractTransData(from, to, amount, contractAddress);
         console.log("data : %s", data);
 
-        const contractGas = await ethApi.getContractGas(from, to, amount, contractAddress_link);
+        const contractGas = await ethApi.getContractGas(from, to, amount, contractAddress);
         console.log("contractGas : %s", contractGas);
 
-        const chainId = 5;
         const contracTxObjcet = {
             from: from,
-            to: contractAddress_link,
+            to: contractAddress,
             value: "0",
             gas: contractGas,
             gasPrice: gasPrice,
             nonce: txCount,
             data: data,
-            chainId,
+            chainId: await getChainId(),
         };
 
         const signTx = { trans: contracTxObjcet, privateKey: privateKey };
         const signTrans = await ethApi.signTransaction(signTx);
         console.log(`signTrans : ${JSON.stringify(signTrans, null, 2)}`);
 
-        // const tx = ethApi.getTransBodyFromSignature(signTrans.rawTrans);
-        // console.log(tx);
+        const tx = ethApi.getEIP1559TransBodyFromSignature(signTrans.rawTrans);
+        console.log(tx);
 
         const txHash = await ethApi.sendSignedTransaction(signTrans.rawTrans);
-        console.log("signTrans.rawTrans : %s", signTrans.rawTrans);
-        const tx = ethApi.getTransactionFromSignature(signTrans.rawTrans);
-        console.log(tx);
-        // console.log(tx.to.toString("hex"));
-        // console.log(tx.value.toString("hex"));
-        // console.log(tx.data.toString("hex"));
-        // const txData = "0x" + tx.data.toString("hex");
-        // const result = ethApi.decodeParameters<{ _to: string; _value: string }>(
-        //     txData.substring(10),
-        //     ABISupportFunctionEnum.transfer,
-        // );
-        // console.log(result);
+        console.log(txHash);
     }
 
     async function getTrans() {
-        const txHash = "0x6abe393ffce83c210a6ef0dd7312718a651c7c5fdb32be88c29665f775acf4d7";
-        const contractHash = "0xcf02e7cfa3297b6a9f5a71464d7c8d1efa6c7f4e36adcf6f26c7186862b03517";
-        const trans = await ethApi.getTrans(contractHash);
+        const txHash = "0x6ebbe5cacf9380cc309052539ebf65e4bd430e22f39ea51b09ac75539f4f1aad";
+        const contractHash = "0xa1e3d739b5b1db7370c0898d0e6f46b93eb86f253c9c9f870ec3daa09896e426";
+        const trans = await ethApi.getTrans(txHash);
         console.log("========= 查询交易信息 =========");
         console.log(trans);
 
@@ -186,24 +176,24 @@ class DemoLogger {
     }
 
     async function getTransReceipt() {
-        const txHash = "0x6abe393ffce83c210a6ef0dd7312718a651c7c5fdb32be88c29665f775acf4d7";
-        const contractHash = "0xcf02e7cfa3297b6a9f5a71464d7c8d1efa6c7f4e36adcf6f26c7186862b03517";
+        const txHash = "0x6ebbe5cacf9380cc309052539ebf65e4bd430e22f39ea51b09ac75539f4f1aad";
+        const contractHash = "0xa1e3d739b5b1db7370c0898d0e6f46b93eb86f253c9c9f870ec3daa09896e426";
         const transReceipt = await ethApi.getTransReceipt(contractHash);
         console.log("========= 查询交易收据 =========");
         console.log(transReceipt);
     }
 
     async function getTransReceiptNative() {
-        const txHash = "0x6abe393ffce83c210a6ef0dd7312718a651c7c5fdb32be88c29665f775acf4d7";
-        const contractHash = "0xcf02e7cfa3297b6a9f5a71464d7c8d1efa6c7f4e36adcf6f26c7186862b03517";
+        const txHash = "0x6ebbe5cacf9380cc309052539ebf65e4bd430e22f39ea51b09ac75539f4f1aad";
+        const contractHash = "0xa1e3d739b5b1db7370c0898d0e6f46b93eb86f253c9c9f870ec3daa09896e426";
         const transReceipt = await ethApi.getTransReceiptNative(contractHash);
         console.log("========= 查询交易收据 =========");
         console.log(transReceipt);
     }
 
     async function getTransBody() {
-        const txHash = "0x6abe393ffce83c210a6ef0dd7312718a651c7c5fdb32be88c29665f775acf4d7";
-        const contractHash = "0xcf02e7cfa3297b6a9f5a71464d7c8d1efa6c7f4e36adcf6f26c7186862b03517";
+        const txHash = "0x6ebbe5cacf9380cc309052539ebf65e4bd430e22f39ea51b09ac75539f4f1aad";
+        const contractHash = "0xa1e3d739b5b1db7370c0898d0e6f46b93eb86f253c9c9f870ec3daa09896e426";
         const trans = await ethApi.getTrans(contractHash);
         const transReceipt = ethApi.getTransBody(trans);
         console.log("========= 获取交易体 =========");
@@ -215,6 +205,16 @@ class DemoLogger {
         const contractSign =
             "0xf8a80e846abacc3782877a94326c977e6efc84e512bb9c30f76e30c160ed06fb80b844a9059cbb0000000000000000000000001b3b3fc528e7c65db1524aa3b74c5ce1aeb95a9200000000000000000000000000000000000000000000000000000002540be4002da07a9f777b89f1534657a8ab8c36c8e2de0014a447e2df2b1e8e4f598ad03072d9a02405e50a66b876d74e869a6f9f87cb64992ea6d107635b64d33d59d412f32063";
         const body = ethApi.getTransBodyFromSignature(commonSign);
+        console.log("========= 获取交易体 =========");
+        console.log(body);
+    }
+
+    async function getEIP1559TransBodyFromSign() {
+        const commonSign =
+            "0xf86c01850168956cfb825208941b3b3fc528e7c65db1524aa3b74c5ce1aeb95a9284075bcd15808401546d72a0bb4cd91d1a054487249badc3f4954dd504214b5e39a19badf8155f93f60ee4baa0486a0bc110fc207d983d6aa93422d155dabcc873e5dca2d64a6572125473a5be";
+        const contractSign =
+            "0xf8ac0384a1af582c82c9b294779877a7b0d9e8603169ddbd7836e478b462478980b844a9059cbb0000000000000000000000001b3b3fc528e7c65db1524aa3b74c5ce1aeb95a9200000000000000000000000000000000000000000000000000000000499602d28401546d71a082dfbbc976633c5d59e6692534cf3ae75d87a705d02c1fb6c44966f00451a17ba02a2d395ab79f1975a19c12fdb5f9b5daebf9c1182b86100889c4997920b395ac";
+        const body = ethApi.getEIP1559TransBodyFromSignature(contractSign);
         console.log("========= 获取交易体 =========");
         console.log(body);
     }
