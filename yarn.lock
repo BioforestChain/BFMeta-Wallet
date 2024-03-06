@@ -6741,7 +6741,7 @@ trim-newlines@^3.0.0:
   resolved "https://registry.yarnpkg.com/trim-newlines/-/trim-newlines-3.0.1.tgz#260a5d962d8b752425b32f3a7db0dcacd176c144"
   integrity sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==
 
-tronweb@^5.3.1:
+tronweb@5.3.1:
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/tronweb/-/tronweb-5.3.1.tgz#eb97e667f580b2c7de81311dd1b353f4b5d927a9"
   integrity sha512-JF3HE0ab8KQWJWETCF7UqZHD4uMNNGlEPrquBoObu5bWc8A8eerBV9M2PJq+HcSYBivmEHeBqFgmpMAQP3ofpw==

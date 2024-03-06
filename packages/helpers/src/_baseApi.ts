@@ -122,15 +122,13 @@ export abstract class _BaseApi {
     async getAssetDetails(
         assetType: string,
     ): Promise<BFChainWallet.BCF.COMMON_RESPONSE<BFChainWallet.BCF.GetAssetDetailsResp>> {
-        const getAssetsRet = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/assets/getAssets`, {
+        const getAssetsRet = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/assets`, {
             page: 1,
             pageSize: 1,
             assetType,
         });
         if (!getAssetsRet.success) {
-            throw new Error(
-                getAssetsRet.error?.message ? getAssetsRet.error.message : `${this.browser} /assets/getAssets error`,
-            );
+            throw new Error(getAssetsRet.error?.message ? getAssetsRet.error.message : `${this.browser} /assets error`);
         }
         const getAssetsData: BFChainWallet.BCF.AssetInfo = getAssetsRet.data.dataList[0];
         if (!getAssetsData) {
