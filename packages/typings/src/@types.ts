@@ -1342,7 +1342,18 @@ declare global {
                 iconUrl: string;
             };
 
-            export type GetAssetDetailsResp = {
+            export interface GetAssetDetailsResp extends AssetInfo {
+                // 图标url
+                iconUrl: string;
+            }
+
+            export interface AssetInfo extends Asset {
+                /**活跃地址数 */
+                addressQty: number;
+            }
+
+            /**Asset */
+            export interface Asset {
                 // 资产名称
                 assetType: string;
                 // 发行地址
@@ -1361,9 +1372,7 @@ declare global {
                 dateCreated: number;
                 // 跨链字段
                 sourceChainMagic: string;
-                // 图标url
-                iconUrl: string;
-            };
+            }
 
             export interface API {
                 sdk: import("@bfmeta/node-sdk").BFMetaSDK;

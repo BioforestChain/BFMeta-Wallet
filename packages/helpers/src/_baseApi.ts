@@ -122,14 +122,32 @@ export abstract class _BaseApi {
     async getAssetDetails(
         assetType: string,
     ): Promise<BFChainWallet.BCF.COMMON_RESPONSE<BFChainWallet.BCF.GetAssetDetailsResp>> {
-        const result = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/assets/queryAssetDetails`, {
+        const getAssetsRet = await this.httpHelper.sendGetRequest<any>(`${this.getBrowserUrl()}/assets/getAssets`, {
+            page: 1,
+            pageSize: 1,
             assetType,
         });
-        if (result.success) {
-            return { success: true, result: result.data };
-        } else {
-            throw new Error(result.error?.message ? result.error.message : `${this.browser} getAssetDetails error`);
+        if (!getAssetsRet.success) {
+            throw new Error(
+                getAssetsRet.error?.message ? getAssetsRet.error.message : `${this.browser} /assets/getAssets error`,
+            );
         }
+        const getAssetsData: BFChainWallet.BCF.AssetInfo = getAssetsRet.data.dataList[0];
+        if (!getAssetsData) {
+            throw new Error(`can't find assetInfo of assetType:${assetType}`);
+        }
+        const detailRet = await this.httpHelper.sendGetRequest<any>(
+            `${this.getBrowserUrl()}/assets/queryAssetDetails`,
+            {
+                assetType,
+            },
+        );
+        if (!detailRet.success) {
+            throw new Error(
+                detailRet.error?.message ? detailRet.error.message : `${this.browser} /assets/queryAssetDetails error`,
+            );
+        }
+        return { success: true, result: { ...detailRet.data, addressQty: getAssetsData.addressQty } };
     }
 
     async getAllAccountAsset(
