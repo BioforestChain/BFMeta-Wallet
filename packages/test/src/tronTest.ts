@@ -52,7 +52,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     // getContractDecimal();
     // getTrans();
     // getTransInfo();
-    // getTransReceipt();
+    getTransReceipt();
 
     async function createAccount() {
         const needMnemonic = true;
@@ -100,7 +100,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     }
 
     async function getAccountResources() {
-        const account = await tronApi.getAccountResources(address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh);
+        const account = await tronApi.getAccountResources(address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh);
         console.log(account);
     }
 
@@ -144,10 +144,10 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     }
 
     async function trc20Trans() {
-        const amount = "1000000";
+        const amount = "10000000";
         const SendTrc20Req: BFChainWallet.TRON.SendTrc20Req = {
-            from: address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
-            to: address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh,
+            from: address_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh,
+            to: address_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh,
             amount: amount,
             contractAddress: contract_usdt,
         };
@@ -155,7 +155,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
         const trc20Trans = await tronApi.sendTrc20(SendTrc20Req);
         console.log(trc20Trans);
         console.log("====== 签名交易 ======");
-        const signTrans = await tronApi.signTrc20(trc20Trans, privateKey_TXfEi2DTRwpguV935X9akWuG4bzYXp7Xqh);
+        const signTrans = await tronApi.signTrc20(trc20Trans, privateKey_THALJV8Nabkhy3s7im5g61pHaAdzSkUEkh);
         console.log(signTrans);
         console.log("====== 广播交易 ======");
         // await sleep(70);
@@ -188,18 +188,18 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     }
 
     async function getTransInfo() {
-        const contractTxId = "e473be87320b182c4da27497b6a8baff8c5de721bef1c9ba413a3726466cef7d";
-        const txId = "f6fc748c8a2d2fd39a25aae99ddcdc49d02a346557d6901ce3264123bdf80283";
-        const result = await tronApi.getTransInfo(txId);
+        const contractTxId = "641880d2635c47a7ca73574a1c8d792400def9044523f95060235a924f22c695";
+        const txId = "62efa5ba9971f05fa73ac2153de071f78ba627d5cc120e35b88bf53972790ff8";
+        const result = await tronApi.getTransInfo(contractTxId);
         console.log("====== 根据txid查询交易详情 ======");
         console.log(result);
     }
 
     async function getTransReceipt() {
-        const contractTxId = "e473be87320b182c4da27497b6a8baff8c5de721bef1c9ba413a3726466cef7d";
+        const contractTxId = "641880d2635c47a7ca73574a1c8d792400def9044523f95060235a924f22c695";
         const txId = "f6fc748c8a2d2fd39a25aae99ddcdc49d02a346557d6901ce3264123bdf80283";
         const faileTxId = "70bf4e63a9dffe5daa6d0e1617a349c0279ce1513528f9ad06e253fb75b86157";
-        const result = await tronApi.getTransReceipt(txId);
+        const result = await tronApi.getTransReceipt(contractTxId);
         console.log("====== 根据txid查询交易 ======");
         console.log(result);
     }

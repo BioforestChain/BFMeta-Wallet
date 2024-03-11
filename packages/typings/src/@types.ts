@@ -978,13 +978,20 @@ declare global {
                 contractResult: string[];
                 // 合约地址
                 contract_address?: string;
+                // trx  带宽  带宽(免费)  能量  能量(免费)
                 receipt: {
-                    // 消耗带宽
+                    //消耗TRX = net_fee + energy_fee
+                    //消耗带宽
                     net_fee?: number;
-                    // 免费带宽
+                    //免费带宽
                     net_usage?: number;
-                    // 消耗能量
+                    //燃烧能量获取的资源（TRX）
                     energy_fee?: number;
+                    //免费能量
+                    energy_usage?: number;
+                    //消耗能量
+                    energy_usage_total?: number;
+                    origin_energy_usage?: number;
                     result?: string;
                 };
             };
@@ -998,12 +1005,17 @@ declare global {
                 blockNumber: number;
                 /** 区块时间: 时间戳 毫秒 */
                 blockTimeStamp: number;
-                // 消耗带宽
+                //消耗带宽
                 netFee: number;
-                // 免费带宽
+                //免费带宽
                 netUsage: number;
-                // 消耗能量
+                //燃烧能量获取的资源（TRX）
                 energyFee: number;
+                //免费能量
+                energyUsage: number;
+                //消耗能量
+                energyUsageTotal: number;
+                originEnergyUsage: number;
                 // 合约地址
                 contractAddress: string;
             };
@@ -1027,12 +1039,17 @@ declare global {
                 amount: string;
                 /** 手续费：消耗TRX */
                 fee: number;
-                /** 网络费(免费) */
-                netUsage: number;
-                /** 网络费 */
+                //消耗带宽
                 netFee: number;
-                /** 能量费 */
+                //免费带宽
+                netUsage: number;
+                //燃烧能量获取的资源（TRX）
                 energyFee: number;
+                //免费能量
+                energyUsage: number;
+                //消耗能量
+                energyUsageTotal: number;
+                originEnergyUsage: number;
                 /** 交易时间戳 */
                 timestamp: number;
             };

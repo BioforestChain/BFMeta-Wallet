@@ -381,8 +381,10 @@ export class TronApi implements BFChainWallet.TRON.API {
                 blockNumber,
                 blockTimeStamp,
                 contract_address,
-                receipt: { net_fee, net_usage, energy_fee },
+                receipt: { net_fee, net_usage, energy_fee, energy_usage, energy_usage_total, origin_energy_usage },
             } = transInfo;
+            console.log(transInfo);
+
             const res: BFChainWallet.TRON.TronTransInfoRes = {
                 txId: id,
                 fee: fee ?? 0,
@@ -391,6 +393,9 @@ export class TronApi implements BFChainWallet.TRON.API {
                 netFee: net_fee ?? 0,
                 netUsage: net_usage ?? 0,
                 energyFee: energy_fee ?? 0,
+                energyUsage: energy_usage ?? 0,
+                energyUsageTotal: energy_usage_total ?? 0,
+                originEnergyUsage: origin_energy_usage ?? 0,
                 contractAddress: contract_address ?? "",
             };
             return res;
@@ -420,8 +425,19 @@ export class TronApi implements BFChainWallet.TRON.API {
             const status = confirmTrans.ret?.[0]?.contractRet === "SUCCESS" || false;
             if (transInfoRes) {
                 const { from, to, amount } = transBody;
-                const { txId, blockNumber, blockTimeStamp, contractAddress, fee, netUsage, netFee, energyFee } =
-                    transInfoRes;
+                const {
+                    txId,
+                    blockNumber,
+                    blockTimeStamp,
+                    contractAddress,
+                    fee,
+                    netUsage,
+                    netFee,
+                    energyFee,
+                    energyUsage,
+                    energyUsageTotal,
+                    originEnergyUsage,
+                } = transInfoRes;
                 const receipt: BFChainWallet.TRON.TronTransReceipt = {
                     status,
                     txId,
@@ -435,6 +451,9 @@ export class TronApi implements BFChainWallet.TRON.API {
                     netUsage,
                     netFee,
                     energyFee,
+                    energyUsage,
+                    energyUsageTotal,
+                    originEnergyUsage,
                     // 预防少数情况下 timestamp 不存在的情况
                     timestamp: confirmTrans.raw_data.timestamp || blockTimeStamp,
                 };
