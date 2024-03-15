@@ -35,12 +35,13 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@bfmeta/node-sdk@^3.0.37":
-  version "3.0.37"
-  resolved "https://registry.yarnpkg.com/@bfmeta/node-sdk/-/node-sdk-3.0.37.tgz#229fa98dc9f549c9c2da5e4823884ca93b857d87"
-  integrity sha512-mA0d8wsIviCnNQTClsR+CCzIzoW36kHqLTyCCu7CQW5mOUKbxv3dnVpRKfm3fLtbOgBd1ezKvrCk2KQ63qP8WA==
+"@bfmeta/node-sdk@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@bfmeta/node-sdk/-/node-sdk-4.0.1.tgz#3f068bb947ba51bc68ca9eb5900c5aa15d45f4af"
+  integrity sha512-HznPhmItn0U6SjKp2TRjtO0oSsnfGDozP6TWaICOc0GptTsznOqaVuuDo9RgpvLYmcLxdgscYwkO3EMZ5yc5zA==
   dependencies:
     "@bfmeta/sign-util" "^1.0.8"
+    "@types/socket.io-client" "^1.4.36"
     socket.io-client "^2.4.0"
 
 "@bfmeta/sign-util@^1.0.8":
@@ -1228,6 +1229,11 @@
   integrity sha512-Da66lEIFeIz9ltsdMZcpQvmrmmoqrfju8pm1BH8WbYjZSwUgCwXLb9C+9XYogwBITnbsSaMdVPb2ekf7TV+03w==
   dependencies:
     "@types/node" "*"
+
+"@types/socket.io-client@^1.4.36":
+  version "1.4.36"
+  resolved "https://registry.yarnpkg.com/@types/socket.io-client/-/socket.io-client-1.4.36.tgz#e4f1ca065f84c20939e9850e70222202bd76ff3f"
+  integrity sha512-ZJWjtFBeBy1kRSYpVbeGYTElf6BqPQUkXDlHHD4k/42byCN5Rh027f4yARHCink9sKAkbtGZXEAmR0ZCnc2/Ag==
 
 "@yarnpkg/lockfile@^1.1.0":
   version "1.1.0"
