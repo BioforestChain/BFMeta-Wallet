@@ -1,4 +1,4 @@
-import type { AbiItem } from "web3-utils";
+import type { AbiItem, AbiFragment, AbiInput, AbiFunctionFragment } from "web3-types";
 
 /** 测试网络 USDT合约地址 */
 export const BSC_TEST_USDT_ADDRESS = "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd";
@@ -8,6 +8,11 @@ export const BSC_TEST_LINK_ADDRESS = "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06
 export const BSC_USDT_ADDRESS = "0x55d398326f99059fF775485246999027B3197955";
 /** 正式网络 USDC合约地址 */
 export const BSC_USDC_ADDRESS = "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d";
+
+export type AbiItemCustom = AbiItem & { name?: string };
+export type AbiInputCustom = AbiInput & { name?: string };
+
+export type { AbiFunctionFragment };
 
 export const BSC_TEST_USDT_ABI: AbiItem[] = [
     {

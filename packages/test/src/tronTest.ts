@@ -45,7 +45,7 @@ const testAccountUsdt = "mom animal indicate soldier roof sheriff always anchor 
     // getAccountResources();
     // signAndVerify();
     // getCurrentBlock();
-    // getTrxBalance();
+    getTrxBalance();
     // trxTrans();
     // trc20Trans();
     // getContractBalance();

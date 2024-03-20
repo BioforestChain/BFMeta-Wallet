@@ -9,13 +9,23 @@ import {
     TRANS_INPUT_PREFIX,
     HEX_PREFIX,
 } from "@bfmeta/wallet-helpers";
-import Web3 from "web3";
-import Web3HttpProvider from "web3-providers-http";
-import { BSC_BEP20_ABI } from "./constants";
+import Web3, { HttpProvider } from "web3";
+import {
+    AbiEventFragment,
+    Transaction,
+    TransactionReceipt,
+    EventLog,
+    DEFAULT_RETURN_FORMAT,
+    FMT_NUMBER,
+    FMT_BYTES,
+    BlockTags,
+    DataFormat,
+} from "web3-types";
+import type { SignTransactionResult } from "web3-eth-accounts";
+import { AbiItemCustom, AbiInputCustom, BSC_BEP20_ABI } from "./constants";
 import * as ethereumjs from "ethereumjs-tx";
 import ethereumcommon from "ethereumjs-common";
-import type { AbiItem, AbiInput } from "web3-utils";
-import type { Log, Transaction, TransactionReceipt, SignedTransaction } from "web3-core";
+import type { HttpProviderOptions } from "web3-providers-http";
 
 export const BSC_PEERS = {
     host: Symbol("host"),
@@ -34,17 +44,31 @@ export class BscApi implements BFChainWallet.BSC.API {
         }
     }
     private async newWeb3() {
-        const headers: { name: string; value: string }[] = [];
+        const headers: { [key: string]: string } = {};
         for (const name in this.headers) {
-            headers.push({ name, value: this.headers[name] });
+            headers[name] = this.headers[name];
         }
-        const provider = new Web3HttpProvider(await this.getPeerUrl(), {
-            headers,
-        });
-        this.__web3 = new Web3(headers.length > 0 ? provider : await this.getPeerUrl());
+        // const provider = new Web3HttpProvider(await this.getPeerUrl(), {
+        //     headers,
+        // });
+        // this.__web3 = new Web3(headers.length > 0 ? provider : await this.getPeerUrl());
 
+        // if (this.official) {
+        //     this.__officialweb3 = new Web3(this.official);
+        // }
+        const url =
+            "https://rpc.ankr.com/bsc_testnet_chapel/28b53fa5e254dfadde9a91b01c47ea24703edb5d39632ee19e233af6e8a5442a";
         if (this.official) {
             this.__officialweb3 = new Web3(this.official);
+        } else {
+            if (headers) {
+                const httpProviderOptions: HttpProviderOptions = {
+                    providerOptions: { headers } as RequestInit,
+                };
+                this.__web3 = new Web3(new HttpProvider(url, httpProviderOptions));
+            } else {
+                this.__web3 = new Web3(url);
+            }
         }
     }
 
@@ -171,8 +195,17 @@ export class BscApi implements BFChainWallet.BSC.API {
         return res;
     }
 
+    async getChainId(): Promise<number> {
+        return await this.web3.eth.getChainId({ ...DEFAULT_RETURN_FORMAT, number: FMT_NUMBER.NUMBER });
+    }
+
+    //如果指定 true，则返回的块将包含所有交易作为对象。 如果为 false，它将仅包含交易哈希。
     async getLastBlock(): Promise<any> {
-        return await this.web3.eth.getBlock("latest");
+        const lastBlock = await this.web3.eth.getBlock(BlockTags.LATEST, false, {
+            bytes: FMT_BYTES.HEX,
+            number: FMT_NUMBER.NUMBER,
+        });
+        return lastBlock;
     }
 
     async getBaseGas(): Promise<BFChainWallet.ETH.BaseGas> {
@@ -181,6 +214,19 @@ export class BscApi implements BFChainWallet.BSC.API {
             contractGas: 70000,
         };
         return baseGas;
+    }
+
+    async getGasPrice(): Promise<string> {
+        const gasPrice: string = await this.web3.eth.getGasPrice({ bytes: FMT_BYTES.HEX, number: FMT_NUMBER.STR });
+        return gasPrice;
+    }
+
+    async getBalance(address: string): Promise<string> {
+        const balance = await this.web3.eth.getBalance(address, BlockTags.LATEST, {
+            ...DEFAULT_RETURN_FORMAT,
+            number: FMT_NUMBER.STR,
+        });
+        return balance;
     }
 
     async getTokenInfo(contractAddress: string): Promise<any> {
@@ -193,24 +239,11 @@ export class BscApi implements BFChainWallet.BSC.API {
     }
 
     async getContractGas(from: string, to: string, amount: string, contractAddress: string) {
-        const contract = this.getContract(from, contractAddress);
-        return await contract.methods.transfer(to, amount).estimateGas();
-    }
-
-    async getGasPrice(): Promise<string> {
-        return await this.web3.eth.getGasPrice();
-    }
-
-    async getBalance(address: string): Promise<string> {
-        return await this.web3.eth.getBalance(address);
-    }
-
-    async fromWei(wei: string) {
-        return this.web3.utils.fromWei(wei, "ether");
-    }
-
-    async getChainId() {
-        return await this.web3.eth.getChainId();
+        const contract = await this.getContract(from, contractAddress);
+        const estimateGas = await contract.methods
+            .transfer(to, amount)
+            .estimateGas(undefined, { bytes: FMT_BYTES.HEX, number: FMT_NUMBER.NUMBER });
+        return estimateGas;
     }
 
     async getContractBalance(address: string, contractAddress: string): Promise<string> {
@@ -221,23 +254,26 @@ export class BscApi implements BFChainWallet.BSC.API {
     async getContractBalanceAndDecimal(
         address: string,
         contractAddress: string,
-    ): Promise<BFChainWallet.ETH.Contract20Balance> {
-        const contract = this.getContract(address, contractAddress);
-        const balance = await contract.methods.balanceOf(address).call();
-        const decimal = await contract.methods.decimals().call();
-        return { balance, decimal };
+    ): Promise<BFChainWallet.ETH.ContractBalance> {
+        const contract = await this.getContract(address, contractAddress);
+        const balance = (await contract.methods.balanceOf(address).call()) as unknown as bigint;
+        const decimal = (await contract.methods.decimals().call()) as unknown as bigint;
+        const result: BFChainWallet.ETH.ContractBalance = {
+            balance: balance.toString(),
+            decimal: decimal.toString(),
+        };
+        return result;
+    }
+
+    async getContractTransData(from: string, to: string, amount: string, contractAddress: string): Promise<string> {
+        const contract = await this.getContract(from, contractAddress);
+        return await contract.methods.transfer(to, amount).encodeABI();
     }
 
     async signTransaction(req: BFChainWallet.ETH.SignTransactionReq): Promise<BFChainWallet.ETH.SignTransactionRes> {
-        const signedTrans: SignedTransaction = await this.web3.eth.accounts.signTransaction(
+        const signedTrans: SignTransactionResult = await this.web3.eth.accounts.signTransaction(
             req.trans,
             req.privateKey,
-            (err, signedTransaction) => {
-                if (err) {
-                    // 抛出错误信息
-                    throw new Error(err.message);
-                }
-            },
         );
         if (signedTrans && signedTrans.rawTransaction && signedTrans.transactionHash) {
             const res: BFChainWallet.ETH.SignTransactionRes = {
@@ -249,44 +285,53 @@ export class BscApi implements BFChainWallet.BSC.API {
             throw new Error(`signedTrans failed: ${signedTrans}`);
         }
     }
-    async getContractTransData(from: string, to: string, amount: string, contractAddress: string): Promise<string> {
-        const contract = this.getContract(from, contractAddress);
-        return await contract.methods.transfer(to, amount).encodeABI();
-    }
 
     async sendSignedTransaction(raw: string): Promise<string> {
-        return new Promise((resolve, reject) => {
-            const web3 = this.__officialweb3 ? this.__officialweb3 : this.web3;
-            web3.eth.sendSignedTransaction(raw, (err, txHash) => {
-                if (err) {
-                    reject(err);
-                }
-                resolve(txHash);
-            });
+        const receipt = await this.web3.eth.sendSignedTransaction(raw, {
+            bytes: FMT_BYTES.HEX,
+            number: FMT_NUMBER.STR,
+        });
+        if (receipt && receipt.transactionHash) {
+            return receipt.transactionHash as unknown as string;
+        }
+        throw Error(`sendSignedTransaction failed receipt:${JSON.stringify(receipt, null, 2)}`);
+    }
+
+    async getTransCount(address: string): Promise<number> {
+        return await this.web3.eth.getTransactionCount(address, undefined, {
+            ...DEFAULT_RETURN_FORMAT,
+            number: FMT_NUMBER.NUMBER,
         });
     }
 
-    async getTransCount(address: string) {
-        return await this.web3.eth.getTransactionCount(address);
+    async getTrans(txHash: string): Promise<BFChainWallet.ETH.TransactionCustom> {
+        const trans = await this.web3.eth.getTransaction(txHash, {
+            bytes: FMT_BYTES.HEX,
+            number: FMT_NUMBER.STR,
+        });
+        const transCustom: BFChainWallet.ETH.TransactionCustom = {
+            hash: trans.hash,
+            nonce: trans.nonce,
+            blockHash: trans.blockHash ?? "",
+            blockNumber: trans.blockNumber ?? "",
+            transactionIndex: trans.transactionIndex ?? "",
+            from: trans.from,
+            to: trans.to ?? "",
+            value: trans.value,
+            gasPrice: trans.gasPrice,
+            maxFeePerGas: trans.maxFeePerGas ?? "",
+            maxPriorityFeePerGas: trans.maxPriorityFeePerGas ?? "",
+            gas: trans.gas,
+            input: trans.input,
+            data: trans.data ?? "",
+            chainId: trans.chainId ?? "",
+            r: trans.r,
+            s: trans.s,
+            v: trans.v ?? "",
+        };
+        return transCustom;
     }
 
-    /**
-     * Retrieves a transaction using its hash.
-     *
-     * @param {string} txHash - the hash of the transaction to retrieve.
-     * @return {Promise<Transaction>} A promise that resolves with the retrieved transaction object.
-     */
-    async getTrans(txHash: string) {
-        const trans: Transaction = await this.web3.eth.getTransaction(txHash);
-        return trans;
-    }
-
-    /**
-     * Retrieves the transaction receipt for a given transaction hash.
-     *
-     * @param {string} txHash - The transaction hash to retrieve the receipt for.
-     * @return {Promise<TransactionReceipt>} - A promise that resolves with the transaction receipt.
-     */
     async getTransReceipt(txHash: string) {
         const receipt: TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
         return receipt;
@@ -299,25 +344,30 @@ export class BscApi implements BFChainWallet.BSC.API {
      * @return {Promise<BFChainWallet.ETH.TransReceiptNative | null>} - the transaction receipt as a native object, or null if the receipt does not exist
      */
     async getTransReceiptNative(txHash: string): Promise<BFChainWallet.ETH.TransReceiptNative | null> {
-        const receipt: TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash);
+        const receipt: TransactionReceipt = await this.web3.eth.getTransactionReceipt(txHash, {
+            bytes: FMT_BYTES.HEX,
+            number: FMT_NUMBER.STR,
+        });
         if (receipt) {
             const { transactionHash, cumulativeGasUsed, effectiveGasPrice, gasUsed, status, blockHash, blockNumber } =
                 receipt;
+
             const parseReceipt = this.parseReceipt(receipt);
             const isContract: boolean = parseReceipt && parseReceipt.contractAddress;
-
             const result: BFChainWallet.ETH.TransReceiptNative = {
-                txHash: transactionHash,
+                txHash: typeof transactionHash === "string" ? transactionHash : "",
                 from: isContract ? parseReceipt?.from : receipt.from,
                 to: isContract ? parseReceipt?.to : receipt.to,
-                value: isContract ? parseReceipt?.value : (await this.getTrans(txHash))?.value,
+                value: isContract
+                    ? BigInt(parseReceipt?.value as bigint).toString()
+                    : (await this.getTrans(txHash))?.value,
                 contractAddress: isContract ? parseReceipt?.contractAddress : "",
-                cumulativeGasUsed,
-                effectiveGasPrice,
-                gasUsed,
-                status,
-                blockHash,
-                blockNumber,
+                cumulativeGasUsed: BigInt(cumulativeGasUsed).toString(),
+                effectiveGasPrice: BigInt(effectiveGasPrice ?? "0").toString(),
+                gasUsed: BigInt(gasUsed).toString(),
+                status: Number(status),
+                blockHash: typeof blockHash === "string" ? blockHash : "",
+                blockNumber: BigInt(blockNumber).toString(),
             };
             return result;
         }
@@ -330,7 +380,7 @@ export class BscApi implements BFChainWallet.BSC.API {
      * @param {Transaction} trans - the transaction to extract the body from
      * @return {BFChainWallet.ETH.EthTransBody} the extracted transaction body
      */
-    getTransBody(trans: Transaction): BFChainWallet.ETH.EthTransBody {
+    getTransBody(trans: BFChainWallet.ETH.TransactionCustom): BFChainWallet.ETH.EthTransBody {
         const { hash, blockHash, blockNumber, from, input, to, value } = trans;
         const parseInput = this.parseInput(input);
         const transBody: BFChainWallet.ETH.EthTransBody = {
@@ -345,13 +395,8 @@ export class BscApi implements BFChainWallet.BSC.API {
         return transBody;
     }
 
-    private getContract(address: string, contractAddress: string) {
-        return this.generateContract(BSC_BEP20_ABI, contractAddress, address);
-    }
-
-    private generateContract(abi: any, contractAddress: string, from: string) {
-        const contract = new this.web3.eth.Contract(abi, contractAddress, { from: from });
-        return contract;
+    private async getContract(address: string, contractAddress: string) {
+        return new this.web3.eth.Contract(BSC_BEP20_ABI, contractAddress, { from: address });
     }
 
     private async getApiScanUrl() {
@@ -376,12 +421,15 @@ export class BscApi implements BFChainWallet.BSC.API {
         const tx = new ethereumjs.Transaction(signature, {
             common: this.testnet ? this.__bscTestnetCommon : this.__bscMainnetCommon,
         });
+
         if (tx) {
             const hash = HEX_PREFIX + tx.hash().toString("hex");
             const txData = HEX_PREFIX + tx.data.toString("hex");
             const from = HEX_PREFIX + tx.getSenderAddress().toString("hex");
             let to = HEX_PREFIX + tx.to.toString("hex");
-            let value = this.web3.utils.hexToNumberString(HEX_PREFIX + tx.value.toString("hex"));
+            // web3升级版本后value会出现为空的情况
+            const txValue = tx.value.toString("hex");
+            let value = !txValue || txValue === "" ? "0" : this.web3.utils.hexToNumberString(HEX_PREFIX + txValue);
             const parseInput = this.parseInput(txData);
             const body: BFChainWallet.ETH.EthTransBodyFromSign = {
                 hash,
@@ -416,21 +464,21 @@ export class BscApi implements BFChainWallet.BSC.API {
     }
 
     getMethodABI(functionName: ABISupportFunctionEnum) {
-        const methodABI: AbiItem | undefined = BSC_BEP20_ABI.find((a: AbiItem) => {
-            return a.type === ABISupportTypeEnum.function && a.name === functionName;
+        const methodABI: AbiItemCustom | undefined = BSC_BEP20_ABI.find((a: AbiItemCustom) => {
+            return a.type === ABISupportTypeEnum.function && a?.name === functionName;
         });
         return methodABI;
     }
 
     getEventABI(eventName: ABISupportEventEnum) {
-        const eventABI: AbiItem | undefined = BSC_BEP20_ABI.find((a: AbiItem) => {
-            return a.type === ABISupportTypeEnum.event && a.name === eventName;
+        const eventABI: AbiItemCustom | undefined = BSC_BEP20_ABI.find((a: AbiItemCustom) => {
+            return a.type === ABISupportTypeEnum.event && a?.name === eventName;
         });
         return eventABI;
     }
 
     parseReceipt(receipt: TransactionReceipt) {
-        const logs = receipt.logs;
+        const logs = receipt.logs as unknown as EventLog[];
         if (!logs || logs.length === 0) {
             return null;
         }
@@ -441,12 +489,12 @@ export class BscApi implements BFChainWallet.BSC.API {
         return result;
     }
 
-    parseEventLog(eventLog: Log) {
+    parseEventLog(eventLog: EventLog) {
         const AbiItem = this.getEventABI(ABISupportEventEnum.Transfer);
         if (!AbiItem) {
             return null;
         }
-        const eventSignature = this.web3.eth.abi.encodeEventSignature(AbiItem);
+        const eventSignature = this.web3.eth.abi.encodeEventSignature(AbiItem as unknown as AbiEventFragment);
         const topics = eventLog.topics;
         // 检查事件签名是否匹配
         if (topics[0] === eventSignature) {
@@ -468,7 +516,7 @@ export class BscApi implements BFChainWallet.BSC.API {
 
             // 交易金额
             const data = eventLog.data;
-            const valueInput = eventInputs.find((input: AbiInput) => {
+            const valueInput = eventInputs.find((input: AbiInputCustom) => {
                 return input.name === "value";
             });
             if (!valueInput) {
@@ -493,15 +541,14 @@ export class BscApi implements BFChainWallet.BSC.API {
         }
         // 获取函数参数
         const funcArguments = input.slice(10);
-
         // 解码
-        const decode = this.decodeParameters<{ recipient: string; amount: string }>(
+        const decode = this.decodeParameters<{ recipient: string; amount: bigint }>(
             funcArguments,
             ABISupportFunctionEnum.transfer,
         );
         if (decode) {
-            const to = decode.recipient;
-            const value = decode.amount;
+            const to = decode.recipient.toString();
+            const value = decode.amount.toString();
             return { to, value };
         }
         return null;
