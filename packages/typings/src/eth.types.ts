@@ -320,7 +320,7 @@ declare global {
                  * @param {string} txHash 交易Hash
                  * @returns {TransReceiptNative | null} 交易回执信息
                  */
-                // getTransReceiptNative(txHash: string): Promise<TransReceiptNative | null>;
+                getTransReceiptNative(txHash: string): Promise<TransReceiptNative | null>;
 
                 getNormalTransHistory(req: TransHistoryReq): Promise<NormalTransHistoryRes>;
 

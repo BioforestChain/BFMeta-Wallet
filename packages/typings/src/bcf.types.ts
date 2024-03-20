@@ -87,23 +87,23 @@ declare global {
 
             /**Asset */
             export interface Asset {
-                // 资产名称
+                /**资产名称 */
                 assetType: string;
-                // 发行地址
+                /**发行地址 */
                 applyAddress: string;
-                // 创世地址
+                /**创世地址 */
                 genesisAddress: string;
-                // 归属链名称
+                /**归属链名称 */
                 sourceChainName: string;
-                // 发行总量
+                /**发行总量 */
                 issuedAssetPrealnum: string;
-                // 当前总量
+                /**当前总量 */
                 remainAssetPrealnum: string;
-                // 冻结主资产量
+                /**冻结主资产量 */
                 frozenMainAssetPrealnum: string;
-                // 发行时间
+                /**发行时间 */
                 dateCreated: number;
-                // 跨链字段
+                /**跨链字段 */
                 sourceChainMagic: string;
             }
 

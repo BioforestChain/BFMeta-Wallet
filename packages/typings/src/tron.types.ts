@@ -18,54 +18,54 @@ declare global {
             };
 
             export type CreateTransactionReq = {
-                /** 转账转出地址，Base58check格式 或 Hex格式 */
+                /**转账转出地址，Base58check格式 或 Hex格式 */
                 owner_address: string;
-                /** 转账转入地址，Base58check格式 或 Hex格式 */
+                /**转账转入地址，Base58check格式 或 Hex格式 */
                 to_address: string;
-                /** 转账金额 */
+                /**转账金额 */
                 amount: number;
-                /** 账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址 */
+                /**账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址 */
                 visible?: boolean;
-                /** 交易时添加的备注信息 */
+                /**交易时添加的备注信息 */
                 extra_data?: string;
             };
 
             export type GetTransactionSignReq = {
-                /** 未签名前的交易信息 */
+                /**未签名前的交易信息 */
                 transaction: TronTransaction | Trc20Transaction;
-                /** 用户私钥 */
+                /**用户私钥 */
                 privateKey: string;
             };
 
             export type BroadcastTransactionRes = {
-                /** 交易是否成功: true: 成功，false: 失败 */
+                /**交易是否成功: true: 成功，false: 失败 */
                 result: boolean;
-                /** 交易ID */
+                /**交易ID */
                 txid: string;
-                /** 交易失败时出现，显示为交易失败原因的code */
+                /**交易失败时出现，显示为交易失败原因的code */
                 code?: string;
-                /** 信息 */
+                /**信息 */
                 message: string;
             };
 
             export type TronTransactionInfo = {
-                /** 交易ID */
+                /**交易ID */
                 id: string;
-                /** 交易手续费 */
+                /**交易手续费 */
                 fee?: number;
-                /** 区块高度 */
+                /**区块高度 */
                 blockNumber: number;
-                /** 时间 */
+                /**时间 */
                 blockTimeStamp: number;
                 contractResult: string[];
-                // 合约地址
+                /**合约地址 */
                 contract_address?: string;
                 receipt: {
-                    // 消耗带宽
+                    /**消耗带宽 */
                     net_fee?: number;
-                    // 免费带宽
+                    /**免费带宽 */
                     net_usage?: number;
-                    // 消耗能量
+                    /**消耗能量 */
                     energy_fee?: number;
                     result?: string;
                 };
@@ -73,9 +73,9 @@ declare global {
             };
 
             export type TriggerSmartContractReq = {
-                /** 发起合约调用的账户地址 默认使用 Hex 地址*/
+                /**发起合约调用的账户地址 默认使用 Hex 地址*/
                 owner_address: string;
-                /** 合约地址 默认使用 Hex 地址*/
+                /**合约地址 默认使用 Hex 地址*/
                 contract_address: string;
                 /**
                  * 所调用的函数
@@ -84,20 +84,20 @@ declare global {
                  * 3.获取代币精度：decimals()
                  */
                 function_selector: string;
-                /** 原始数据，包含转账地址和转账金额 */
+                /**原始数据，包含转账地址和转账金额 */
                 input: TronContractParameter[];
-                /** 编码后的 parameter(服务端使用) */
+                /**编码后的 parameter(服务端使用) */
                 parameter?: string;
-                /** 最大消耗的 TRX 数量 */
+                /**最大消耗的 TRX 数量 */
                 fee_limit?: number;
-                /** 本次调用往合约转账的 TRX 数量 */
+                /**本次调用往合约转账的 TRX 数量 */
                 call_value?: number;
-                /** 账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址 */
+                /**账户地址是否为 Base58check 格式，默认为 false，使用 Hex 地址 */
                 visible?: boolean;
             };
 
             export type TriggerSmartContractRes = {
-                /** 请求结果 */
+                /**请求结果 */
                 result: { result: boolean };
                 energy_used?: number;
                 constant_result?: string[];
@@ -111,86 +111,86 @@ declare global {
             };
 
             export type TronTransHistoryReq = {
-                // 查询地址
+                /**查询地址 */
                 address: string;
-                // 每页结果数，默认20，最大200
+                /**每页结果数，默认20，最大200 */
                 limit: number;
-                // 特定合约地址(适用于合约交易查询)
+                /**特定合约地址(适用于合约交易查询) */
                 contract_address?: string;
-                // 翻页参数，指定上一页的 fingerprint
+                /**翻页参数，指定上一页的 fingerprint */
                 fingerprint?: string;
             };
 
             export type CommonTransByAddressResult = {
-                // 是否成功；ture 成功， false失败
+                /**是否成功；ture 成功， false失败 */
                 success: boolean;
-                // 交易历史集合
+                /**交易历史集合 */
                 data: CommonTransHistoryResultData[];
-                // 额外参数
+                /**额外参数 */
                 meta?: {
-                    // 时间戳
+                    /**时间戳 */
                     at: number;
-                    // 翻页参数，指定上一页的 fingerprint
+                    /**翻页参数，指定上一页的 fingerprint */
                     fingerprint: string;
-                    // 翻页链接地址
+                    /**翻页链接地址 */
                     links?: { next: string };
-                    // 页数
+                    /**页数 */
                     page_size: number;
                 };
-                // 查询错误信息
+                /**查询错误信息 */
                 error?: string;
                 statusCode?: number;
             };
 
             export type CommonTransHistoryRes = {
-                // 是否成功；ture 成功， false失败
+                /**是否成功；ture 成功， false失败 */
                 success: boolean;
-                // 交易历史集合
+                /**交易历史集合 */
                 data: CommonTransHistoryResData[];
-                // 当前页的数量
+                /**当前页的数量 */
                 pageSize?: number;
-                // 翻页参数，指定上一页的 fingerprint
+                /**翻页参数，指定上一页的 fingerprint */
                 fingerprint?: string;
-                // 查询错误信息
+                /**查询错误信息 */
                 error?: string;
-                // 错误状态
+                /**错误状态 */
                 statusCode?: number;
             };
 
             export type Trc20TransHistoryResult = {
-                // 是否成功；ture 成功， false失败
+                /**是否成功；ture 成功， false失败 */
                 success: boolean;
-                // 交易历史集合
+                /**交易历史集合 */
                 data: Trc20TransHistoryResultData[];
-                // 额外参数
+                /**额外参数 */
                 meta?: {
-                    // 时间戳
+                    /**时间戳 */
                     at: number;
-                    // 翻页参数，指定上一页的 fingerprint
+                    /**翻页参数，指定上一页的 fingerprint */
                     fingerprint: string;
-                    // 翻页链接地址
+                    /**翻页链接地址 */
                     links?: { next: string };
-                    // 页数
+                    /**页数 */
                     page_size: number;
                 };
-                // 查询错误信息
+                /**查询错误信息 */
                 error?: string;
-                // 错误状态
+                /**错误状态 */
                 statusCode?: number;
             };
 
             export type Trc20TransHistoryRes = {
-                // 是否成功；ture 成功， false失败
+                /**是否成功；ture 成功， false失败 */
                 success: boolean;
-                // 交易历史集合
+                /**交易历史集合 */
                 data: Trc20TransHistoryResData[];
-                // 当前页的数量
+                /**当前页的数量 */
                 pageSize?: number;
-                // 翻页参数，指定上一页的 fingerprint
+                /**翻页参数，指定上一页的 fingerprint */
                 fingerprint?: string;
-                // 错误信息
+                /**错误信息 */
                 error?: string;
-                // 错误状态
+                /**错误状态 */
                 statusCode?: number;
             };
 
@@ -279,11 +279,11 @@ declare global {
 
             // 以下是新的类型
             export type TronNewAccount = {
-                /** 私钥 */
+                /**私钥 */
                 privateKey: string;
-                /** 公钥 */
+                /**公钥 */
                 publicKey: string;
-                /** 地址 */
+                /**地址 */
                 address: {
                     base58: string;
                     hex: string;
@@ -291,57 +291,57 @@ declare global {
             };
 
             export type TronNewAccountWithMnemonic = {
-                /** 助记词 */
+                /**助记词 */
                 mnemonic: { phrase: string; path: string; locale: string };
-                /** 私钥 */
+                /**私钥 */
                 privateKey: string;
-                /** 公钥 */
+                /**公钥 */
                 publicKey: string;
-                /** base58地址 */
+                /**base58地址 */
                 address: string;
             };
 
             export type TronAccount = {
-                /** 地址 */
+                /**地址 */
                 address: {
                     base58: string;
                     hex: string;
                 };
-                /** 余额 */
+                /**余额 */
                 balance: number;
             };
 
             export type TronWebAccount = {
-                /** hex格式地址 */
+                /**hex格式地址 */
                 address: string;
-                /** 余额 */
+                /**余额 */
                 balance: number;
-                /** 创建时间 */
+                /**创建时间 */
                 create_time: number;
             };
 
             export type TronAccountResources = {
-                /** 免费带宽总量 */
+                /**免费带宽总量 */
                 freeNetLimit?: number;
-                /** 已使用的免费带宽 */
+                /**已使用的免费带宽 */
                 freeNetUsed?: number;
-                /** 已使用的通过质押获得的带宽 */
+                /**已使用的通过质押获得的带宽 */
                 NetUsed?: number;
-                /** 质押获得的带宽总量 */
+                /**质押获得的带宽总量 */
                 NetLimit?: number;
-                /** 拥有的投票权 */
+                /**拥有的投票权 */
                 tronPowerLimit?: number;
-                /** 已使用的能量 */
+                /**已使用的能量 */
                 EnergyUsed?: number;
-                /** 质押获取的总能量 */
+                /**质押获取的总能量 */
                 EnergyLimit?: number;
-                /** 全网通过质押获取的带宽总量 */
+                /**全网通过质押获取的带宽总量 */
                 TotalNetLimit?: number;
-                /** 全网用于获取带宽的质押TRX总量 */
+                /**全网用于获取带宽的质押TRX总量 */
                 TotalNetWeight?: number;
-                /** 全网通过质押获取的能量总量 */
+                /**全网通过质押获取的能量总量 */
                 TotalEnergyLimit?: number;
-                /** 全网用于获取能量的质押TRX总量 */
+                /**全网用于获取能量的质押TRX总量 */
                 TotalEnergyWeight?: number;
             };
 
@@ -362,11 +362,11 @@ declare global {
                 contract: {
                     parameter: {
                         value: {
-                            /** 交易金额 */
+                            /**交易金额 */
                             amount: number;
-                            /** 交易发起地址 */
+                            /**交易发起地址 */
                             owner_address: string;
-                            /** 交易接收地址 */
+                            /**交易接收地址 */
                             to_address: string;
                         };
                         type_url: string;
@@ -383,11 +383,11 @@ declare global {
                 contract: {
                     parameter: {
                         value: {
-                            /** 交易加密数据 */
+                            /**交易加密数据 */
                             data: string;
-                            /** 交易发起地址 */
+                            /**交易发起地址 */
                             owner_address: string;
-                            /** 合约地址 */
+                            /**合约地址 */
                             contract_address: string;
                         };
                         type_url: string;
@@ -414,20 +414,18 @@ declare global {
                 txID: string;
                 raw_data: Trc20TransactionRawData;
                 raw_data_hex: string;
-                /** 签名 */
                 signature?: string[];
-                /** 查询 */
                 ret?: { contractRet: string }[];
             };
 
             export type TronOptions = {
-                /** 交易的手续费上限。可以根据交易的复杂性和网络情况选择适当的手续费上限。如果未提供此选项，默认手续费上限为 10 TRX。 */
+                /**交易的手续费上限。可以根据交易的复杂性和网络情况选择适当的手续费上限。如果未提供此选项，默认手续费上限为 10 TRX。 */
                 feeLimit: number;
-                /** 调用合约时传输的 TRX 数量。对于 TRC20 转账，一般情况下传输的 TRX 数量为 0。 */
+                /**调用合约时传输的 TRX 数量。对于 TRC20 转账，一般情况下传输的 TRX 数量为 0。 */
                 callValue: number;
-                /** 发送的代币数量。这是一个可选项，如果您要发送 TRC10 代币，可以使用此选项指定发送的代币数量 */
+                /**发送的代币数量。这是一个可选项，如果您要发送 TRC10 代币，可以使用此选项指定发送的代币数量 */
                 tokenValue?: number;
-                /** 代币的 tokenId。这是一个可选项，如果您要发送 TRC10 代币，可以使用此选项指定代币的 ID */
+                /**代币的 tokenId。这是一个可选项，如果您要发送 TRC10 代币，可以使用此选项指定代币的 ID */
                 tokenId?: number;
             };
 
@@ -437,49 +435,49 @@ declare global {
             };
 
             export type SendTransResult = {
-                /** 交易ID */
+                /**交易ID */
                 txid: string;
-                /** 广播结果 */
+                /**广播结果 */
                 result?: boolean;
-                /** 错误码，不是数字，而是错误信息 */
+                /**错误码，不是数字，而是错误信息 */
                 code?: string;
                 message?: string;
             };
 
             export type BroadcastRes = {
-                /** 广播结果 */
+                /**广播结果 */
                 result: boolean;
-                /** 交易ID */
+                /**交易ID */
                 txid: string;
-                /** 返回消息 */
+                /**返回消息 */
                 message: string;
                 code?: string;
             };
 
             export type TronTransInfo = {
-                /** txId */
+                /**txId */
                 id: string;
-                /** 手续费 */
+                /**手续费 */
                 fee: number;
-                /** 区块高度 */
+                /**区块高度 */
                 blockNumber: number;
-                /** 区块时间: 时间戳 毫秒 */
+                /**区块时间: 时间戳 毫秒 */
                 blockTimeStamp: number;
                 contractResult: string[];
-                // 合约地址
+                /**合约地址 */
                 contract_address?: string;
-                // trx  带宽  带宽(免费)  能量  能量(免费)
+                /**trx  带宽  带宽(免费)  能量  能量(免费) */
                 receipt: {
-                    //消耗TRX = net_fee + energy_fee
-                    //消耗带宽
+                    /**消耗TRX = net_fee + energy_fee + ... */
+                    /**消耗带宽 */
                     net_fee?: number;
-                    //免费带宽
+                    /**免费带宽 */
                     net_usage?: number;
-                    //燃烧能量获取的资源（TRX）
+                    /**燃烧能量获取的资源（TRX） */
                     energy_fee?: number;
-                    //免费能量
+                    /**免费能量 */
                     energy_usage?: number;
-                    //消耗能量
+                    /**消耗能量 */
                     energy_usage_total?: number;
                     origin_energy_usage?: number;
                     result?: string;
@@ -487,60 +485,60 @@ declare global {
             };
 
             export type TronTransInfoRes = {
-                /** txId */
+                /**txId */
                 txId: string;
-                /** 手续费 */
+                /**手续费 */
                 fee: number;
-                /** 区块高度 */
+                /**区块高度 */
                 blockNumber: number;
-                /** 区块时间: 时间戳 毫秒 */
+                /**区块时间: 时间戳 毫秒 */
                 blockTimeStamp: number;
-                //消耗带宽
+                /**消耗带宽 */
                 netFee: number;
-                //免费带宽
+                /**免费带宽 */
                 netUsage: number;
-                //燃烧能量获取的资源（TRX）
+                /**燃烧能量获取的资源（TRX） */
                 energyFee: number;
-                //免费能量
+                /**免费能量 */
                 energyUsage: number;
-                //消耗能量
+                /**消耗能量 */
                 energyUsageTotal: number;
                 originEnergyUsage: number;
-                // 合约地址
+                /**合约地址 */
                 contractAddress: string;
             };
 
             export type TronTransReceipt = {
-                /** 状态：true 成功，false 失败 */
+                /**状态：true 成功，false 失败 */
                 status: boolean;
-                /** 交易ID */
+                /**交易ID */
                 txId: string;
-                /** 区块高度 */
+                /**区块高度 */
                 blockNumber: number;
-                /** 区块时间: 时间戳 毫秒 */
+                /**区块时间: 时间戳 毫秒 */
                 blockTimeStamp: number;
-                /** 交易发起地址 */
+                /**交易发起地址 */
                 from: string;
-                /** 交易接收地址 */
+                /**交易接收地址 */
                 to: string;
-                /** 合约地址 */
+                /**合约地址 */
                 contractAddress: string;
-                /** 交易金额 */
+                /**交易金额 */
                 amount: string;
-                /** 手续费：消耗TRX */
+                /**手续费：消耗TRX */
                 fee: number;
-                //消耗带宽
+                /**消耗带宽 */
                 netFee: number;
-                //免费带宽
+                /**免费带宽 */
                 netUsage: number;
-                //燃烧能量获取的资源（TRX）
+                /**燃烧能量获取的资源（TRX） */
                 energyFee: number;
-                //免费能量
+                /**免费能量 */
                 energyUsage: number;
-                //消耗能量
+                /**消耗能量 */
                 energyUsageTotal: number;
                 originEnergyUsage: number;
-                /** 交易时间戳 */
+                /**交易时间戳 */
                 timestamp: number;
             };
 
@@ -549,9 +547,9 @@ declare global {
                 from: string;
                 to: string;
                 amount: string;
-                /** 合约地址：该字段不会为空，非合约交易时为空字符串 */
+                /**合约地址：该字段不会为空，非合约交易时为空字符串 */
                 contractAddress: string;
-                /** 签名信息：已签名的交易才会有该字段，默认为空字符串 */
+                /**签名信息：已签名的交易才会有该字段，默认为空字符串 */
                 signature: string;
             };
 

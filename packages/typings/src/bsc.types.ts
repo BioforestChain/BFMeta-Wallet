@@ -1,22 +1,22 @@
 export {};
 declare global {
     export namespace BFChainWallet {
-        /** 币安智能链 */
+        /**币安智能链 */
         export namespace BSC {
             export type BscTransHistoryReq = {
-                // 指定地址
+                /**指定地址 */
                 address: string;
-                // 合约地址（仅适用于查询合约交易）
+                /**合约地址（仅适用于查询合约交易） */
                 contractaddress?: string;
-                // 开始区块号, 默认为0
+                /**开始区块号, 默认为0 */
                 startblock?: number;
-                // 结束区块号，默认为 999999999
+                /**结束区块号，默认为 999999999 */
                 endblock?: number;
-                // 页码, 默认为 1
+                /**页码, 默认为 1 */
                 page?: number;
-                // 每页显示交易数量，默认为20，不可超过10000
+                /**每页显示交易数量，默认为20，不可超过10000 */
                 offset?: number;
-                // 排序偏好：默认为 desc 降序
+                /**排序偏好：默认为 desc 降序 */
                 sort?: string;
             };
 
@@ -27,9 +27,9 @@ declare global {
             };
 
             export type NormalTransHistoryRes = {
-                // 状态：0：无更多结果 或 错误请求，1：请求成功，可继续
+                /**状态：0：无更多结果 或 错误请求，1：请求成功，可继续 */
                 status: string;
-                // 请求结果：成功时返回 "OK"
+                /**请求结果：成功时返回 "OK" */
                 message: string;
                 result: NormalTransRes[];
             };
@@ -41,61 +41,62 @@ declare global {
             };
 
             export type Bep20TransHistoryRes = {
-                // 状态：0：无更多结果 或 错误请求，1：请求成功，可继续
+                /**状态：0：无更多结果 或 错误请求，1：请求成功，可继续 */
                 status: string;
-                // 请求结果：成功时返回 "OK"
+                /**请求结果：成功时返回 "OK" */
                 message: string;
                 result: Bep20TransRes[];
             };
 
             export type NormalTransRes = {
-                // 区块号
+                /**区块号 */
                 blockNumber: string;
-                // 时间戳：秒级
+                /**时间戳：秒级 */
                 timeStamp: string;
-                // 交易Hash
+                /**交易Hash */
                 hash: string;
-                // 转账发起地址
+                /**转账发起地址 */
                 from: string;
-                // 转账接收地址
+                /**转账接收地址 */
                 to: string;
-                // 转账金额
+                /**转账金额 */
                 value: string;
-                // Gas
+                /**Gas */
                 gas: string;
-                // GasPrice
+                /**GasPrice */
                 gasPrice: string;
-                // 手续费
+                /**手续费 */
                 gasUsed: string;
                 // 交易回执状态： "1" 为成功
                 // txreceipt_status: string;
             };
 
             export type Bep20TransRes = {
-                // 区块号
+                /**区块号 */
                 blockNumber: string;
-                // 时间戳：秒级
+                /**时间戳：秒级 */
                 timeStamp: string;
-                // 交易Hash
+                /**交易Hash */
                 hash: string;
-                // 转账发起地址
+                /**转账发起地址 */
                 from: string;
-                contractAddress: string;
-                // 转账接收地址
+                /**转账接收地址 */
                 to: string;
-                // 转账金额
+                /**合约地址 */
+                contractAddress: string;
+                /**转账金额 */
                 value: string;
-                // 合约名称
+                /**合约名称 */
                 tokenName: string;
-                // 合约符号
+                /**合约符号 */
                 tokenSymbol: string;
-                // 合约精度
+                /**合约精度 */
                 tokenDecimal: string;
-                // Gas
+                /**Gas */
                 gas: string;
-                // GasPrice
+                /**GasPrice */
                 gasPrice: string;
-                // 手续费
+                /**手续费 */
                 gasUsed: string;
             };
 
