@@ -48,8 +48,7 @@ export class EthApi implements BFChainWallet.ETH.API {
         for (const name in this.headers) {
             headers[name] = this.headers[name];
         }
-
-        const url = "https://rpc.ankr.com/eth_sepolia/28b53fa5e254dfadde9a91b01c47ea24703edb5d39632ee19e233af6e8a5442a";
+        const url = await this.getPeerUrl();
         if (headers) {
             const httpProviderOptions: HttpProviderOptions = {
                 providerOptions: { headers } as RequestInit,

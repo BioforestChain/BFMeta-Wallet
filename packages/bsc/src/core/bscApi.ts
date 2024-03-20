@@ -48,16 +48,7 @@ export class BscApi implements BFChainWallet.BSC.API {
         for (const name in this.headers) {
             headers[name] = this.headers[name];
         }
-        // const provider = new Web3HttpProvider(await this.getPeerUrl(), {
-        //     headers,
-        // });
-        // this.__web3 = new Web3(headers.length > 0 ? provider : await this.getPeerUrl());
-
-        // if (this.official) {
-        //     this.__officialweb3 = new Web3(this.official);
-        // }
-        const url =
-            "https://rpc.ankr.com/bsc_testnet_chapel/28b53fa5e254dfadde9a91b01c47ea24703edb5d39632ee19e233af6e8a5442a";
+        const url = await this.getPeerUrl();
         if (this.official) {
             this.__officialweb3 = new Web3(this.official);
         } else {

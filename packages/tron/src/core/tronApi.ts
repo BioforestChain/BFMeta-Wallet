@@ -24,9 +24,9 @@ export class TronApi implements BFChainWallet.TRON.API {
     }
 
     private async newTronWeb() {
-        const headers: { name: string; value: string }[] = [];
+        const headers: { [key: string]: string } = {};
         for (const name in this.headers) {
-            headers.push({ name, value: this.headers[name] });
+            headers[name] = this.headers[name];
         }
         const url = await this.getPeerUrl();
         this.__tronWeb = new TronWeb({ fullHost: url, headers: this.headers });
