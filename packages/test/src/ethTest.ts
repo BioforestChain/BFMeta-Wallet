@@ -37,10 +37,10 @@ class DemoLogger {
 
     // getTrans();
     // getTransReceipt();
-    // getTransReceiptNative();
+    getTransReceiptNative();
     // getTransBody();
 
-    getTransBodyFromSign();
+    // getTransBodyFromSign();
     // getEIP1559TransBodyFromSign();
 
     async function getChainId() {

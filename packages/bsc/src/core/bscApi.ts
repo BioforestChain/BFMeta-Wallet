@@ -356,7 +356,7 @@ export class BscApi implements BFChainWallet.BSC.API {
                 cumulativeGasUsed: BigInt(cumulativeGasUsed).toString(),
                 effectiveGasPrice: BigInt(effectiveGasPrice ?? "0").toString(),
                 gasUsed: BigInt(gasUsed).toString(),
-                status: Number(status),
+                status: status.toString() === "1",
                 blockHash: typeof blockHash === "string" ? blockHash : "",
                 blockNumber: BigInt(blockNumber).toString(),
             };

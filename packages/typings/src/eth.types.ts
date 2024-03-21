@@ -196,7 +196,7 @@ declare global {
                 /**交易消耗的Gas */
                 gasUsed: string;
                 /**执行结果 */
-                status: number;
+                status: boolean;
                 /**交易区块hash */
                 blockHash: string;
                 /**交易区块高度 */
