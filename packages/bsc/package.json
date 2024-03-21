@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet-bsc",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "description": " wallet bsc",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -16,7 +16,7 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet-typings": "1.6.0",
+        "@bfmeta/wallet-typings": "1.6.1",
         "web3": "4.5.0"
     },
     "files": [
