@@ -30,6 +30,7 @@ class DemoLogger {
     // lastBlock();
     // getGasPrice();
     // getBalance();
+    getContractBalance();
     // getContractBalanceAndDecimal();
 
     // commonTrans();
@@ -75,6 +76,14 @@ class DemoLogger {
         const fromWei = await ethApi.web3.utils.fromWei(balance, "ether");
         console.log("========= 获取账户 balance =========");
         console.log("balance : %s, fromWei : %s", balance, fromWei);
+    }
+
+    async function getContractBalance() {
+        const address = address_0x2CE7Cc719b8d4DBA69d0ab002cD56808FC684311;
+        const contractAddress = ETH_SEPOLIA_TEST_LINK_ADDRESS;
+        const contractBalance = await ethApi.getContractBalance(address, contractAddress);
+        console.log("========= 获取账户 contractBalance =========");
+        console.log(contractBalance);
     }
 
     async function getContractBalanceAndDecimal() {

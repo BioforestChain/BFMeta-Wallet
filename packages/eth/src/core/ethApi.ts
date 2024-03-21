@@ -207,7 +207,12 @@ export class EthApi implements BFChainWallet.ETH.API {
 
     async getContractBalance(address: string, contractAddress: string): Promise<string> {
         const contract = await this.getContract(address, contractAddress);
-        return await contract.methods.balanceOf(address).call();
+        const balanceOf = await contract.methods.balanceOf(address).call();
+        if (balanceOf) {
+            const balance = balanceOf as unknown as bigint;
+            return balance.toString();
+        }
+        return "0";
     }
 
     async getContractBalanceAndDecimal(
