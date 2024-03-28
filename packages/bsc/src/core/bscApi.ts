@@ -49,17 +49,16 @@ export class BscApi implements BFChainWallet.BSC.API {
             headers[name] = this.headers[name];
         }
         const url = await this.getPeerUrl();
+        if (headers) {
+            const httpProviderOptions: HttpProviderOptions = {
+                providerOptions: { headers } as RequestInit,
+            };
+            this.__web3 = new Web3(new HttpProvider(url, httpProviderOptions));
+        } else {
+            this.__web3 = new Web3(url);
+        }
         if (this.official) {
             this.__officialweb3 = new Web3(this.official);
-        } else {
-            if (headers) {
-                const httpProviderOptions: HttpProviderOptions = {
-                    providerOptions: { headers } as RequestInit,
-                };
-                this.__web3 = new Web3(new HttpProvider(url, httpProviderOptions));
-            } else {
-                this.__web3 = new Web3(url);
-            }
         }
     }
 
@@ -283,7 +282,8 @@ export class BscApi implements BFChainWallet.BSC.API {
     }
 
     async sendSignedTransaction(raw: string): Promise<string> {
-        const receipt = await this.web3.eth.sendSignedTransaction(raw, {
+        const web3 = this.__officialweb3 ? this.__officialweb3 : this.web3;
+        const receipt = await web3.eth.sendSignedTransaction(raw, {
             bytes: FMT_BYTES.HEX,
             number: FMT_NUMBER.STR,
         });
