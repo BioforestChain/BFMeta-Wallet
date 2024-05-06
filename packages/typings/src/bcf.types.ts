@@ -102,7 +102,7 @@ declare global {
                 /**冻结主资产量 */
                 frozenMainAssetPrealnum: string;
                 /**发行时间 */
-                dateCreated: number;
+                publishTime: number;
                 /**跨链字段 */
                 sourceChainMagic: string;
             }
