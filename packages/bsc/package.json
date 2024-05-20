@@ -17,7 +17,7 @@
     "types": "build/cjs/index.d.ts",
     "dependencies": {
         "@bfmeta/wallet-typings": "1.6.4",
-        "web3": "4.5.0"
+        "web3": "4.8.0"
     },
     "files": [
         "build"
