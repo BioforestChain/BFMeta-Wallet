@@ -362,7 +362,9 @@ export class EthApi implements BFChainWallet.ETH.API {
     }
 
     private async getContract(address: string, contractAddress: string) {
-        return new this.web3.eth.Contract(ETH_ERC20_ABI, contractAddress, { from: address });
+        //add gasLimit fix web3js bug for github.com/web3/web3.js/issues/7021
+        return new this.web3.eth.Contract(ETH_ERC20_ABI, contractAddress, { from: address, gasLimit: "70000" });
+        // return new this.web3.eth.Contract(ETH_ERC20_ABI, contractAddress, { from: address });
     }
 
     private async getApiScanUrl() {
