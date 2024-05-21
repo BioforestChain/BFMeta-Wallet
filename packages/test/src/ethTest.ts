@@ -2,7 +2,7 @@ import type {} from "@bfmeta/wallet-typings";
 import { WalletFactory } from "@bfmeta/wallet";
 import { LoggerSymbol } from "@bfmeta/wallet";
 import { ModuleStroge, Injectable, sleep } from "@bnqkl/util-node";
-import { ETH_SEPOLIA_TEST_LINK_ADDRESS } from "@bfmeta/wallet-eth";
+import { ETH_SEPOLIA_TEST_LINK_ADDRESS, ETH_USDT_ADDRESS } from "@bfmeta/wallet-eth";
 const config: BFChainWallet.Config = require(`../../assets/config.json`);
 
 @Injectable(LoggerSymbol)
@@ -30,15 +30,15 @@ class DemoLogger {
     // lastBlock();
     // getGasPrice();
     // getBalance();
-    getContractBalance();
-    // getContractBalanceAndDecimal();
+    // getContractBalance();
+    getContractBalanceAndDecimal();
 
     // commonTrans();
     // ERC20Trans();
 
     // getTrans();
     // getTransReceipt();
-    getTransReceiptNative();
+    // getTransReceiptNative();
     // getTransBody();
 
     // getTransBodyFromSign();

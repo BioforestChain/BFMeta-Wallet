@@ -36,7 +36,7 @@ export const ETH_PEERS = {
 @Injectable()
 export class EthApi implements BFChainWallet.ETH.API {
     private __web3!: Web3;
-    get web3() {
+    get web3(): Web3 {
         if (this.__web3) {
             return this.__web3;
         } else {
@@ -363,8 +363,11 @@ export class EthApi implements BFChainWallet.ETH.API {
 
     private async getContract(address: string, contractAddress: string) {
         //add gasLimit fix web3js bug for github.com/web3/web3.js/issues/7021
-        return new this.web3.eth.Contract(ETH_ERC20_ABI, contractAddress, { from: address, gasLimit: "70000" });
-        // return new this.web3.eth.Contract(ETH_ERC20_ABI, contractAddress, { from: address });
+        return new this.web3.eth.Contract(
+            ETH_ERC20_ABI,
+            contractAddress,
+            this.testnet ? { from: address, gasLimit: "70000" } : { from: address },
+        );
     }
 
     private async getApiScanUrl() {
