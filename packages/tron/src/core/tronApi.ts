@@ -383,8 +383,6 @@ export class TronApi implements BFChainWallet.TRON.API {
                 contract_address,
                 receipt: { net_fee, net_usage, energy_fee, energy_usage, energy_usage_total, origin_energy_usage },
             } = transInfo;
-            console.log(transInfo);
-
             const res: BFChainWallet.TRON.TronTransInfoRes = {
                 txId: id,
                 fee: fee ?? 0,
