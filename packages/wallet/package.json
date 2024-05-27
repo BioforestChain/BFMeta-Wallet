@@ -1,6 +1,6 @@
 {
     "name": "@bfmeta/wallet",
-    "version": "1.6.6",
+    "version": "1.6.7",
     "description": " wallet",
     "main": "build/cjs/index.js",
     "keywords": [
@@ -15,12 +15,12 @@
     "type": "commonjs",
     "types": "build/cjs/index.d.ts",
     "dependencies": {
-        "@bfmeta/wallet-bcf": "1.6.6",
-        "@bfmeta/wallet-bsc": "1.6.6",
-        "@bfmeta/wallet-eth": "1.6.6",
-        "@bfmeta/wallet-helpers": "1.6.6",
-        "@bfmeta/wallet-tron": "1.6.6",
-        "@bfmeta/wallet-typings": "1.6.6",
+        "@bfmeta/wallet-bcf": "1.6.7",
+        "@bfmeta/wallet-bsc": "1.6.7",
+        "@bfmeta/wallet-eth": "1.6.7",
+        "@bfmeta/wallet-helpers": "1.6.7",
+        "@bfmeta/wallet-tron": "1.6.7",
+        "@bfmeta/wallet-typings": "1.6.7",
         "@bnqkl/util-node": "^1.1.3"
     },
     "files": [
