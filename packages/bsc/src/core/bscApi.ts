@@ -35,7 +35,7 @@ export const BSC_PEERS = {
 };
 @Injectable()
 export class BscApi implements BFChainWallet.BSC.API {
-    private __web3!: Web3;
+    private __web3!: Web3<{}>;
     get web3() {
         if (this.__web3) {
             return this.__web3;
