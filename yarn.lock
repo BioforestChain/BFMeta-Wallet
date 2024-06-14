@@ -37,10 +37,10 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@bfmeta/node-sdk@^4.0.1":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@bfmeta/node-sdk/-/node-sdk-4.0.3.tgz#5184c5c8c66a854c0e792518133f1ce2fe23e742"
-  integrity sha512-FzW7kfQOMpen0vvpWCD3HyhCF9C5ZTYkLgfjxRbjtR/CGaJ9aUabpVEGu+eh0JLgSoU5B2JS/EpOhD6iFUjNKQ==
+"@bfmeta/node-sdk@^4.0.7":
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/@bfmeta/node-sdk/-/node-sdk-4.0.7.tgz#2d8dd66e7c485b9ed211167501c3f282a3330c8b"
+  integrity sha512-gE4lOab961oQr0aSFsdZSW5bOMpZhqGp/nwKVEqksjX9PT9/4Kq6ijgThoi047cOIJalNB4RcQzC+UebP/OAFw==
   dependencies:
     "@bfmeta/sign-util" "^1.0.8"
     "@types/socket.io-client" "^1.4.36"
