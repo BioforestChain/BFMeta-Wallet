@@ -24,6 +24,7 @@ export class BfmetabrowserTest {
     async getAccountInfo() {
         console.log(`getAccountInfo`);
         const r1 = await this.BFChainApi.getAccountInfo("cEAXDkaEJgWKMM61KYz2dYU1RfuxbB8Ma");
+        console.log(r1.result?.secondPublicKey); // 是否设置安全密码含有二次密钥
     }
     async getBlockAverageFee() {
         console.log(`getBlockAverageFee`);
