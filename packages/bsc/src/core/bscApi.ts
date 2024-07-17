@@ -228,6 +228,11 @@ export class BscApi implements BFChainWallet.BSC.API {
         return { name, symbol, decimals, totalSupply };
     }
 
+    private async getContract(address: string, contractAddress: string) {
+        const web3 = this.__officialweb3 ? this.__officialweb3 : this.web3;
+        return new web3.eth.Contract(BSC_BEP20_ABI, contractAddress, { from: address });
+    }
+
     async getContractGas(from: string, to: string, amount: string, contractAddress: string) {
         const contract = await this.getContract(from, contractAddress);
         const estimateGas = await contract.methods
@@ -389,10 +394,6 @@ export class BscApi implements BFChainWallet.BSC.API {
             contractAddress: parseInput ? trans.to : "",
         };
         return transBody;
-    }
-
-    private async getContract(address: string, contractAddress: string) {
-        return new this.web3.eth.Contract(BSC_BEP20_ABI, contractAddress, { from: address });
     }
 
     private async getApiScanUrl() {
