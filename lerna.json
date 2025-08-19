@@ -1,8 +1,8 @@
 {
-    "packages": ["packages/*", "packages/@types/*"],
+    "$schema": "./node_modules/lerna/schemas/lerna-schema.json",
     "version": "1.6.10",
     "npmClient": "pnpm",
-    "publishConifg": {
+    "publishConfig": {
         "access": "public",
         "registry": "https://registry.npmjs.org/"
     },
@@ -11,6 +11,5 @@
         "init": {
             "exact": true
         }
-    },
-    "$schema": "node_modules/lerna/schemas/lerna-schema.json"
+    }
 }
