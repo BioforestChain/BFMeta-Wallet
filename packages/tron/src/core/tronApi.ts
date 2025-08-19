@@ -1,8 +1,8 @@
-import type {} from "@bfmeta/wallet-helpers";
+import type { HttpHelper, PeerListHelper} from "@bfmeta/wallet-helpers";
 import { Inject, Injectable } from "@bnqkl/util-node";
-import { HttpHelper, PeerListHelper, TronApiScanSymbol } from "@bfmeta/wallet-helpers";
-import { TronHelper } from "./tronHelper";
-import { TronFuncionEnum } from "./constants";
+import { TronApiScanSymbol } from "@bfmeta/wallet-helpers";
+import { TronHelper } from "./tronHelper.js";
+import { TronFuncionEnum } from "./constants.js";
 const TronWeb = require("tronweb");
 
 export const TRON_PEERS = {

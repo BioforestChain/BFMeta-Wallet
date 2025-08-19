@@ -1,6 +1,6 @@
-import type {} from "@bfmeta/wallet-helpers";
+import type { HttpHelper} from "@bfmeta/wallet-helpers";
 import { Injectable, Inject } from "@bnqkl/util-node";
-import { HttpHelper, LoggerSymbol } from "@bfmeta/wallet-helpers";
+import { LoggerSymbol } from "@bfmeta/wallet-helpers";
 
 @Injectable("CustomerPeerCheckHelper")
 export class CustomerPeerCheckHelper implements BFChainWallet.Helpers.CustomerPeerCheckHelperInterface {

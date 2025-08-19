@@ -1,8 +1,7 @@
 {
     "packages": ["packages/*", "packages/@types/*"],
     "version": "1.6.10",
-    "useWorkspaces": true,
-    "npmClient": "yarn",
+    "npmClient": "pnpm",
     "publishConifg": {
         "access": "public",
         "registry": "https://registry.npmjs.org/"

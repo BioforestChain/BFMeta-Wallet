@@ -1,3 +1,4 @@
+import type {} from '@bfmeta/node-sdk'
 export {};
 declare global {
     export namespace BFChainWallet {

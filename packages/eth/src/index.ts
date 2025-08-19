@@ -1,7 +1,7 @@
 import type {} from "@bfmeta/wallet-typings";
 import type {} from "@bfmeta/wallet-helpers";
 import { Resolve, ModuleStroge } from "@bnqkl/util-node";
-import { EthApi, EthHealthCheckHelper, ETH_PEERS } from "./core";
+import { EthApi, EthHealthCheckHelper, ETH_PEERS } from "./core/index.js";
 import { PeerListHelperParmas } from "@bfmeta/wallet-helpers";
 
 export const EthWalletFactory = (config: BFChainWallet.Config["eth"], parentMap?: ModuleStroge) => {
@@ -24,4 +24,4 @@ export const EthWalletFactory = (config: BFChainWallet.Config["eth"], parentMap?
     }
 };
 
-export * from "./core";
+export * from "./core/index.js";

@@ -3,7 +3,12 @@
     "name": "@bfmeta/wallet-test",
     "version": "1.6.10",
     "description": " wallet test",
-    "main": "build/cjs/index.js",
+    "exports": {
+        ".": {
+            "types": "./build/index.d.ts",
+            "default": "./build/index.js"
+        }
+    },
     "keywords": [
         "wallet",
         "test"
@@ -13,17 +18,19 @@
         "registry": "https://registry.npmjs.org/"
     },
     "author": "wzx",
-    "license": "ISC",
-    "type": "commonjs",
-    "types": "build/cjs/index.d.ts",
+    "license": "MIT",
+    "type": "module",
     "dependencies": {
-        "@bfmeta/wallet": "1.6.10",
-        "@bfmeta/wallet-typings": "1.6.10",
+        "@bfmeta/wallet": "workspace:^",
+        "@bfmeta/wallet-bcf": "workspace:^",
+        "@bfmeta/wallet-bsc": "workspace:^",
+        "@bfmeta/wallet-eth": "workspace:^",
+        "@bfmeta/wallet-typings": "workspace:^",
+        "@bnqkl/util-node": "^1.1.3",
         "ethereumjs-tx": "^2.1.2"
     },
     "files": [
         "build"
     ],
-    "module": "build/esm/index.js",
     "gitHead": "613869747a152d44fd66d2f138228afd2421b809"
 }

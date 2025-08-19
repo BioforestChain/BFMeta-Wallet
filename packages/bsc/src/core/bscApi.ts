@@ -1,20 +1,22 @@
 import { Inject, Injectable } from "@bnqkl/util-node";
-import {
+import type {
     PeerListHelper,
+    HttpHelper} from "@bfmeta/wallet-helpers";
+import {
     BscApiScanSymbol,
-    HttpHelper,
     ABISupportFunctionEnum,
     ABISupportTypeEnum,
     ABISupportEventEnum,
     TRANS_INPUT_PREFIX,
     HEX_PREFIX,
 } from "@bfmeta/wallet-helpers";
-import Web3, { HttpProvider } from "web3";
-import {
+import { Web3, HttpProvider } from "web3";
+import type {
     AbiEventFragment,
-    Transaction,
     TransactionReceipt,
-    EventLog,
+    EventLog} from "web3-types";
+import {
+    Transaction,
     DEFAULT_RETURN_FORMAT,
     FMT_NUMBER,
     FMT_BYTES,
@@ -22,7 +24,8 @@ import {
     DataFormat,
 } from "web3-types";
 import type { SignTransactionResult } from "web3-eth-accounts";
-import { AbiItemCustom, AbiInputCustom, BSC_BEP20_ABI } from "./constants";
+import type { AbiItemCustom, AbiInputCustom} from "./constants.js";
+import { BSC_BEP20_ABI } from "./constants.js";
 import * as ethereumjs from "ethereumjs-tx";
 import ethereumcommon from "ethereumjs-common";
 import type { HttpProviderOptions } from "web3-providers-http";
@@ -64,7 +67,7 @@ export class BscApi implements BFChainWallet.BSC.API {
 
     private __officialweb3?: Web3;
 
-    private __bscMainnetCommon = ethereumcommon.forCustomChain(
+    private __bscMainnetCommon = ethereumcommon.default.forCustomChain(
         "mainnet",
         {
             name: "my-network",
@@ -73,7 +76,7 @@ export class BscApi implements BFChainWallet.BSC.API {
         },
         "petersburg",
     );
-    private __bscTestnetCommon = ethereumcommon.forCustomChain(
+    private __bscTestnetCommon = ethereumcommon.default.forCustomChain(
         "mainnet",
         {
             name: "my-network",

@@ -1,8 +1,9 @@
 import { LoggerSymbol } from "@bfmeta/wallet";
 import { WalletFactory } from "@bfmeta/wallet";
-import {
+import type {
     AbiFunctionFragment,
-    AbiItemCustom,
+    AbiItemCustom} from "@bfmeta/wallet-bsc";
+import {
     BSC_BEP20_ABI,
     BSC_TEST_LINK_ADDRESS,
     BSC_TEST_USDT_ADDRESS,

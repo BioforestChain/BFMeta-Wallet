@@ -1,9 +1,9 @@
 import type {} from "@bfmeta/wallet-typings";
 import type {} from "@bfmeta/wallet-helpers";
 import { PeerListHelperParmas } from "@bfmeta/wallet-helpers";
-import { TronApi, TRON_PEERS } from "./core/tronApi";
+import { TronApi, TRON_PEERS } from "./core/tronApi.js";
 import { Resolve, ModuleStroge } from "@bnqkl/util-node";
-import { CustomerPeerCheckHelper } from "./core";
+import { CustomerPeerCheckHelper } from "./core/index.js";
 export const TronWalletFactory = (config: BFChainWallet.Config["tron"], parentMap?: ModuleStroge) => {
     if (config && config.enable) {
         const moduleMap = new ModuleStroge(
@@ -24,4 +24,4 @@ export const TronWalletFactory = (config: BFChainWallet.Config["tron"], parentMa
     }
 };
 
-export * from "./core";
+export * from "./core/index.js";

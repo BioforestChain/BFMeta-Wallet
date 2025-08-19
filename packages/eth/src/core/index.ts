@@ -1,3 +1,3 @@
-export * from "./ethApi";
-export * from "./healthCheckHelper";
-export * from "./constants";
+export * from "./ethApi.js";
+export * from "./healthCheckHelper.js";
+export * from "./constants.js";

@@ -1,1 +1,1 @@
-export * from "./bcfApi";
+export * from "./bcfApi.js";

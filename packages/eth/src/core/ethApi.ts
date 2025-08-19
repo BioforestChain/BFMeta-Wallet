@@ -1,26 +1,29 @@
 import { Inject, Injectable } from "@bnqkl/util-node";
+import type {
+    HttpHelper,
+    PeerListHelper} from "@bfmeta/wallet-helpers";
 import {
     ABISupportEventEnum,
     ABISupportFunctionEnum,
     ABISupportTypeEnum,
     EthApiScanSymbol,
     HEX_PREFIX,
-    HttpHelper,
-    PeerListHelper,
     TRANS_INPUT_PREFIX,
 } from "@bfmeta/wallet-helpers";
-import Web3, { HttpProvider } from "web3";
-import {
+import { Web3, HttpProvider } from "web3";
+import type {
     AbiEventFragment,
     TransactionReceipt,
-    EventLog,
+    EventLog} from "web3-types";
+import {
     DEFAULT_RETURN_FORMAT,
     FMT_NUMBER,
     FMT_BYTES,
     BlockTags,
     DataFormat,
 } from "web3-types";
-import { AbiInputCustom, AbiItemCustom, ETH_ERC20_ABI } from "./constants";
+import type { AbiInputCustom, AbiItemCustom} from "./constants.js";
+import { ETH_ERC20_ABI } from "./constants.js";
 import * as ethereumjs2 from "@ethereumjs/tx";
 import * as ethereumjs from "ethereumjs-tx";
 import type { HttpProviderOptions } from "web3-providers-http";

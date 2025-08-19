@@ -1,10 +1,13 @@
 import type {} from "@bfmeta/wallet-typings";
 export * from "@bfmeta/wallet-helpers";
 import { BCFWalletFactory } from "@bfmeta/wallet-bcf";
-import { TronApi, TronWalletFactory } from "@bfmeta/wallet-tron";
+import type { TronApi} from "@bfmeta/wallet-tron";
+import { TronWalletFactory } from "@bfmeta/wallet-tron";
 import type { ModuleStroge } from "@bnqkl/util-node";
-import { EthApi, EthWalletFactory } from "@bfmeta/wallet-eth";
-import { BscApi, BscWalletFactory } from "@bfmeta/wallet-bsc";
+import type { EthApi} from "@bfmeta/wallet-eth";
+import { EthWalletFactory } from "@bfmeta/wallet-eth";
+import type { BscApi} from "@bfmeta/wallet-bsc";
+import { BscWalletFactory } from "@bfmeta/wallet-bsc";
 import { BscApiScanSymbol, EthApiScanSymbol, TronApiScanSymbol } from "@bfmeta/wallet-helpers";
 // export * from "@bfmeta/wallet-test";
 

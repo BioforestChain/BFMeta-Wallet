@@ -1,7 +1,7 @@
 import type {} from "@bfmeta/wallet-typings";
 import { Resolve, ModuleStroge } from "@bnqkl/util-node";
 import { PeerListHelperParmas } from "@bfmeta/wallet-helpers";
-import { BscApi, BscHealthCheckHelper, BSC_PEERS } from "./core";
+import { BscApi, BscHealthCheckHelper, BSC_PEERS } from "./core/index.js";
 export const BscWalletFactory = (config: BFChainWallet.Config["bsc"], parentMap?: ModuleStroge) => {
     if (config && config.enable) {
         const moduleMap = new ModuleStroge(
@@ -22,4 +22,4 @@ export const BscWalletFactory = (config: BFChainWallet.Config["bsc"], parentMap?
     }
 };
 
-export * from "./core";
+export * from "./core/index.js";

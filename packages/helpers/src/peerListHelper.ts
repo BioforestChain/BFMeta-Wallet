@@ -1,5 +1,5 @@
 import { Inject, sleep, Injectable, PromiseOut } from "@bnqkl/util-node";
-import { LoggerSymbol } from "./constants";
+import { LoggerSymbol } from "./constants.js";
 
 export const PeerListHelperParmas = {
     checkInterval: Symbol("checkInterval"),

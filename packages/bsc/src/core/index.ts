@@ -1,3 +1,3 @@
-export * from "./bscApi";
-export * from "./bscHealthCheckHelper";
-export * from "./constants";
+export * from "./bscApi.js";
+export * from "./bscHealthCheckHelper.js";
+export * from "./constants.js";

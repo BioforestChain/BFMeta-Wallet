@@ -1,5 +1,5 @@
 import type {} from "@bfmeta/wallet-typings";
-import { BCF_PEERS, BCFApi } from "./core/bcfApi";
+import { BCF_PEERS, BCFApi } from "./core/bcfApi.js";
 import { Resolve, ModuleStroge } from "@bnqkl/util-node";
 export const BCFWalletFactory = (config: BFChainWallet.WalletNode, parentMap?: ModuleStroge) => {
     const bcfApi = Resolve(
@@ -14,4 +14,4 @@ export const BCFWalletFactory = (config: BFChainWallet.WalletNode, parentMap?: M
     );
     return bcfApi;
 };
-export * from "./core";
+export * from "./core/index.js";

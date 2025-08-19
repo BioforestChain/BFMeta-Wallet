@@ -1,5 +1,5 @@
 import { Injectable } from "@bnqkl/util-node";
-import { HttpHelper } from "./httpHelper";
+import type { HttpHelper } from "./httpHelper.js";
 // import type { BFMetaSDK } from "@bfmeta/node-sdk";
 export const BFCHAIN_PEERS = {
     ips: Symbol("ips"),
