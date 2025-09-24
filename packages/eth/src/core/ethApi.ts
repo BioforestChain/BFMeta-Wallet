@@ -79,7 +79,7 @@ export class EthApi implements BFChainWallet.ETH.API {
     async getNormalTransHistory(
         req: BFChainWallet.ETH.TransHistoryReq,
     ): Promise<BFChainWallet.ETH.NormalTransHistoryRes> {
-        const host = `${await this.getApiScanUrl()}&module=account&action=txlist`;
+        const host = `${await this.getApiScanUrl()}&chainid=1&module=account&action=txlist`;
         const normalResult: BFChainWallet.ETH.NormalTransHistoryResult = await this.httpHelper.sendGetRequest(
             host,
             req,
@@ -114,7 +114,7 @@ export class EthApi implements BFChainWallet.ETH.API {
     async getErc20TransHistory(
         req: BFChainWallet.ETH.TransHistoryReq,
     ): Promise<BFChainWallet.ETH.Erc20TransHistoryRes> {
-        const host = `${await this.getApiScanUrl()}&module=account&action=tokentx`;
+        const host = `${await this.getApiScanUrl()}&chainid=1&module=account&action=tokentx`;
         const erc20Result: BFChainWallet.ETH.Erc20TransHistoryResult = await this.httpHelper.sendGetRequest(host, req);
         const result: BFChainWallet.ETH.Erc20TransRes[] =
             erc20Result?.status === "1"
@@ -224,6 +224,15 @@ export class EthApi implements BFChainWallet.ETH.API {
         const decimal = (await contract.methods.decimals().call()) as unknown as bigint;
         const result: BFChainWallet.ETH.ContractBalance = {
             balance: balance.toString(),
+            decimal: decimal.toString(),
+        };
+        return result;
+    }
+
+    async getContractDecimal(address: string, contractAddress: string) {
+        const contract = await this.getContract(address, contractAddress);
+        const decimal = (await contract.methods.decimals().call()) as unknown as bigint;
+        const result = {
             decimal: decimal.toString(),
         };
         return result;

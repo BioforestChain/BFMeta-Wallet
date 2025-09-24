@@ -103,7 +103,7 @@ export class BscApi implements BFChainWallet.BSC.API {
     async getNormalTransHistory(
         req: BFChainWallet.BSC.BscTransHistoryReq,
     ): Promise<BFChainWallet.BSC.NormalTransHistoryRes> {
-        const host = `${await this.getApiScanUrl()}&module=account&action=txlist`;
+        const host = `${await this.getApiScanUrl()}&chainid=56&module=account&action=txlist`;
         const normalResult: BFChainWallet.BSC.NormalTransHistoryResult = await this.httpHelper.sendGetRequest(
             host,
             req,
@@ -138,7 +138,7 @@ export class BscApi implements BFChainWallet.BSC.API {
     async getBep20TransHistory(
         req: BFChainWallet.BSC.BscTransHistoryReq,
     ): Promise<BFChainWallet.BSC.Bep20TransHistoryRes> {
-        const host = `${await this.getApiScanUrl()}&module=account&action=tokentx`;
+        const host = `${await this.getApiScanUrl()}&chainid=56&module=account&action=tokentx`;
         const bep20Result: BFChainWallet.BSC.Bep20TransHistoryResult = await this.httpHelper.sendGetRequest(host, req);
         const result: BFChainWallet.BSC.Bep20TransRes[] =
             // status = 1 时为成功状态
