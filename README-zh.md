@@ -2,16 +2,26 @@
 英文版请参见 [README](README.md)。
 
 ## 简介
-BFMeta 桌面钱包：账户管理、转账、签名及链交互。
+BFMeta 桌面钱包 monorepo，提供账户/密钥管理、转账、签名、多链适配与网络切换。
+
+## 架构
+- 工作区 `packages/`
+  - `wallet`：钱包 UI 与应用壳
+  - 链适配器：`bcf`、`bsc`、`eth`、`tron`
+  - 共享库：`helpers`、`typings`、`test`
+- 工具链：`lerna.json`、`pnpm-workspace.yaml`、`tsconfig*.json`
+- 配置：`config/`；脚本：`scripts/`
 
 ## 快速开始
-1) 安装依赖：`pnpm install`
-2) 开发运行：`pnpm dev`
-3) 构建：`pnpm build`（如有平台脚本按需使用）
-4) 连接主网前，请在应用配置中设置节点地址和网络参数。
+```bash
+pnpm install
+pnpm dev      # 开发
+pnpm build    # 全量构建
+```
+连接主网前，请在 `config/` 或环境变量中设置节点地址、网络参数。
 
-## 贡献
-- 产品级应用：界面文案保持中英双语；避免 `any`/`@ts-ignore`。
-- UI 与服务逻辑分层，复用共享 hooks/utils，遵循 DRY。
-- 新增功能（转账、导入密钥、设置）需补最小回归测试。
-- 分支：`feature/<scope>` / `fix/<issue>`；提交保持简洁。
+## 贡献规范
+- 生态产品（Layer 2A，GPLv3）：TypeScript 严格，避免 `any`/`@ts-ignore`。
+- UI 与业务分层：UI 负责展示，逻辑放共享 helpers/适配器（SRP/DRY）。
+- 涉及转账/密钥/设置的改动需在 `packages/test` 补回归用例。
+- 分支：`feature/<scope>`、`fix/<issue>`；提交用简短动词短语。

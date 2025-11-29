@@ -2,16 +2,26 @@
 For Chinese version please see [README-zh](README-zh.md).
 
 ## Overview
-BFMeta desktop wallet application: account management, transfers, signing, and network interaction for BFMeta chains.
+Monorepo desktop wallet for BFMeta. Provides account/key management, transfers, signing, network switching, and multi-chain adapters.
+
+## Architecture
+- Workspaces: see `packages/`
+  - `wallet` UI/application shell
+  - chain adapters: `bcf`, `bsc`, `eth`, `tron`
+  - shared libs: `helpers`, `typings`, `test`
+- Tooling: `lerna.json`, `pnpm-workspace.yaml`, `tsconfig*.json` for multi-target builds
+- Config: `config/` app configs; `scripts/` helper scripts
 
 ## Getting Started
-1) Install deps: `pnpm install`
-2) Dev run: `pnpm dev`
-3) Build: `pnpm build` (or platform-specific script if provided)
-4) Configure node endpoints and network settings in app config before connecting to mainnet.
+```bash
+pnpm install          # install workspace deps
+pnpm dev              # run dev app (per package scripts may proxy)
+pnpm build            # full build
+```
+Before connecting to mainnet, update endpoint/network settings in `config/` or env files.
 
-## Contribution
-- Product app: keep UX strings bilingual; avoid `any`/`@ts-ignore`.
-- Separate UI components and service logic; reuse shared hooks/utils to stay DRY.
-- Add minimal regression tests for new flows (send, import key, settings).
-- Branch naming `feature/<scope>` / `fix/<issue>`; concise commit messages.
+## Contribution Guide
+- Layer 2A product → GPLv3; keep TypeScript strict, avoid `any`/`@ts-ignore`.
+- UI vs services: keep UI components thin; business logic in shared helpers/adapters (DRY/SRP).
+- Tests: add minimal regression for send/import/settings flows in `packages/test` when touching related code.
+- Branches: `feature/<scope>` / `fix/<issue>`; concise verb commits.
